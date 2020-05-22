@@ -1,8 +1,11 @@
 {
   "compilerOptions": {
+    //"baseUrl": "/",
     "outDir": "./dist/",
     "sourceMap": true,
-    "noImplicitAny": true,
+    //"noImplicitAny": true,
+    //"preserveSymlinks": true,
+    "strict": true,
     "module": "commonjs",
     "target": "es5",
     "jsx": "react",

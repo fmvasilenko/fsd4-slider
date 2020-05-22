@@ -1,26 +1,14 @@
 import "./slider/slider.scss"
 import { Slider } from "./slider/slider"
 
-$.fn.slider = Object.assign<SliderFunction, SliderGlobalOptions>(
-  function (this: JQuery, options: SliderOptions = {}): JQuery {
+$.fn.slider = function (this: JQuery, options?: SliderConfig) {
+  
+  let slider = new Slider(this, options)
+  console.log(slider)
 
-    options = $.extend({}, $.fn.slider.options, options)
+  return this
+}
 
-    /*if (!options.outputSelector) {
-      console.error('Slider options are missing required parameter "outputSelector": ', JSON.stringify(options));
-      return this;
-    }*/
-
-    console.log(this)
-    return this
-  },
-  {
-    options: {
-      outputSelector: null
-    }
-  }
-)
-
-$(".slider").slider({})
+$(".slider").slider()
 
 console.log("ts works")
