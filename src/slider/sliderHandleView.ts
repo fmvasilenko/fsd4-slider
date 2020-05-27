@@ -2,25 +2,22 @@
 
 class SliderHandleView {
   private parent: ISliderView
-  private config: SliderHandleConfig
+  private config: SliderConfig
   public ROOT: HTMLElement
   private state: SliderHandleState
 
-  constructor(parent: ISliderView, container: HTMLElement, rootClass: string, config?: SliderHandleConfig) {
-    let defaultConfig: SliderHandleConfig = {
-      isRange: false,
-      position: ""
-    }
-    this.config = Object.assign(defaultConfig, config)
+  constructor(parent: ISliderView, rootClass: string, config: SliderConfig) {
+    this.config = config
     this.parent = parent
-    this.state = this.getDefaultState();
+    this.state = this.getDefaultState()
     this.ROOT = this.createRootElement(rootClass)
+    this.render()
   }
 
   private getDefaultState(): SliderHandleState {
     return {
       drag: false,
-      position: 0
+      value: this.config.value
     }
   }
 
@@ -30,35 +27,43 @@ class SliderHandleView {
     return handle
   }
 
+  public getValue(): number {
+    return this.state.value
+  }
+
+  public setValue(value: number) {
+    this.state.value = value
+    this.render()
+  }
+
+  private render() {
+    let position = this.calculateHandlePosition()
+    this.ROOT.style.left = `${position}px`
+  }
+
+  private calculateHandlePosition(): number {
+    let length = this.parent.ROOT.offsetWidth
+    return length * (this.state.value - this.config.minValue) / (this.config.maxValue - this.config.minValue)
+  }
+
   public drag() {
     this.state.drag = true
+    this.ROOT.style.cursor = "grabbing"
+    let body = document.querySelector("body")
+    if (body !== null)
+      body.style.cursor = "grabbing"
   }
 
   public drop() {
     this.state.drag = false
-  }
-
-  public move(event: MouseEvent) {
-    this.state.position = this.calculateHandlePosition(event)
-    this.ROOT.style.left = `${this.state.position}px`
-  }
-
-  private calculateHandlePosition(event: MouseEvent): number {
-    let x = event.pageX
-    let scaleBeginning = this.parent.ROOT.getBoundingClientRect().left
-    let length = this.parent.ROOT.offsetWidth
-
-    if (x < scaleBeginning) return 0
-    else if (x > scaleBeginning + length) return length
-    else return x - scaleBeginning
+    this.ROOT.style.cursor = "default"
+    let body = document.querySelector("body")
+    if (body !== null)
+      body.style.cursor = "default"
   }
 
   public isDragged(): boolean {
     return this.state.drag
-  }
-
-  public getPosition(): number {
-    return this.state.position
   }
 }
 

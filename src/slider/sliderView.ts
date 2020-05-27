@@ -1,18 +1,25 @@
 ///<reference path="./slider.d.ts" />
 ///<reference path="./view/sliderView.d.ts" />
 import { SliderHandleView } from "./sliderHandleView"
+import { SliderLimitsView } from "./view/sliderLimitsView"
+import { SliderValueLabel } from "./view/sliderValueLabel"
 
 class SliderView implements ISliderView {
   ROOT: HTMLElement
+  private controller: Slider
   private LEFT_HANDLE: SliderHandleView
   private RIGHT_HANDLE: SliderHandleView | undefined
+  private MIN_VALUE: SliderLimitsView
+  private MAX_VALUE: SliderLimitsView
+  private VALUE_LABEL: SliderValueLabel
   private CLASSES = require("./sliderClasses.json")
-  private config: SliderViewConfig
+  private config: SliderConfig
   private state: SliderViewState
 
-  constructor(root: HTMLElement, config?: SliderViewConfig) {
-    this.config = Object.assign(this.getDefaultConfig(), config)
+  constructor(controller: Slider, root: HTMLElement, config: SliderConfig) {
+    this.config = config
     this.state = this.getDefaultState()
+    this.controller = controller
 
     this.ROOT = root
     this.ROOT.classList.add(this.CLASSES.SLIDER)
@@ -25,13 +32,25 @@ class SliderView implements ISliderView {
       this.ROOT.appendChild(this.RIGHT_HANDLE.ROOT)
     }
 
+    this.MIN_VALUE = new SliderLimitsView(this.CLASSES.MIN_VALUE)
+    this.ROOT.appendChild(this.MIN_VALUE.ROOT)
+    this.MIN_VALUE.updateValue(this.config.minValue)
+
+    this.MAX_VALUE = new SliderLimitsView(this.CLASSES.MAX_VALUE)
+    this.ROOT.appendChild(this.MAX_VALUE.ROOT)
+    this.MAX_VALUE.updateValue(this.config.maxValue)
+
+    this.VALUE_LABEL = new SliderValueLabel(this.CLASSES.VALUE_LABEL)
+    this.LEFT_HANDLE.ROOT.appendChild(this.VALUE_LABEL.ROOT)
+    this.VALUE_LABEL.updateValue(this.config.value)
+
     this.bindEventListeners()
   }
 
-  private getDefaultConfig(): SliderViewConfig {
-    return {
-      isRange: false
-    }
+  public setState(config: ImportedSliderConfig) {
+    this.config = Object.assign(this.config, config)
+    this.VALUE_LABEL.value = this.config.value
+    this.LEFT_HANDLE.setValue(this.config.value)
   }
 
   private getDefaultState(): SliderViewState {
@@ -43,9 +62,9 @@ class SliderView implements ISliderView {
 
   private createHandle(position?: string): SliderHandleView{
     if (position == "right")
-      return new SliderHandleView(this, this.ROOT, this.CLASSES.HANDLE, {isRange: true, position: "right"})
+      return new SliderHandleView(this, this.CLASSES.HANDLE, this.config)
     else
-      return new SliderHandleView(this, this.ROOT, this.CLASSES.HANDLE, {isRange: true, position: "left"})
+      return new SliderHandleView(this, this.CLASSES.HANDLE, this.config)
   }
 
   private bindEventListeners() {
@@ -59,8 +78,6 @@ class SliderView implements ISliderView {
       this.LEFT_HANDLE.drag()
     else if (this.RIGHT_HANDLE !== undefined && event.target == this.RIGHT_HANDLE.ROOT)
       this.RIGHT_HANDLE.drag()
-
-    //this.controller
   }
 
   private drop() {
@@ -70,10 +87,22 @@ class SliderView implements ISliderView {
   }
 
   private watchMouse(event: MouseEvent) {
-    if (this.LEFT_HANDLE.isDragged())
-      this.LEFT_HANDLE.move(event)
-    else if (this.RIGHT_HANDLE !== undefined && this.RIGHT_HANDLE.isDragged())
-      this.RIGHT_HANDLE.move(event)
+    if (this.LEFT_HANDLE.isDragged()) {
+      this.controller.changeModel({
+        leftPosition: this.calculateHandlePosition(event),
+        length: this.ROOT.offsetWidth
+      })
+    }
+  }
+
+  private calculateHandlePosition(event: MouseEvent): number {
+    let x = event.pageX
+    let scaleBeginning = this.ROOT.getBoundingClientRect().left
+    let length = this.ROOT.offsetWidth
+
+    if (x < scaleBeginning) return 0
+    else if (x > scaleBeginning + length) return length
+    else return x - scaleBeginning
   }
 }
 

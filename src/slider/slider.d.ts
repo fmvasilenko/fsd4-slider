@@ -18,30 +18,49 @@ interface SliderHandleConfig {
 
 interface SliderHandleState {
   drag: boolean,
-  position: number
+  value: number
+}
+
+interface ImportedSliderConfig {
+  isRange?: boolean,
+  minValue?: number,
+  maxValue?: number,
+  step?: number,
+  value?: number,
+  defaultValues?: number[] | undefined
 }
 
 interface SliderConfig {
-  isRange?: boolean,
-  minValue?: number,
-  maxValue?: number
+  isRange: boolean,
+  minValue: number,
+  maxValue: number,
+  step: number,
+  value: number,
+  defaultValues: number[] | undefined
 }
 
 interface SliderFunction {
-  (config?: SliderConfig): JQuery;
+  (config?: ImportedSliderConfig): JQuery;
 }
 
 interface JQuery {
-  slider: Slider;
+  slider: ISlider;
 }
 
-interface Slider extends SliderFunction {
-  //ROOT?: HTMLElement
-  //MODEL?: SliderModel
-  //VIEW?: SliderView
-  //config?: SliderConfig
+interface ISlider extends SliderFunction {}
+
+interface Slider {
+  changeModel(parameters: ModelParameters): void
+  changeView(value: number): void
 }
 
 interface ModelParameters {
+  leftPosition: number,
+  rightPosition?: number,
+  length: number
+}
 
+interface SliderModelState {
+  leftValue: number,
+  rightValue: number | undefined
 }
