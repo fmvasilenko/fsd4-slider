@@ -1,16 +1,21 @@
 ///<reference path="./view/sliderView.d.ts" />
 
+enum HandlePosition {Left, Right}
+
 class SliderHandleView {
   private parent: ISliderView
   private config: SliderConfig
   public ROOT: HTMLElement
   private state: SliderHandleState
+  private position: HandlePosition
 
-  constructor(parent: ISliderView, rootClass: string, config: SliderConfig) {
+  constructor(parent: ISliderView, rootClass: string, config: SliderConfig, position: HandlePosition) {
     this.config = config
     this.parent = parent
+    this.position = position
     this.state = this.getDefaultState()
     this.ROOT = this.createRootElement(rootClass)
+    this.parent.ROOT.appendChild(this.ROOT)
     this.render()
   }
 
@@ -42,11 +47,36 @@ class SliderHandleView {
   }
 
   private calculatePosition(): number {
-    let length = this.parent.ROOT.offsetWidth
-    if (this.config.defaultValues === undefined)
+    /*if (this.config.defaultValues === undefined)
       return length * (this.state.value - this.config.minValue) / (this.config.maxValue - this.config.minValue)
     else
-      return this.state.value * length / (this.config.defaultValues.length - 1)
+      return this.state.value * length / (this.config.defaultValues.length - 1)*/
+
+    if (this.config.defaultValues !== undefined)
+      return this.calculateDefaultValuePosition()
+    else if (this.config.isRange !==undefined)
+      return this.calculateRangePosition()
+    else return this.calculateOneHandlePosition()
+  }
+
+  private calculateDefaultValuePosition(): number {
+    let length = this.parent.ROOT.offsetWidth
+    return this.config.defaultValues ? this.state.value * length / (this.config.defaultValues.length - 1) : 0
+  }
+
+  private calculateRangePosition(): number {
+    let position = this.calculateOneHandlePosition()
+
+    if (this.position == HandlePosition.Left) {
+      return position - this.ROOT.offsetWidth / 2
+    }
+    else
+      return position + this.ROOT.offsetWidth / 2
+  }
+
+  private calculateOneHandlePosition(): number {
+    let length = this.parent.ROOT.offsetWidth
+    return length * (this.state.value - this.config.minValue) / (this.config.maxValue - this.config.minValue)
   }
 
   public drag() {

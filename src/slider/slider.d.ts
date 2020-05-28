@@ -8,7 +8,9 @@ interface SliderViewConfig {
 
 interface SliderViewState {
   dragLeftHandle: boolean,
-  dragRightHandle: boolean
+  dragRightHandle: boolean,
+  leftPosition: number,
+  rightPosition: number
 }
 
 interface SliderHandleConfig {
@@ -51,7 +53,7 @@ interface ISlider extends SliderFunction {}
 
 interface Slider {
   changeModel(parameters: ModelParameters): void
-  changeView(value: number): void
+  changeView(state: SliderModelState): void
 }
 
 interface ModelParameters {

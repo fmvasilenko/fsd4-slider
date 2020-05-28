@@ -5,6 +5,8 @@ import { SliderLimitsView } from "./view/sliderLimitsView"
 import { SliderValueLabel } from "./view/sliderValueLabel"
 import { SliderDefaultValue } from "./view/sliderDefaultValue"
 
+enum HandlePosition {Left, Right}
+
 class SliderView implements ISliderView {
   ROOT: HTMLElement
   private controller: Slider
@@ -13,6 +15,7 @@ class SliderView implements ISliderView {
   private MIN_VALUE: SliderLimitsView | undefined
   private MAX_VALUE: SliderLimitsView | undefined
   private VALUE_LABEL: SliderValueLabel
+  private RIGHT_HANDLE_VALUE_LABEL: SliderValueLabel | undefined
   private DEFAULT_VALUES: SliderDefaultValue[]
   private CLASSES = require("./sliderClasses.json")
   private config: SliderConfig
@@ -29,11 +32,13 @@ class SliderView implements ISliderView {
     this.DEFAULT_VALUES = []
 
     this.LEFT_HANDLE = this.createHandle()
-    this.ROOT.appendChild(this.LEFT_HANDLE.ROOT)
+    this.VALUE_LABEL = new SliderValueLabel(this.CLASSES.VALUE_LABEL, this.config)
+    this.LEFT_HANDLE.ROOT.appendChild(this.VALUE_LABEL.ROOT)
 
     if (this.config.isRange === true) {
       this.RIGHT_HANDLE = this.createHandle("right")
-      this.ROOT.appendChild(this.RIGHT_HANDLE.ROOT)
+      this.RIGHT_HANDLE_VALUE_LABEL = new SliderValueLabel(this.CLASSES.VALUE_LABEL, this.config)
+      this.RIGHT_HANDLE.ROOT.appendChild(this.RIGHT_HANDLE_VALUE_LABEL.ROOT)
     }
 
     if (this.config.defaultValues == undefined) {
@@ -54,30 +59,33 @@ class SliderView implements ISliderView {
       })
     }
 
-    this.VALUE_LABEL = new SliderValueLabel(this.CLASSES.VALUE_LABEL, this.config)
-    this.LEFT_HANDLE.ROOT.appendChild(this.VALUE_LABEL.ROOT)
-
     this.bindEventListeners()
   }
 
-  public setState(config: ImportedSliderConfig) {
-    this.config = Object.assign(this.config, config)
-    this.VALUE_LABEL.setValue(this.config.value)
-    this.LEFT_HANDLE.setValue(this.config.value)
+  public setState(config: SliderModelState) {
+    this.VALUE_LABEL.setValue(config.leftValue)
+    this.LEFT_HANDLE.setValue(config.leftValue)
+
+    if (config.rightValue !== undefined) {
+      this.RIGHT_HANDLE?.setValue(config.rightValue)
+      this.RIGHT_HANDLE_VALUE_LABEL?.setValue(config.rightValue)
+    }
   }
 
   private getDefaultState(): SliderViewState {
     return {
       dragLeftHandle: true,
-      dragRightHandle: false
+      dragRightHandle: false,
+      leftPosition: 0,
+      rightPosition: 0
     }
   }
 
   private createHandle(position?: string): SliderHandleView{
     if (position == "right")
-      return new SliderHandleView(this, this.CLASSES.HANDLE, this.config)
+      return new SliderHandleView(this, this.CLASSES.HANDLE, this.config, HandlePosition.Right)
     else
-      return new SliderHandleView(this, this.CLASSES.HANDLE, this.config)
+      return new SliderHandleView(this, this.CLASSES.HANDLE, this.config, HandlePosition.Left)
   }
 
   private bindEventListeners() {
@@ -101,8 +109,17 @@ class SliderView implements ISliderView {
 
   private watchMouse(event: MouseEvent) {
     if (this.LEFT_HANDLE.isDragged()) {
+      this.state.leftPosition = this.calculateHandlePosition(event)
       this.controller.changeModel({
-        leftPosition: this.calculateHandlePosition(event),
+        leftPosition: this.state.leftPosition,
+        length: this.ROOT.offsetWidth
+      })
+    }
+    else if (this.RIGHT_HANDLE !== undefined && this.RIGHT_HANDLE.isDragged()) {
+      this.state.rightPosition = this.calculateHandlePosition(event)
+      this.controller.changeModel({
+        leftPosition: this.state.leftPosition,
+        rightPosition: this.state.rightPosition,
         length: this.ROOT.offsetWidth
       })
     }

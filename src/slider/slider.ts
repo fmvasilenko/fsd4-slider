@@ -30,8 +30,8 @@ class Slider {
     this.MODEL.update(parameters)
   }
 
-  public changeView(value: number) {
-    this.VIEW.setState({value: value})
+  public changeView(state: SliderModelState) {
+    this.VIEW.setState(state)
   }
 }
 

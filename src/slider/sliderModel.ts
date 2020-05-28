@@ -21,7 +21,7 @@ class SliderModel {
       this.updateOneHandle(parameters)
     else this.updateDefaultValues(parameters)
 
-    this.controller.changeView(this.state.leftValue)
+    this.controller.changeView({leftValue: this.state.leftValue, rightValue: this.state.rightValue})
   }
 
   private updateOneHandle(parameters: ModelParameters) {
@@ -34,7 +34,13 @@ class SliderModel {
 
     if (parameters.rightPosition !== undefined) {
       let rightValue = Math.floor(range * parameters.rightPosition / parameters.length)
-      this.state.rightValue = rightValue - rightValue % this.config.step
+      this.state.rightValue = rightValue - rightValue % this.config.step + this.config.minValue
+      if (rightValue % this.config.step > this.config.step / 2) this.state.rightValue += this.config.step
+      if (this.state.rightValue > this.config.maxValue) this.state.rightValue -= this.config.step
+    }
+
+    if (this.state.rightValue !== undefined && this.state.leftValue > this.state.rightValue) {
+      this.state.leftValue = this.state.rightValue
     }
   }
 
