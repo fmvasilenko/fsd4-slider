@@ -26,6 +26,7 @@
     width: 16px;
     height: 16px;
     position: absolute;
+    z-index: 2;
     top: -5px;
     left: 50%;
     margin-left: - 8px;
@@ -65,5 +66,25 @@
     background: white;
 
     text-align: center;
+  }
+
+  &__default-value {
+    width: 8px;
+    height: 8px;
+    position: absolute;
+    top: -2px;
+    left: 50%;
+    margin-left: - 4px;
+    background: green;
+    border-radius: 50%;
+  }
+
+  &__default-value-label {
+    position: absolute;
+    bottom: -50px;
+
+    padding: 10px;
+    border: 1px solid #444;
+    background: white;
   }
 }

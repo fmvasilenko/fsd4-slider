@@ -3,15 +3,17 @@
 import { SliderHandleView } from "./sliderHandleView"
 import { SliderLimitsView } from "./view/sliderLimitsView"
 import { SliderValueLabel } from "./view/sliderValueLabel"
+import { SliderDefaultValue } from "./view/sliderDefaultValue"
 
 class SliderView implements ISliderView {
   ROOT: HTMLElement
   private controller: Slider
   private LEFT_HANDLE: SliderHandleView
   private RIGHT_HANDLE: SliderHandleView | undefined
-  private MIN_VALUE: SliderLimitsView
-  private MAX_VALUE: SliderLimitsView
+  private MIN_VALUE: SliderLimitsView | undefined
+  private MAX_VALUE: SliderLimitsView | undefined
   private VALUE_LABEL: SliderValueLabel
+  private DEFAULT_VALUES: SliderDefaultValue[]
   private CLASSES = require("./sliderClasses.json")
   private config: SliderConfig
   private state: SliderViewState
@@ -24,6 +26,8 @@ class SliderView implements ISliderView {
     this.ROOT = root
     this.ROOT.classList.add(this.CLASSES.SLIDER)
 
+    this.DEFAULT_VALUES = []
+
     this.LEFT_HANDLE = this.createHandle()
     this.ROOT.appendChild(this.LEFT_HANDLE.ROOT)
 
@@ -32,24 +36,33 @@ class SliderView implements ISliderView {
       this.ROOT.appendChild(this.RIGHT_HANDLE.ROOT)
     }
 
-    this.MIN_VALUE = new SliderLimitsView(this.CLASSES.MIN_VALUE)
-    this.ROOT.appendChild(this.MIN_VALUE.ROOT)
-    this.MIN_VALUE.updateValue(this.config.minValue)
+    if (this.config.defaultValues == undefined) {
+      this.MIN_VALUE = new SliderLimitsView(this.CLASSES.MIN_VALUE)
+      this.ROOT.appendChild(this.MIN_VALUE.ROOT)
+      this.MIN_VALUE.updateValue(this.config.minValue)
 
-    this.MAX_VALUE = new SliderLimitsView(this.CLASSES.MAX_VALUE)
-    this.ROOT.appendChild(this.MAX_VALUE.ROOT)
-    this.MAX_VALUE.updateValue(this.config.maxValue)
+      this.MAX_VALUE = new SliderLimitsView(this.CLASSES.MAX_VALUE)
+      this.ROOT.appendChild(this.MAX_VALUE.ROOT)
+      this.MAX_VALUE.updateValue(this.config.maxValue)
+    }
+    else {
+      let length = 100 * (this.ROOT.offsetWidth / (this.config.defaultValues.length - 1)) / this.ROOT.offsetWidth
+      this.config.defaultValues.forEach((element: number | string, index: number) => {
+        let position = index * length
+        this.DEFAULT_VALUES[index] = new SliderDefaultValue(element, this.CLASSES.DEFAULT_VALUE, position)
+        this.ROOT.appendChild(this.DEFAULT_VALUES[index].ROOT)
+      })
+    }
 
-    this.VALUE_LABEL = new SliderValueLabel(this.CLASSES.VALUE_LABEL)
+    this.VALUE_LABEL = new SliderValueLabel(this.CLASSES.VALUE_LABEL, this.config)
     this.LEFT_HANDLE.ROOT.appendChild(this.VALUE_LABEL.ROOT)
-    this.VALUE_LABEL.updateValue(this.config.value)
 
     this.bindEventListeners()
   }
 
   public setState(config: ImportedSliderConfig) {
     this.config = Object.assign(this.config, config)
-    this.VALUE_LABEL.value = this.config.value
+    this.VALUE_LABEL.setValue(this.config.value)
     this.LEFT_HANDLE.setValue(this.config.value)
   }
 

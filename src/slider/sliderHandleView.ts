@@ -17,7 +17,7 @@ class SliderHandleView {
   private getDefaultState(): SliderHandleState {
     return {
       drag: false,
-      value: this.config.value
+      value: this.config.defaultValues ? 0 : this.config.value
     }
   }
 
@@ -37,13 +37,16 @@ class SliderHandleView {
   }
 
   private render() {
-    let position = this.calculateHandlePosition()
+    let position = this.calculatePosition()
     this.ROOT.style.left = `${position}px`
   }
 
-  private calculateHandlePosition(): number {
+  private calculatePosition(): number {
     let length = this.parent.ROOT.offsetWidth
-    return length * (this.state.value - this.config.minValue) / (this.config.maxValue - this.config.minValue)
+    if (this.config.defaultValues === undefined)
+      return length * (this.state.value - this.config.minValue) / (this.config.maxValue - this.config.minValue)
+    else
+      return this.state.value * length / (this.config.defaultValues.length - 1)
   }
 
   public drag() {

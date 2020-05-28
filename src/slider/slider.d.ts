@@ -27,7 +27,7 @@ interface ImportedSliderConfig {
   maxValue?: number,
   step?: number,
   value?: number,
-  defaultValues?: number[] | undefined
+  defaultValues?: number[] | string[] | undefined
 }
 
 interface SliderConfig {
@@ -36,7 +36,7 @@ interface SliderConfig {
   maxValue: number,
   step: number,
   value: number,
-  defaultValues: number[] | undefined
+  defaultValues: number[] | string[] | undefined
 }
 
 interface SliderFunction {

@@ -1,18 +1,21 @@
 class SliderValueLabel {
   ROOT: HTMLElement
-  private _value: number
+  private config: SliderConfig
+  private value: number
 
-  constructor(className: string) {
+  constructor(className: string, config: SliderConfig) {
     this.ROOT = this.createRootElement(className)
-    this._value = 0
+    this.config = config
+    this.value = this.config.defaultValues ? 0 : this.config.value
+    this.render()
   }
 
-  get value(): number {
-    return this._value
+  getValue(): number {
+    return this.value
   }
 
-  set value(value: number) {
-    this._value = value
+  setValue(value: number) {
+    this.value = value
     this.render()
   }
 
@@ -23,11 +26,14 @@ class SliderValueLabel {
   }
 
   public updateValue(value: number) {
-    this.value = value
+    this.setValue(value)
   }
 
   private render() {
-    this.ROOT.innerHTML = `${this.value}`
+    if (this.config.defaultValues === undefined)
+      this.ROOT.innerHTML = `${this.value}`
+    else 
+      this.ROOT.innerHTML = `${this.config.defaultValues[this.value]}`
   }
 }
 

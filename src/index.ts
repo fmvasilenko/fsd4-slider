@@ -10,10 +10,10 @@ $.fn.slider = function (this: JQuery, options?: ImportedSliderConfig) {
 }
 
 $(".block").slider({
-  value: 20,
   minValue: 20,
-  maxValue: 180,
-  step: 50
+  maxValue: 100,
+  value: 30,
+  defaultValues: ["first", "second", "third"]
 })
 
 console.log("ts works")

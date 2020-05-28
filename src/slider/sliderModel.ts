@@ -17,6 +17,14 @@ class SliderModel {
   }
 
   public update(parameters: ModelParameters) {
+    if (this.config.defaultValues == undefined)
+      this.updateOneHandle(parameters)
+    else this.updateDefaultValues(parameters)
+
+    this.controller.changeView(this.state.leftValue)
+  }
+
+  private updateOneHandle(parameters: ModelParameters) {
     let range = this.config.maxValue - this.config.minValue
 
     let leftValue = Math.floor(range * parameters.leftPosition / parameters.length)
@@ -28,8 +36,11 @@ class SliderModel {
       let rightValue = Math.floor(range * parameters.rightPosition / parameters.length)
       this.state.rightValue = rightValue - rightValue % this.config.step
     }
+  }
 
-    this.controller.changeView(this.state.leftValue)
+  private updateDefaultValues(parameters: ModelParameters) {
+    if (this.config.defaultValues !== undefined)
+      this.state.leftValue = Math.round((this.config.defaultValues.length - 1) * parameters.leftPosition / parameters.length)
   }
 }
 
