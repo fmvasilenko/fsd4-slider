@@ -20,6 +20,7 @@ class SliderView {
 
     this.ROOT = this.CONTROLLER.ROOT
     this.ROOT.classList.add(this.CLASSES.SLIDER)
+    if (this.config.isVertical) this.ROOT.classList.add(this.CLASSES.SLIDER_VERTICAL)
 
     this.LEFT_HANDLE = this.createLeftHandle()
     this.RIGHT_HANDLE = this.createRightHandle()
@@ -57,14 +58,16 @@ class SliderView {
   }
 
   private createMinValueLabel(): SliderLimitView {
-    let label = new SliderLimitView(this, this.CLASSES.MIN_VALUE)
+    enum Type{MinVal, MaxVal}
+    let label = new SliderLimitView(this, Type.MinVal)
     label.setValue(this.config.minValue)
     this.ROOT.appendChild(label.ROOT)
     return label
   }
 
   private createMaxValueLabel(): SliderLimitView {
-    let label = new SliderLimitView(this, this.CLASSES.MAX_VALUE)
+    enum Type{MinVal, MaxVal}
+    let label = new SliderLimitView(this, Type.MaxVal)
     label.setValue(this.config.maxValue)
     this.ROOT.appendChild(label.ROOT)
     return label
@@ -75,11 +78,14 @@ class SliderView {
     let defaultValues = this.config.defaultValues
 
     if (defaultValues !== undefined) {
-      let length = 100 * (this.ROOT.clientWidth / (defaultValues.length - 1)) / this.ROOT.clientWidth
+      let length: number
+      if (this.config.isVertical)
+        length = 100 * (this.ROOT.clientHeight / (defaultValues.length - 1)) / this.ROOT.clientHeight
+      else length = 100 * (this.ROOT.clientWidth / (defaultValues.length - 1)) / this.ROOT.clientWidth
 
       this.config.defaultValues?.forEach((element: number | string, index: number) => {
         let shift = index * length
-        labels[index] = new SliderDefaultValueLabel(this, this.CLASSES.DEFAULT_VALUE)
+        labels[index] = new SliderDefaultValueLabel(this)
         labels[index].setValue(defaultValues ? defaultValues[index] : 0)
         labels[index].setShift(shift)
         this.ROOT.appendChild(labels[index].ROOT)
@@ -150,10 +156,10 @@ class SliderView {
     if (this.config.isRange == true) {
       let stepLength = 0
       if (this.config.hasDefaultValues == true) 
-        stepLength = this.ROOT.clientWidth / this.config.defaultValues.length
+        stepLength = (this.config.isVertical ? this.ROOT.clientHeight : this.ROOT.clientWidth) / this.config.defaultValues.length
       else
-        stepLength = this.ROOT.clientWidth / (this.config.maxValue - this.config.minValue)
-      let handleSize = this.LEFT_HANDLE.ROOT.offsetWidth
+        stepLength = (this.config.isVertical ? this.ROOT.clientHeight : this.ROOT.clientWidth) / (this.config.maxValue - this.config.minValue)
+      let handleSize = this.config.isVertical ? this.LEFT_HANDLE.ROOT.offsetHeight : this.LEFT_HANDLE.ROOT.offsetWidth
       let distanceBetweenHandles = (this.RIGHT_HANDLE.getValue() - value) * stepLength
 
       if (handleSize > distanceBetweenHandles) extraShift = (handleSize - distanceBetweenHandles) / 2
@@ -175,10 +181,10 @@ class SliderView {
     if (this.config.isRange == true) {
       let stepLength = 0
       if (this.config.hasDefaultValues == true) 
-        stepLength = this.ROOT.clientWidth / this.config.defaultValues.length
+        stepLength = (this.config.isVertical ? this.ROOT.clientHeight : this.ROOT.clientWidth) / this.config.defaultValues.length
       else
-        stepLength = this.ROOT.clientWidth / (this.config.maxValue - this.config.minValue)
-      let handleSize = this.RIGHT_HANDLE.ROOT.offsetWidth
+        stepLength = (this.config.isVertical ? this.ROOT.clientHeight : this.ROOT.clientWidth) / (this.config.maxValue - this.config.minValue)
+      let handleSize = this.config.isVertical ? this.RIGHT_HANDLE.ROOT.offsetHeight : this.RIGHT_HANDLE.ROOT.offsetWidth
       let distanceBetweenHandles = (value - this.LEFT_HANDLE.getValue()) * stepLength
 
       if (handleSize > distanceBetweenHandles) extraShift = (handleSize - distanceBetweenHandles) / 2
@@ -189,9 +195,18 @@ class SliderView {
   }
 
   private calculatePosition(event: MouseEvent): number {
-    let x = event.pageX
-    let scaleBeginning = this.ROOT.getBoundingClientRect().left
-    let length = this.ROOT.clientWidth
+    let x: number
+    let scaleBeginning: number
+
+    if (this.config.isVertical) {
+      x = event.pageY
+      scaleBeginning = this.ROOT.getBoundingClientRect().top
+    }
+    else {
+      x = event.pageX
+      scaleBeginning = this.ROOT.getBoundingClientRect().left
+    }
+    let length = (this.config.isVertical ? this.ROOT.clientHeight : this.ROOT.clientWidth)
 
     if (x < scaleBeginning) return 0
     else if (x > scaleBeginning + length) return 1

@@ -12,10 +12,10 @@ class SliderHandle {
   constructor(parent: SliderView, side: Side) {
     this.PARENT = parent
     this.SIDE = side
+    this.config = this.PARENT.getConfig()
     this.CLASSES = this.PARENT.CLASSES
     this.ROOT = this.createRootElement()
     this.LABEL = this.createLabel()
-    this.config = this.PARENT.getConfig()
     this.state = this.getDefaultState()
     this.render()
   }
@@ -29,6 +29,8 @@ class SliderHandle {
     else
       handle.classList.add(this.CLASSES.LEFT_HANDLE) 
 
+    if (this.config.isVertical) handle.classList.add(this.CLASSES.HANDLE_VERTICAL)
+
     return handle
   }
 
@@ -36,10 +38,14 @@ class SliderHandle {
     let label = document.createElement("div")
     label.classList.add(this.CLASSES.VALUE_LABEL)
 
-    if (this.SIDE == Side.Right)
-      label.classList.add(this.CLASSES.RIGHT_HANDLE_VALUE_LABEL)
-    else
-      label.classList.add(this.CLASSES.LEFT_HANDLE_VALUE_LABEL)
+    if (this.SIDE == Side.Right) {
+      label.classList.add(this.CLASSES.RIGHT_HANDLE_LABEL)
+      if (this.config.isVertical) label.classList.add(this.CLASSES.RIGHT_HANDLE_LABEL_VERTICAL)
+    }
+    else {
+      label.classList.add(this.CLASSES.LEFT_HANDLE_LABEL)
+      if (this.config.isVertical) label.classList.add(this.CLASSES.LEFT_HANDLE_LABEL_VERTICAL)
+    }
     this.ROOT.appendChild(label)
 
     return label
@@ -75,18 +81,23 @@ class SliderHandle {
 
     shift += extraShift ? extraShift : 0
     shift = Math.ceil(shift)
-    this.ROOT.style.left = `${shift}px`
+
+    if (this.config.isVertical) this.ROOT.style.top = `${shift}px`
+    else this.ROOT.style.left = `${shift}px`
   }
 
   private calculateDefaultValuesShift(): number {
-    let length = this.PARENT.ROOT.clientWidth
+    let length: number
+    if (this.config.isVertical) length = this.PARENT.ROOT.clientHeight
+    else length = this.PARENT.ROOT.clientWidth
     return this.config.defaultValues ? this.state.value * length / (this.config.defaultValues.length - 1) : 0
   }
 
   private calculateShift(): number {
     let range = this.config.maxValue - this.config.minValue
     let position = this.state.value / range
-    return position * this.PARENT.ROOT.clientWidth
+    if (this.config.isVertical)return position * this.PARENT.ROOT.clientHeight
+    else return position * this.PARENT.ROOT.clientWidth
   }
 
   public drag() {

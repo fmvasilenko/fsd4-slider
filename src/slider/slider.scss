@@ -4,7 +4,8 @@
 
 .slider-wrapper {
   width: 50%;
-  padding: 200px 0;
+  height: 400px;
+  padding: 100px 0;
   margin: auto;
 }
 
@@ -22,6 +23,11 @@
   -ms-user-select: none;       /* Internet Explorer/Edge */
   user-select: none; 
 
+  &_vertical {
+    width: 6px;
+    height: 100%;
+  }
+
   &__handle {
     width: 16px;
     height: 16px;
@@ -33,6 +39,12 @@
     border-radius: 50%;
     border: 2px solid black;
     cursor: grab;
+
+    &_vertical {
+      left: -6px;
+      margin-left: 0;
+      margin-top: -8px;
+    }
   }
 
   &__value-label {
@@ -48,10 +60,22 @@
 
   &__left-handle-value-label {
     right: 50%;
+
+    &_vertical {
+      right: auto;
+      top: auto;
+      left: 20px;
+      bottom: 50%;
+    }
   }
 
   &__right-handle-value-label {
     left: 50%;
+
+    &_vertical {
+      left: 20px;
+      top: 50%;
+    }
   }
 
   &__minvalue {
@@ -62,6 +86,12 @@
     padding: 10px;
     border: 1px solid #444;
     background: white;
+
+    &_vertical {
+      left: auto;
+      right: 15px;
+      bottom: 100%;
+    }
   }
 
   &__maxvalue {
@@ -72,6 +102,12 @@
     padding: 10px;
     border: 1px solid #444;
     background: white;
+
+    &_vertical {
+      right: 15px;
+      top: 100%;
+      bottom: auto;
+    }
   }
 
   &__default-value {
@@ -84,6 +120,12 @@
     background: green;
     border-radius: 50%;
     opacity: 0.5;
+
+    &_vertical {
+      left: -2px;
+      margin-left: 0;
+      margin-top: -4px;
+    }
   }
 
   &__default-value-label {
@@ -93,5 +135,10 @@
     padding: 10px;
     border: 1px solid #444;
     background: white;
+
+    &_vertical {
+      bottom: 50%;
+      right: 15px;
+    }
   }
 }

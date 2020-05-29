@@ -1,29 +1,38 @@
 class SliderDefaultValueLabel {
   private PARENT: SliderView
+  private config: SliderConfig
+  private CLASSES: SliderClasses
   ROOT: HTMLElement
   private LABEL: HTMLElement
 
-  constructor(parent: SliderView, className: string) {
+  constructor(parent: SliderView) {
     this.PARENT = parent
-    this.ROOT = this.createRootElement(className)
-    this.LABEL = this.createLabel(className)
+    this.config = this.PARENT.getConfig()
+    this.CLASSES = this.PARENT.CLASSES
+    this.ROOT = this.createRootElement()
+    this.LABEL = this.createLabel()
   }
 
-  private createRootElement(className: string): HTMLElement {
+  private createRootElement(): HTMLElement {
     let root = document.createElement("div")
-    root.classList.add(className)
+    root.classList.add(this.CLASSES.DEFAULT_VALUE)
+    if (this.config.isVertical) root.classList.add(this.CLASSES.DEFAULT_VALUE_VERTICAL)
     return root
   }
 
-  private createLabel(className: string): HTMLElement {
+  private createLabel(): HTMLElement {
     let label = document.createElement("div")
-    label.classList.add(`${className}-label`)
+    label.classList.add(`${this.CLASSES.DEFAULT_VALUE_LABEL}`)
+    if (this.config.isVertical) label.classList.add(`${this.CLASSES.DEFAULT_VALUE_LABEL_VERTICAL}`)
     this.ROOT.appendChild(label)
     return label
   }
 
   public setShift(shift: number) {
-    this.ROOT.style.left = `${shift}%`
+    if (this.config.isVertical)
+      this.ROOT.style.top = `${shift}%`
+    else
+      this.ROOT.style.left = `${shift}%`
   }
 
   public setValue(value: number | string) {
