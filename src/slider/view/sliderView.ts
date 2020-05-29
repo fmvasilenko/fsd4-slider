@@ -100,9 +100,15 @@ class SliderView {
     else if (event.target == this.RIGHT_HANDLE.ROOT) this.RIGHT_HANDLE.drag()
   }
 
-  private drop() {
+  private drop(event: MouseEvent) {
     this.LEFT_HANDLE.drop()
     this.RIGHT_HANDLE.drop()
+
+    if (this.config.isRange == false) {
+      let position = this.calculatePosition(event)
+      let value = this.CONTROLLER.calculateLeftHandleValue(position)
+      this.setLeftHandleValue(value)
+    }
   }
 
   private watchMouse(event: MouseEvent) {

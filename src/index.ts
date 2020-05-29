@@ -10,8 +10,7 @@ $.fn.slider = function (this: JQuery, options?: ImportedSliderConfig) {
 }
 
 $(".block").slider({
-  hasDefaultValues: true,
-  leftHandleValue: 40
+
 })
 
 console.log("ts works")
