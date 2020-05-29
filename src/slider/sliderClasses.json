@@ -1,8 +1,12 @@
 {
   "SLIDER": "slider",
   "HANDLE": "slider__handle",
+  "LEFT_HANDLE": "slider__left-handle",
+  "RIGHT_HANDLE": "slider__right-handle",
   "MAX_VALUE": "slider__maxvalue",
   "MIN_VALUE": "slider__minvalue",
   "VALUE_LABEL": "slider__value-label",
+  "LEFT_HANDLE_VALUE_LABEL": "slider__left-handle-value-label",
+  "RIGHT_HANDLE_VALUE_LABEL": "slider__right-handle-value-label",
   "DEFAULT_VALUE": "slider__default-value"
 }

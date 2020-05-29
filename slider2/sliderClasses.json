@@ -1,0 +1,8 @@
+{
+  "SLIDER": "slider",
+  "HANDLE": "slider__handle",
+  "MAX_VALUE": "slider__maxvalue",
+  "MIN_VALUE": "slider__minvalue",
+  "VALUE_LABEL": "slider__value-label",
+  "DEFAULT_VALUE": "slider__default-value"
+}

@@ -1,0 +1,107 @@
+enum Side{Left, Right}
+
+class SliderHandle {
+  public PARENT: SliderView
+  private CLASSES: SliderClasses
+  public ROOT: HTMLElement
+  private LABEL: HTMLElement
+  private SIDE: Side
+  private state: HandleState
+  private config: SliderConfig
+
+  constructor(parent: SliderView, side: Side) {
+    this.PARENT = parent
+    this.SIDE = side
+    this.CLASSES = this.PARENT.CLASSES
+    this.ROOT = this.createRootElement()
+    this.LABEL = this.createLabel()
+    this.config = this.PARENT.getConfig()
+    this.state = this.getDefaultState()
+    this.render()
+  }
+
+  private createRootElement() {
+    let handle = document.createElement("div")
+    handle.classList.add(this.CLASSES.HANDLE)
+
+    if(this.SIDE == Side.Right)
+      handle.classList.add(this.CLASSES.RIGHT_HANDLE)
+    else
+      handle.classList.add(this.CLASSES.LEFT_HANDLE) 
+
+    return handle
+  }
+
+  private createLabel(): HTMLElement {
+    let label = document.createElement("div")
+    label.classList.add(this.CLASSES.VALUE_LABEL)
+
+    if (this.SIDE == Side.Right)
+      label.classList.add(this.CLASSES.RIGHT_HANDLE_VALUE_LABEL)
+    else
+      label.classList.add(this.CLASSES.LEFT_HANDLE_VALUE_LABEL)
+    this.ROOT.appendChild(label)
+
+    return label
+  }
+
+  private getDefaultState() {
+    return {
+      isDragged: false,
+      value: this.SIDE == Side.Left ? this.config.leftHandleValue : this.config.rightHandleValue
+    }
+  }
+
+  public setValue(value: number, extraShift?: number) {
+    this.state.value = value
+    this.render(extraShift)
+  }
+
+  public getValue(): number {
+    return this.state.value
+  }
+
+  private render(extraShift?: number) {
+    let shift: number
+
+    switch (this.config.type) {
+      case "defaultValues": {
+        shift = this.calculateDefaultValuesShift()
+        this.LABEL.innerHTML = `${this.config.defaultValues ? this.config.defaultValues[this.state.value] : 0}`
+        break;
+      }
+      default: {
+        shift = this.calculateShift()
+        this.LABEL.innerHTML = `${this.state.value}`
+      }
+    }
+
+    shift += extraShift ? extraShift : 0
+    this.ROOT.style.left = `${shift}px`
+  }
+
+  private calculateDefaultValuesShift(): number {
+    let length = this.PARENT.ROOT.offsetWidth
+    return this.config.defaultValues ? this.state.value * length / (this.config.defaultValues.length - 1) : 0
+  }
+
+  private calculateShift(): number {
+    let range = this.config.maxValue - this.config.minValue
+    let position = this.state.value / range
+    return position * this.PARENT.ROOT.offsetWidth
+  }
+
+  public drag() {
+    this.state.isDragged = true
+  }
+
+  public drop() {
+    this.state.isDragged = false
+  }
+
+  public isDragged(): boolean {
+    return this.state.isDragged
+  }
+}
+
+export { SliderHandle }

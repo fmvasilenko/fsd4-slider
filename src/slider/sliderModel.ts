@@ -1,52 +1,67 @@
 class SliderModel {
+  private CONTROLLER: Slider
   private config: SliderConfig
-  private state: SliderModelState
-  private controller: Slider
+  private state: ModelState
 
-  constructor(controller: Slider,config: SliderConfig) {
-    this.config = config
+  constructor(controller: Slider) {
+    this.CONTROLLER = controller
+    this.config = this.CONTROLLER.getConfig()
     this.state = this.getDefaultState()
-    this.controller = controller
   }
 
-  private getDefaultState(): SliderModelState {
+  private getDefaultState(): ModelState {
     return {
-      leftValue: 0,
-      rightValue: undefined
+      leftHandleValue: this.config.minValue,
+      rightHandleValue: this.config.maxValue
     }
   }
 
-  public update(parameters: ModelParameters) {
-    if (this.config.defaultValues == undefined)
-      this.updateOneHandle(parameters)
-    else this.updateDefaultValues(parameters)
+  public calculateLeftHandleValue(position: number): number {
+    switch (this.config.type) {
+      case "defaultValues": {
+        this.state.leftHandleValue = this.calculateDefaultValue(position)
+        break;
+      }
+      default: {
+        this.state.leftHandleValue = this.calculateValue(position)
+      }
+    }
 
-    this.controller.changeView({leftValue: this.state.leftValue, rightValue: this.state.rightValue})
+    if (this.state.rightHandleValue < this.state.leftHandleValue) 
+      this.state.leftHandleValue = this.state.rightHandleValue
+    return this.state.leftHandleValue
   }
 
-  private updateOneHandle(parameters: ModelParameters) {
+  public calculateRightHandleValue(position: number): number {
+    switch (this.config.type) {
+      case "defaultValues": {
+        this.state.rightHandleValue = this.calculateDefaultValue(position)
+        break;
+      }
+      default: {
+        this.state.rightHandleValue = this.calculateValue(position)
+      }
+    }
+
+    if (this.state.rightHandleValue < this.state.leftHandleValue) 
+      this.state.rightHandleValue = this.state.leftHandleValue
+    return this.state.rightHandleValue
+  }
+
+  private calculateValue(position: number): number {
     let range = this.config.maxValue - this.config.minValue
+    let value = Math.floor(position * range)
 
-    let leftValue = Math.floor(range * parameters.leftPosition / parameters.length)
-    this.state.leftValue = leftValue - leftValue % this.config.step + this.config.minValue
-    if (leftValue % this.config.step > this.config.step / 2) this.state.leftValue += this.config.step
-    if (this.state.leftValue > this.config.maxValue) this.state.leftValue -= this.config.step
+    value -= value % this.config.step + this.config.minValue
+    if (value % this.config.step > this.config.step / 2) value += this.config.step
 
-    if (parameters.rightPosition !== undefined) {
-      let rightValue = Math.floor(range * parameters.rightPosition / parameters.length)
-      this.state.rightValue = rightValue - rightValue % this.config.step + this.config.minValue
-      if (rightValue % this.config.step > this.config.step / 2) this.state.rightValue += this.config.step
-      if (this.state.rightValue > this.config.maxValue) this.state.rightValue -= this.config.step
-    }
-
-    if (this.state.rightValue !== undefined && this.state.leftValue > this.state.rightValue) {
-      this.state.leftValue = this.state.rightValue
-    }
+    return value
   }
 
-  private updateDefaultValues(parameters: ModelParameters) {
+  private calculateDefaultValue(position: number): number {
     if (this.config.defaultValues !== undefined)
-      this.state.leftValue = Math.round((this.config.defaultValues.length - 1) * parameters.leftPosition / parameters.length)
+      return Math.round((this.config.defaultValues.length - 1) * position)
+    else return 0
   }
 }
 

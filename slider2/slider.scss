@@ -27,31 +27,13 @@
     height: 16px;
     position: absolute;
     z-index: 2;
-    top: -6px;
-    margin-left: -10px;
-    //background: green;
-    border-radius: 50%;
-    border: 2px solid black;
-    cursor: grab;
-  }
-
-  &__value-label {
-    position: absolute;
-    top: -50px;
-
-    padding: 10px;
-    border: 1px solid #444;
-    background: white;
-
-    text-align: center;
-  }
-
-  &__left-handle-value-label {
-    right: 50%;
-  }
-
-  &__right-handle-value-label {
+    top: -5px;
     left: 50%;
+    margin-left: - 8px;
+    background: green;
+    border-radius: 50%;
+    border: 2px solid white;
+    cursor: grab;
   }
 
   &__minvalue {
@@ -74,16 +56,27 @@
     background: white;
   }
 
+  &__value-label {
+    position: absolute;
+    top: -50px;
+    left: 50%;
+
+    padding: 10px;
+    border: 1px solid #444;
+    background: white;
+
+    text-align: center;
+  }
+
   &__default-value {
     width: 8px;
     height: 8px;
     position: absolute;
     top: -2px;
     left: 50%;
-    margin-left: -4px;
+    margin-left: - 4px;
     background: green;
     border-radius: 50%;
-    opacity: 0.5;
   }
 
   &__default-value-label {

@@ -1,38 +1,44 @@
 ///<reference path="./slider.d.ts" />
+
+import { SliderView } from "./view/sliderView"
 import { SliderModel } from "./sliderModel"
-import { SliderView } from "./sliderView"
 
 class Slider {
   ROOT: HTMLElement
-  MODEL: SliderModel
-  VIEW: SliderView
-  config: SliderConfig
+  private MODEL: SliderModel
+  private VIEW: SliderView
+  private config: SliderConfig
 
-  constructor(root: HTMLElement, config?: ImportedSliderConfig) {
+  constructor(root: HTMLElement, config?: number) {
     this.ROOT = root
-    this.config = Object.assign(this.getDefaultConfig(), config)
-    this.MODEL = new SliderModel(this, this.config)
-    this.VIEW = new SliderView(this, this.ROOT, this.config)
+    this.config = this.getDefaultConfig()
+    this.MODEL = new SliderModel(this)
+    this.VIEW = new SliderView(this)
   }
 
   private getDefaultConfig(): SliderConfig {
     return {
-      isRange: false,
+      type: "defaultValues",
       minValue: 0,
       maxValue: 100,
       step: 1,
-      value: 0,
-      defaultValues: undefined
+      leftHandleValue: 0,
+      rightHandleValue: 100,
+      defaultValues: ["first", "second", "third"]
     }
   }
 
-  public changeModel(parameters: ModelParameters) {
-    this.MODEL.update(parameters)
+  public getConfig(): SliderConfig {
+    return this.config
   }
 
-  public changeView(state: SliderModelState) {
-    this.VIEW.setState(state)
+  public calculateLeftHandleValue(position: number): number {
+    return this.MODEL.calculateLeftHandleValue(position)
+  }
+
+  public calculateRightHandleValue(position: number): number {
+    return this.MODEL.calculateRightHandleValue(position)
   }
 }
 
-export {Slider}
+export { Slider }
