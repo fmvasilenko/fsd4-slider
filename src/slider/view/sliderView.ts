@@ -105,8 +105,26 @@ class SliderView {
     this.RIGHT_HANDLE.drop()
 
     if (this.config.isRange == false) {
-      let position = this.calculatePosition(event)
-      let value = this.CONTROLLER.calculateLeftHandleValue(position)
+      if (event.target == this.MIN_VALUE_LABEL?.ROOT) this.minValueClickHandler()
+      else if (event.target == this.MAX_VALUE_LABEL?.ROOT) this.maxValueClickHandler()
+      else {
+        let position = this.calculatePosition(event)
+        let value = this.CONTROLLER.calculateLeftHandleValue(position)
+        this.setLeftHandleValue(value)
+      }
+    }
+  }
+
+  private minValueClickHandler() {
+    if (this.config.isRange == false) {
+      let value = this.CONTROLLER.calculateLeftHandleValue(0)
+      this.setLeftHandleValue(value)
+    }
+  }
+
+  private maxValueClickHandler() {
+    if (this.config.isRange == false) {
+      let value = this.CONTROLLER.calculateLeftHandleValue(1)
       this.setLeftHandleValue(value)
     }
   }
