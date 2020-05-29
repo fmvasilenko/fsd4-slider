@@ -11,20 +11,17 @@ class SliderModel {
 
   private getDefaultState(): ModelState {
     return {
-      leftHandleValue: this.config.minValue,
-      rightHandleValue: this.config.maxValue
+      leftHandleValue: this.config.leftHandleValue,
+      rightHandleValue: this.config.rightHandleValue
     }
   }
 
   public calculateLeftHandleValue(position: number): number {
-    switch (this.config.type) {
-      case "defaultValues": {
-        this.state.leftHandleValue = this.calculateDefaultValue(position)
-        break;
-      }
-      default: {
-        this.state.leftHandleValue = this.calculateValue(position)
-      }
+    if (this.config.hasDefaultValues) {
+      this.state.leftHandleValue = this.calculateDefaultValue(position)
+    }
+    else {
+      this.state.leftHandleValue = this.calculateValue(position)
     }
 
     if (this.state.rightHandleValue < this.state.leftHandleValue) 
@@ -33,14 +30,11 @@ class SliderModel {
   }
 
   public calculateRightHandleValue(position: number): number {
-    switch (this.config.type) {
-      case "defaultValues": {
-        this.state.rightHandleValue = this.calculateDefaultValue(position)
-        break;
-      }
-      default: {
-        this.state.rightHandleValue = this.calculateValue(position)
-      }
+    if (this.config.hasDefaultValues) {
+      this.state.rightHandleValue = this.calculateDefaultValue(position)
+    }
+    else {
+      this.state.rightHandleValue = this.calculateValue(position)
     }
 
     if (this.state.rightHandleValue < this.state.leftHandleValue) 
@@ -52,8 +46,8 @@ class SliderModel {
     let range = this.config.maxValue - this.config.minValue
     let value = Math.floor(position * range)
 
-    value -= value % this.config.step + this.config.minValue
     if (value % this.config.step > this.config.step / 2) value += this.config.step
+    value -= value % this.config.step + this.config.minValue
 
     return value
   }

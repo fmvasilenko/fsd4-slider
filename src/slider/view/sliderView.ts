@@ -24,21 +24,18 @@ class SliderView {
     this.LEFT_HANDLE = this.createLeftHandle()
     this.RIGHT_HANDLE = this.createRightHandle()
 
-    switch (this.config.type) {
-      case "defaultValues": {
-        this.DEFAULT_VALUES = this.createDefaultValuesLabels()
-        break;
-      }
-      case "range": {
-        this.ROOT.appendChild(this.RIGHT_HANDLE.ROOT)
-        break;
-      }
-      default: {
-        this.MIN_VALUE_LABEL = this.createMinValueLabel()
-        this.MAX_VALUE_LABEL = this.createMaxValueLabel()
-      }
+    if (this.config.isRange) this.ROOT.appendChild(this.RIGHT_HANDLE.ROOT)
+
+    if (this.config.hasDefaultValues) {
+      this.DEFAULT_VALUES = this.createDefaultValuesLabels()
+    }
+    else {
+      this.MIN_VALUE_LABEL = this.createMinValueLabel()
+      this.MAX_VALUE_LABEL = this.createMaxValueLabel()
     }
 
+    this.setLeftHandleValue(this.LEFT_HANDLE.getValue())
+    this.setRightHandleValue(this.RIGHT_HANDLE.getValue())
     this.bindEventListeners()
   }
 
@@ -78,7 +75,7 @@ class SliderView {
     let defaultValues = this.config.defaultValues
 
     if (defaultValues !== undefined) {
-      let length = 100 * (this.ROOT.offsetWidth / (defaultValues.length - 1)) / this.ROOT.offsetWidth
+      let length = 100 * (this.ROOT.clientWidth / (defaultValues.length - 1)) / this.ROOT.clientWidth
 
       this.config.defaultValues?.forEach((element: number | string, index: number) => {
         let shift = index * length
@@ -120,10 +117,18 @@ class SliderView {
   private moveLeftHandle(event: MouseEvent) {
     let position = this.calculatePosition(event)
     let value = this.CONTROLLER.calculateLeftHandleValue(position)
+    this.setLeftHandleValue(value)
+  }
+
+  private setLeftHandleValue(value: number) {
     let extraShift = 0
 
-    if (this.config.type == "range") {
-      let stepLength = this.ROOT.offsetWidth / (this.config.maxValue - this.config.minValue)
+    if (this.config.isRange == true) {
+      let stepLength = 0
+      if (this.config.hasDefaultValues == true) 
+        stepLength = this.ROOT.clientWidth / this.config.defaultValues.length
+      else
+        stepLength = this.ROOT.clientWidth / (this.config.maxValue - this.config.minValue)
       let handleSize = this.LEFT_HANDLE.ROOT.offsetWidth
       let distanceBetweenHandles = (this.RIGHT_HANDLE.getValue() - value) * stepLength
 
@@ -137,10 +142,18 @@ class SliderView {
   private moveRightHandle(event: MouseEvent) {
     let position = this.calculatePosition(event)
     let value = this.CONTROLLER.calculateRightHandleValue(position)
+    this.setRightHandleValue(value)
+  }
+
+  private setRightHandleValue(value: number) {
     let extraShift = 0
 
-    if (this.config.type == "range") {
-      let stepLength = this.ROOT.offsetWidth / (this.config.maxValue - this.config.minValue)
+    if (this.config.isRange == true) {
+      let stepLength = 0
+      if (this.config.hasDefaultValues == true) 
+        stepLength = this.ROOT.clientWidth / this.config.defaultValues.length
+      else
+        stepLength = this.ROOT.clientWidth / (this.config.maxValue - this.config.minValue)
       let handleSize = this.RIGHT_HANDLE.ROOT.offsetWidth
       let distanceBetweenHandles = (value - this.LEFT_HANDLE.getValue()) * stepLength
 
@@ -154,7 +167,7 @@ class SliderView {
   private calculatePosition(event: MouseEvent): number {
     let x = event.pageX
     let scaleBeginning = this.ROOT.getBoundingClientRect().left
-    let length = this.ROOT.offsetWidth
+    let length = this.ROOT.clientWidth
 
     if (x < scaleBeginning) return 0
     else if (x > scaleBeginning + length) return 1

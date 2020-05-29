@@ -64,31 +64,29 @@ class SliderHandle {
   private render(extraShift?: number) {
     let shift: number
 
-    switch (this.config.type) {
-      case "defaultValues": {
-        shift = this.calculateDefaultValuesShift()
-        this.LABEL.innerHTML = `${this.config.defaultValues ? this.config.defaultValues[this.state.value] : 0}`
-        break;
-      }
-      default: {
-        shift = this.calculateShift()
-        this.LABEL.innerHTML = `${this.state.value}`
-      }
+    if (this.config.hasDefaultValues == true) {
+      shift = this.calculateDefaultValuesShift()
+      this.LABEL.innerHTML = `${this.config.defaultValues ? this.config.defaultValues[this.state.value] : 0}`
+    }
+    else {
+      shift = this.calculateShift()
+      this.LABEL.innerHTML = `${this.state.value}`
     }
 
     shift += extraShift ? extraShift : 0
+    shift = Math.ceil(shift)
     this.ROOT.style.left = `${shift}px`
   }
 
   private calculateDefaultValuesShift(): number {
-    let length = this.PARENT.ROOT.offsetWidth
+    let length = this.PARENT.ROOT.clientWidth
     return this.config.defaultValues ? this.state.value * length / (this.config.defaultValues.length - 1) : 0
   }
 
   private calculateShift(): number {
     let range = this.config.maxValue - this.config.minValue
     let position = this.state.value / range
-    return position * this.PARENT.ROOT.offsetWidth
+    return position * this.PARENT.ROOT.clientWidth
   }
 
   public drag() {

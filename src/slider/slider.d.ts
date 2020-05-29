@@ -1,5 +1,5 @@
 interface SliderFunction {
-  (config?: number): JQuery;
+  (config?: ImportedSliderConfig): JQuery;
 }
 
 interface JQuery {
@@ -15,14 +15,26 @@ interface Slider {
   calculateRightHandleValue(position: number): number
 }
 
+interface ImportedSliderConfig {
+  isRange?: boolean
+  hasDefaultValues?: boolean
+  minValue?: number
+  maxValue?: number
+  step?: number
+  leftHandleValue?: number
+  rightHandleValue?: number
+  defaultValues?: number[] | string[]
+}
+
 interface SliderConfig {
-  type: string
+  isRange: boolean
+  hasDefaultValues: boolean
   minValue: number
   maxValue: number
   step: number
   leftHandleValue: number
   rightHandleValue: number
-  defaultValues: number[] | string[] | undefined
+  defaultValues: number[] | string[]
 }
 
 interface SliderClasses {
