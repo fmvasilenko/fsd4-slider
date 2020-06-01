@@ -133,14 +133,14 @@ class SliderView {
   private minValueClickHandler() {
     if (this.config.isRange == false) {
       let value = this.CONTROLLER.calculateLeftHandleValue(0)
-      this.setLeftHandleValue(value)
+      //this.setLeftHandleValue(value)
     }
   }
 
   private maxValueClickHandler() {
     if (this.config.isRange == false) {
       let value = this.CONTROLLER.calculateLeftHandleValue(1)
-      this.setLeftHandleValue(value)
+      //this.setLeftHandleValue(value)
     }
   }
 
@@ -151,14 +151,20 @@ class SliderView {
 
   private moveLeftHandle(event: MouseEvent) {
     let position = this.calculatePosition(event)
-    let value = this.CONTROLLER.calculateLeftHandleValue(position)
+    this.CONTROLLER.calculateLeftHandleValue(position)
+  }
+
+  public changeLeftHandleValue(value: number) {
     this.setLeftHandleValue(value)
     this.RANGE_LINE.setRange(this.LEFT_HANDLE.getValue(), this.RIGHT_HANDLE.getValue())
   }
 
   private moveRightHandle(event: MouseEvent) {
     let position = this.calculatePosition(event)
-    let value = this.CONTROLLER.calculateRightHandleValue(position)
+    this.CONTROLLER.calculateRightHandleValue(position)
+  }
+
+  public changeRightHandleValue(value: number) {
     this.setRightHandleValue(value)
     this.RANGE_LINE.setRange(this.LEFT_HANDLE.getValue(), this.RIGHT_HANDLE.getValue())
   }

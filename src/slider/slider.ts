@@ -8,18 +8,20 @@ class Slider {
   private MODEL: SliderModel
   private VIEW: SliderView
   private config: SliderConfig
+  private slideFunction: SliderCallBackFunction | undefined
 
-  constructor(root: HTMLElement, config?: ImportedSliderConfig) {
+  constructor(root: HTMLElement, config?: ImportedSliderConfig, slide?: SliderCallBackFunction) {
     this.ROOT = root
     this.config = Object.assign(this.getDefaultConfig(), config)
     this.config = this.checkConfig()
+    this.slideFunction = slide
     this.MODEL = new SliderModel(this)
     this.VIEW = new SliderView(this)
   }
 
   private getDefaultConfig(): SliderConfig {
     return {
-      isRange: false,
+      isRange: true,
       hasDefaultValues: false,
       isVertical: false,
       valueLabelDisplayed: true,
@@ -77,12 +79,38 @@ class Slider {
     return this.config
   }
 
-  public calculateLeftHandleValue(position: number): number {
-    return this.MODEL.calculateLeftHandleValue(position)
+  public calculateLeftHandleValue(position: number) {
+    let value = this.MODEL.calculateLeftHandleValue(position)
+    this.VIEW.changeLeftHandleValue(value)
+    if (this.slideFunction !== undefined) 
+      this.slideFunction(this.MODEL.getLeftHandleValue(), this.MODEL.getRightHandleValue())
   }
 
-  public calculateRightHandleValue(position: number): number {
-    return this.MODEL.calculateRightHandleValue(position)
+  public calculateRightHandleValue(position: number) {
+    let value = this.MODEL.calculateRightHandleValue(position)
+    this.VIEW.changeRightHandleValue(value)
+  }
+
+  public setLeftHandleValue(value: number) {
+    if (value > this.config.maxValue) value = this.config.maxValue
+    if (value < this.config.minValue) value = this.config.minValue
+    this.MODEL.setLeftHandleValue(value)
+    this.VIEW.changeLeftHandleValue(value)
+  }
+
+  public setRightHandleValue(value: number) {
+    if (value > this.config.maxValue) value = this.config.maxValue
+    if (value < this.config.minValue) value = this.config.minValue
+    this.MODEL.setRightHandleValue(value)
+    this.VIEW.changeRightHandleValue(value)
+  }
+
+  public getLeftHandleValue(): number {
+    return this.MODEL.getLeftHandleValue()
+  }
+
+  public getRightHandleValue(): number {
+    return this.MODEL.getRightHandleValue()
   }
 }
 

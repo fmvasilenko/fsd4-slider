@@ -57,6 +57,22 @@ class SliderModel {
       return Math.round((this.config.defaultValues.length - 1) * position)
     else return 0
   }
+
+  public setLeftHandleValue(value: number) {
+    this.state.leftHandleValue = value
+  }
+
+  public setRightHandleValue(value: number) {
+    this.state.rightHandleValue = value
+  }
+
+  public getLeftHandleValue(): number {
+    return this.state.leftHandleValue
+  }
+
+  public getRightHandleValue(): number {
+    return this.state.rightHandleValue
+  }
 }
 
 export { SliderModel }

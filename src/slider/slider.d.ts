@@ -1,9 +1,15 @@
 interface SliderFunction {
-  (config?: ImportedSliderConfig): JQuery;
+  (config?: ImportedSliderConfig, 
+    slide?: SliderCallBackFunction): JQuery;
 }
 
 interface JQuery {
-  slider: ISlider;
+  slider: ISlider
+  setValue(value: number): void
+  setFirstValue(value: number): void
+  setSecondValue(value: number): void
+  getFirstValue(): number
+  getSecondValue(): number
 }
 
 interface ISlider extends SliderFunction {}
@@ -11,8 +17,8 @@ interface ISlider extends SliderFunction {}
 interface Slider {
   ROOT: HTMLElement
   getConfig(): SliderConfig
-  calculateLeftHandleValue(position: number): number
-  calculateRightHandleValue(position: number): number
+  calculateLeftHandleValue(position: number): void
+  calculateRightHandleValue(position: number): void
 }
 
 interface ImportedSliderConfig {
@@ -38,6 +44,10 @@ interface SliderConfig {
   leftHandleValue: number
   rightHandleValue: number
   defaultValues: number[] | string[]
+}
+
+interface SliderCallBackFunction {
+  (firstValue: number, secondValue: number): void
 }
 
 interface SliderClasses {
