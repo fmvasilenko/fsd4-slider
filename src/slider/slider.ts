@@ -38,6 +38,7 @@ class Slider {
     let rightHandleValue = this.config.rightHandleValue
     let minValue = this.config.minValue
     let maxValue = this.config.maxValue
+    let step = this.config.step
 
     if (maxValue < minValue) maxValue = minValue
 
@@ -54,6 +55,7 @@ class Slider {
       if (rightHandleValue < leftHandleValue) rightHandleValue = leftHandleValue
       if (rightHandleValue > maxValue) rightHandleValue = maxValue
       if (this.config.isRange == false) rightHandleValue = maxValue
+      if (step < 1) step = 1;
     }
 
     return {
@@ -64,7 +66,7 @@ class Slider {
       limitsDisplayed: this.config.limitsDisplayed,
       minValue: this.config.minValue,
       maxValue: maxValue,
-      step: this.config.step,
+      step: step,
       leftHandleValue: leftHandleValue,
       rightHandleValue: rightHandleValue,
       defaultValues: this.config.defaultValues
