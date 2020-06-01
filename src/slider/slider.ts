@@ -19,9 +19,11 @@ class Slider {
 
   private getDefaultConfig(): SliderConfig {
     return {
-      isRange: true,
-      hasDefaultValues: true,
-      isVertical: true,
+      isRange: false,
+      hasDefaultValues: false,
+      isVertical: false,
+      valueLabelDisplayed: true,
+      limitsDisplayed: true,
       minValue: 0,
       maxValue: 100,
       step: 1,
@@ -58,6 +60,8 @@ class Slider {
       isRange: this.config.isRange,
       hasDefaultValues: this.config.hasDefaultValues,
       isVertical: this.config.isVertical,
+      valueLabelDisplayed: this.config.valueLabelDisplayed,
+      limitsDisplayed: this.config.limitsDisplayed,
       minValue: this.config.minValue,
       maxValue: maxValue,
       step: this.config.step,

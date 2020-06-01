@@ -46,7 +46,8 @@ class SliderHandle {
       label.classList.add(this.CLASSES.LEFT_HANDLE_LABEL)
       if (this.config.isVertical) label.classList.add(this.CLASSES.LEFT_HANDLE_LABEL_VERTICAL)
     }
-    this.ROOT.appendChild(label)
+
+    if (this.config.valueLabelDisplayed) this.ROOT.appendChild(label)
 
     return label
   }

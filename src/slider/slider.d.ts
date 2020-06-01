@@ -30,6 +30,8 @@ interface SliderConfig {
   isRange: boolean
   hasDefaultValues: boolean
   isVertical: boolean
+  valueLabelDisplayed: boolean
+  limitsDisplayed: boolean
   minValue: number
   maxValue: number
   step: number
