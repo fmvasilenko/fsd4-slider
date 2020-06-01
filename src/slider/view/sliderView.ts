@@ -1,6 +1,7 @@
 import { SliderHandle } from "./sliderHandleView"
 import { SliderLimitView } from "./sliderLimitView"
 import { SliderDefaultValueLabel } from "./sliderDefaultValueLabelView"
+import { SliderRangeLineView } from "./sliderRangeLineView"
 
 class SliderView {
   private CONTROLLER: Slider
@@ -9,6 +10,7 @@ class SliderView {
   public CLASSES: SliderClasses
   private LEFT_HANDLE: SliderHandle
   private RIGHT_HANDLE: SliderHandle
+  private RANGE_LINE: SliderRangeLineView
   private MIN_VALUE_LABEL: SliderLimitView | undefined
   private MAX_VALUE_LABEL: SliderLimitView | undefined
   private DEFAULT_VALUES: SliderDefaultValueLabel[] | undefined
@@ -26,6 +28,8 @@ class SliderView {
     this.RIGHT_HANDLE = this.createRightHandle()
 
     if (this.config.isRange) this.ROOT.appendChild(this.RIGHT_HANDLE.ROOT)
+
+    this.RANGE_LINE = this.createRangeLine()
 
     if (this.config.hasDefaultValues) {
       this.DEFAULT_VALUES = this.createDefaultValuesLabels()
@@ -55,6 +59,12 @@ class SliderView {
     enum Side{Left, Right}
     let handle = new SliderHandle(this, Side.Right)
     return handle
+  }
+
+  private createRangeLine(): SliderRangeLineView {
+    let rangeLine = new SliderRangeLineView(this)
+    if (this.config.isRange) this.ROOT.appendChild(rangeLine.ROOT)
+    return rangeLine
   }
 
   private createMinValueLabel(): SliderLimitView {
@@ -143,12 +153,14 @@ class SliderView {
     let position = this.calculatePosition(event)
     let value = this.CONTROLLER.calculateLeftHandleValue(position)
     this.setLeftHandleValue(value)
+    this.RANGE_LINE.setRange(this.LEFT_HANDLE.getValue(), this.RIGHT_HANDLE.getValue())
   }
 
   private moveRightHandle(event: MouseEvent) {
     let position = this.calculatePosition(event)
     let value = this.CONTROLLER.calculateRightHandleValue(position)
     this.setRightHandleValue(value)
+    this.RANGE_LINE.setRange(this.LEFT_HANDLE.getValue(), this.RIGHT_HANDLE.getValue())
   }
 
   private setLeftHandleValue(value: number) {

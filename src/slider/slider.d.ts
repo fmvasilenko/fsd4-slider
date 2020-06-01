@@ -45,6 +45,8 @@ interface SliderClasses {
   HANDLE_VERTICAL: string
   LEFT_HANDLE: string
   RIGHT_HANDLE: string
+  RANGE_LINE: string
+  RANGE_LINE_VERTICAL: string
   MAX_VALUE: string
   MAX_VALUE_VERTICAL: string
   MIN_VALUE: string

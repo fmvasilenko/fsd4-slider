@@ -5,6 +5,8 @@
   "HANDLE_VERTICAL": "slider__handle_vertical",
   "LEFT_HANDLE": "slider__left-handle",
   "RIGHT_HANDLE": "slider__right-handle",
+  "RANGE_LINE": "slider__range-line",
+  "RANGE_LINE_VERTICAL": "slider__range-line_vertical",
   "MAX_VALUE": "slider__maxvalue",
   "MAX_VALUE_VERTICAL": "slider__maxvalue_vertical",
   "MIN_VALUE": "slider__minvalue",
