@@ -152,7 +152,8 @@ class SliderView {
   }
 
   private setLeftHandleValue(value: number) {
-    let extraShift = this.calculateExtraShift(value, this.RIGHT_HANDLE.getValue())  
+    let extraShift = 0
+    if (this.config.isRange) extraShift = this.calculateExtraShift(value, this.RIGHT_HANDLE.getValue())  
     this.LEFT_HANDLE.setValue(value, -extraShift)
     this.RIGHT_HANDLE.setValue(this.RIGHT_HANDLE.getValue(), extraShift)
   }

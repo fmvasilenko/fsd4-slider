@@ -20,8 +20,8 @@ class Slider {
   private getDefaultConfig(): SliderConfig {
     return {
       isRange: true,
-      hasDefaultValues: false,
-      isVertical: false,
+      hasDefaultValues: true,
+      isVertical: true,
       minValue: 0,
       maxValue: 100,
       step: 1,
