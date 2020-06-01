@@ -82,7 +82,7 @@ class SliderHandle {
     shift += extraShift ? extraShift : 0
     shift = Math.ceil(shift)
 
-    if (this.config.isVertical) this.ROOT.style.top = `${shift}px`
+    if (this.config.isVertical) this.ROOT.style.bottom = `${shift}px`
     else this.ROOT.style.left = `${shift}px`
   }
 

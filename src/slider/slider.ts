@@ -21,7 +21,7 @@ class Slider {
     return {
       isRange: true,
       hasDefaultValues: false,
-      isVertical: true,
+      isVertical: false,
       minValue: 0,
       maxValue: 100,
       step: 1,

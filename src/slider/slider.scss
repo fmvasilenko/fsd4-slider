@@ -41,9 +41,10 @@
     cursor: grab;
 
     &_vertical {
+      top: auto;
       left: -6px;
       margin-left: 0;
-      margin-top: -8px;
+      margin-bottom: -8px;
     }
   }
 
@@ -63,9 +64,8 @@
 
     &_vertical {
       right: auto;
-      top: auto;
       left: 20px;
-      bottom: 50%;
+      top: 50%;
     }
   }
 
@@ -73,8 +73,9 @@
     left: 50%;
 
     &_vertical {
+      top: auto;
       left: 20px;
-      top: 50%;
+      bottom: 50%;
     }
   }
 
@@ -90,7 +91,8 @@
     &_vertical {
       left: auto;
       right: 15px;
-      bottom: 100%;
+      top: 100%;
+      bottom: auto;
     }
   }
 
@@ -105,8 +107,7 @@
 
     &_vertical {
       right: 15px;
-      top: 100%;
-      bottom: auto;
+      bottom: 100%;
     }
   }
 
