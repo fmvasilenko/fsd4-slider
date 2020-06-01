@@ -1,9 +1,9 @@
 class SliderModel {
-  private CONTROLLER: Slider
+  private CONTROLLER: SliderController
   private config: SliderConfig
   private state: ModelState
 
-  constructor(controller: Slider) {
+  constructor(controller: SliderController) {
     this.CONTROLLER = controller
     this.config = this.CONTROLLER.getConfig()
     this.state = this.getDefaultState()

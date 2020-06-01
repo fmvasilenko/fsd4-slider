@@ -6,7 +6,7 @@ const { JSDOM } = jsdom;
 //const $ = (global as any).$ = require("jquery");
 
 import {expect} from "chai"
-import {Slider} from "../../src/slider/slider"
+//import {Slider} from "../../src/slider/sliderController"
 
 describe("slider", () => {
   

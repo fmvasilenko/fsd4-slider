@@ -14,7 +14,7 @@ interface JQuery {
 
 interface ISlider extends SliderFunction {}
 
-interface Slider {
+interface SliderController {
   ROOT: HTMLElement
   getConfig(): SliderConfig
   calculateLeftHandleValue(position: number): void

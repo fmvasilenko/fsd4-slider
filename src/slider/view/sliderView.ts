@@ -4,7 +4,7 @@ import { SliderDefaultValueLabel } from "./sliderDefaultValueLabelView"
 import { SliderRangeLineView } from "./sliderRangeLineView"
 
 class SliderView {
-  private CONTROLLER: Slider
+  private CONTROLLER: SliderController
   private config: SliderConfig
   public ROOT: HTMLElement
   public CLASSES: SliderClasses
@@ -15,7 +15,7 @@ class SliderView {
   private MAX_VALUE_LABEL: SliderLimitView | undefined
   private DEFAULT_VALUES: SliderDefaultValueLabel[] | undefined
 
-  constructor(controller: Slider) {
+  constructor(controller: SliderController) {
     this.CONTROLLER = controller
     this.config = this.CONTROLLER.getConfig()
     this.CLASSES = require("../sliderClasses.json")
