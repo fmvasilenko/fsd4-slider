@@ -94,19 +94,30 @@ class SliderController {
   }
 
   public setLeftHandleValue(value: number) {
-    if (value > this.config.maxValue) value = this.config.maxValue
-    if (value < this.config.minValue) value = this.config.minValue
-    if (!value) value = this.config.minValue
+    value = this.checkLeftHandleValue(value)
     this.MODEL.setLeftHandleValue(value)
     this.VIEW.changeLeftHandleValue(value)
   }
 
   public setRightHandleValue(value: number) {
-    if (value > this.config.maxValue) value = this.config.maxValue
-    if (value < this.config.minValue) value = this.config.minValue
-    if (!value) value = this.config.maxValue
+    value = this.checkRightHandleValue(value)
     this.MODEL.setRightHandleValue(value)
     this.VIEW.changeRightHandleValue(value)
+  }
+
+  private checkLeftHandleValue(value: number): number {
+    if (value == NaN) value = this.config.minValue
+    if (value < this.config.minValue) value = this.config.minValue
+    if (value > this.config.maxValue) value = this.config.maxValue
+    if (this.config.isRange && value > this.getRightHandleValue()) value = this.getRightHandleValue()
+    return value
+  }
+
+  private checkRightHandleValue(value: number): number {
+    if (value == NaN) value = this.config.maxValue
+    if (value < this.MODEL.getLeftHandleValue()) value = this.MODEL.getLeftHandleValue()
+    if (value > this.config.maxValue) value = this.config.maxValue
+    return value
   }
 
   public getLeftHandleValue(): number {
