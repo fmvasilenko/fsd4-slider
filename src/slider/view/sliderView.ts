@@ -237,6 +237,19 @@ class SliderView {
     else if (y > scaleBeginning) return 0
     else return (scaleBeginning - y) / length
   }
+
+  public switchValueLabel(switcher: boolean) {
+    if (switcher == true && this.config.valueLabelDisplayed == false) {
+      this.LEFT_HANDLE.switchValueLabel(switcher)
+      this.RIGHT_HANDLE.switchValueLabel(switcher)
+      this.config.valueLabelDisplayed = true
+    }
+    else if (switcher == false && this.config.valueLabelDisplayed == true) {
+      this.LEFT_HANDLE.switchValueLabel(switcher)
+      this.RIGHT_HANDLE.switchValueLabel(switcher)
+      this.config.valueLabelDisplayed = false
+    }
+  }
 }
 
 export { SliderView }

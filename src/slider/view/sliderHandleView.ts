@@ -112,6 +112,15 @@ class SliderHandle {
   public isDragged(): boolean {
     return this.state.isDragged
   }
+
+  public switchValueLabel(switcher: boolean) {
+    if (switcher == true && this.config.valueLabelDisplayed == false) {
+      this.ROOT.appendChild(this.LABEL)
+    }
+    else if (switcher == false && this.config.valueLabelDisplayed == true){
+      this.LABEL.remove()
+    }
+  }
 }
 
 export { SliderHandle }

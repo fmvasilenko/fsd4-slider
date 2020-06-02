@@ -10,6 +10,8 @@ interface JQuery {
   setSecondValue(value: number): void
   getFirstValue(): number
   getSecondValue(): number
+  switchValueLabel(switcher: boolean): void
+  getValueLabelDisplayed(): boolean
 }
 
 interface ISlider extends SliderFunction {}
@@ -24,6 +26,7 @@ interface SliderController {
 interface ImportedSliderConfig {
   isRange?: boolean
   hasDefaultValues?: boolean
+  valueLabelDisplayed?: boolean
   minValue?: number
   maxValue?: number
   step?: number

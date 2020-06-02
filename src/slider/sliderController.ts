@@ -116,6 +116,14 @@ class SliderController {
   public getRightHandleValue(): number {
     return this.MODEL.getRightHandleValue()
   }
+
+  public switchValueLabel(switcher: boolean) {
+    this.VIEW.switchValueLabel(switcher)
+  }
+
+  public getValueLabelDisplayed(): boolean {
+    return this.config.valueLabelDisplayed
+  }
 }
 
 export { SliderController }

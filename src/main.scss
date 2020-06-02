@@ -67,4 +67,14 @@
     margin-left: 10px;
     padding: 0 10px;
   }
+
+  &__value-label-switcher {
+    width: 100%;
+    display: flex;
+    align-items: center;
+
+    &_vertical {
+      width: 40%;
+    }
+  }
 }
