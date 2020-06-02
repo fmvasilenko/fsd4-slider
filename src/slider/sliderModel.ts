@@ -47,7 +47,7 @@ class SliderModel {
     let value = Math.floor(position * range)
 
     if (value % this.config.step > this.config.step / 2) value += this.config.step
-    value -= value % this.config.step + this.config.minValue
+    value = value - value % this.config.step + this.config.minValue
 
     return value
   }

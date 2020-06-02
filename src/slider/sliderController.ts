@@ -21,7 +21,7 @@ class SliderController {
 
   private getDefaultConfig(): SliderConfig {
     return {
-      isRange: true,
+      isRange: false,
       hasDefaultValues: false,
       isVertical: false,
       valueLabelDisplayed: true,
@@ -89,11 +89,14 @@ class SliderController {
   public calculateRightHandleValue(position: number) {
     let value = this.MODEL.calculateRightHandleValue(position)
     this.VIEW.changeRightHandleValue(value)
+    if (this.slideFunction !== undefined) 
+      this.slideFunction(this.MODEL.getLeftHandleValue(), this.MODEL.getRightHandleValue())
   }
 
   public setLeftHandleValue(value: number) {
     if (value > this.config.maxValue) value = this.config.maxValue
     if (value < this.config.minValue) value = this.config.minValue
+    if (!value) value = this.config.minValue
     this.MODEL.setLeftHandleValue(value)
     this.VIEW.changeLeftHandleValue(value)
   }
@@ -101,6 +104,7 @@ class SliderController {
   public setRightHandleValue(value: number) {
     if (value > this.config.maxValue) value = this.config.maxValue
     if (value < this.config.minValue) value = this.config.minValue
+    if (!value) value = this.config.maxValue
     this.MODEL.setRightHandleValue(value)
     this.VIEW.changeRightHandleValue(value)
   }

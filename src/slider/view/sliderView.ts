@@ -229,8 +229,9 @@ class SliderView {
      * function receives y mouse coordinate
      * and returns handle position on the scale, normalized form 0 to 1
      */
-    let scaleBeginning = this.ROOT.getBoundingClientRect().bottom
+    //let scaleBeginning = this.ROOT.getBoundingClientRect().bottom
     let length = this.ROOT.clientHeight
+    let scaleBeginning = this.ROOT.offsetTop + length
 
     if (y < scaleBeginning - length) return 1
     else if (y > scaleBeginning) return 0

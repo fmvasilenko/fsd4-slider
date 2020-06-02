@@ -54,7 +54,7 @@ class SliderRangeLineView {
     let sliderRange: number
     if (this.config.hasDefaultValues) sliderRange = this.config.defaultValues.length - 1
     else sliderRange = this.config.maxValue - this.config.minValue
-    let position = this.range.leftHandleValue / sliderRange
+    let position = (this.range.leftHandleValue - this.config.minValue) / sliderRange
 
     if (this.config.isVertical) return position * this.PARENT.ROOT.clientHeight
     else return position * this.PARENT.ROOT.clientWidth
@@ -64,7 +64,7 @@ class SliderRangeLineView {
     let sliderRange: number
     if (this.config.hasDefaultValues) sliderRange = this.config.defaultValues.length - 1
     else sliderRange = this.config.maxValue - this.config.minValue
-    let position = this.range.rightHandleValue / sliderRange
+    let position = (this.range.rightHandleValue - this.config.minValue) / sliderRange
 
     if (this.config.isVertical) return this.PARENT.ROOT.clientHeight - position * this.PARENT.ROOT.clientHeight
     else return this.PARENT.ROOT.clientWidth - position * this.PARENT.ROOT.clientWidth
