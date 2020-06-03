@@ -35,43 +35,56 @@
 
     &_vertical {
       width: 6px;
-      margin: 30px 0;
+      margin: 30px 40px;
     }
   }
 
   &__min-value {
     display: flex;
     align-items: center;
+    justify-content: space-between;
+
+    &_vertical {
+      width: 40%;
+      margin-top: 30px;
+    }
   }
 
   &__min-value-input {
-    width: 80px;
+    width: 70px;
     height: 40px;
     margin-left: 10px;
     padding: 0 10px;
+    border: 1px solid #444;
+    border-radius: 5px;
   }
 
   &__max-value {
     display: flex;
     align-items: center;
     margin-left: 30px;
+    justify-content: space-between;
 
     &_vertical {
+      width: 40%;
       margin-left: 0;
     }
   }
 
   &__max-value-input {
-    width: 80px;
+    width: 70px;
     height: 40px;
     margin-left: 10px;
     padding: 0 10px;
+    border: 1px solid #444;
+    border-radius: 5px;
   }
 
   &__value-label-switcher {
     width: 100%;
     display: flex;
     align-items: center;
+    cursor: pointer;
 
     &_vertical {
       width: 40%;

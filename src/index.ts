@@ -126,38 +126,47 @@ let config = [
     minValue: 20,
     maxValue: 150,
     step: 4,
-    leftHandleValue: 80
+    leftHandleValue: 50
   },
   {
     hasDefaultValues: true,
-    defaultValues: ["Первое", "Второе", "Третье"]
+    defaultValues: ["Первое", "Второе", "Третье"],
+    leftHandleValue: 1
   },
   {
     isRange: true,
     minValue: -10,
     maxValue: 60,
-    leftHandleValue: -5
+    leftHandleValue: -5,
+    rightHandleValue: 40
   },
   {
     hasDefaultValues: true,
     isRange: true,
-    defaultValues: [2, 5, 7, 9]
-  },
-  {
-    isVertical: true
-  },
-  {
-    isVertical: true,
-    hasDefaultValues: true
+    defaultValues: [2, 5, 7, 9],
+    leftHandleValue: 1,
+    rightHandleValue: 2
   },
   {
     isVertical: true,
-    isRange: true
+    leftHandleValue: 30
+  },
+  {
+    isVertical: true,
+    hasDefaultValues: true,
+    leftHandleValue: 1
   },
   {
     isVertical: true,
     isRange: true,
-    hasDefaultValues: true
+    leftHandleValue: 20,
+    rightHandleValue: 80
+  },
+  {
+    isVertical: true,
+    isRange: true,
+    hasDefaultValues: true,
+    rightHandleValue: 1
   }
 ]
 
@@ -167,5 +176,6 @@ let config = [
 
 let pageWrapper = $(".page-wrapper")
 config.forEach((item) => {
-  console.log(new DemoSlider(pageWrapper[0], item))
+  let demoSlider = new DemoSlider(pageWrapper[0], item)
+  console.log(demoSlider)
 })

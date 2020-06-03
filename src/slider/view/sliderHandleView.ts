@@ -97,7 +97,7 @@ class SliderHandle {
   private calculateShift(): number {
     let range = this.config.maxValue - this.config.minValue
     let position = (this.state.value - this.config.minValue) / range
-    if (this.config.isVertical)return position * this.PARENT.ROOT.clientHeight
+    if (this.config.isVertical) return position * this.PARENT.ROOT.clientHeight
     else return position * this.PARENT.ROOT.clientWidth
   }
 
