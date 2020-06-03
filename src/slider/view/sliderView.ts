@@ -123,10 +123,15 @@ class SliderView {
     if (this.config.isRange == false) {
       if (event.target == this.MIN_VALUE_LABEL?.ROOT) this.minValueClickHandler()
       else if (event.target == this.MAX_VALUE_LABEL?.ROOT) this.maxValueClickHandler()
-      else if (event.target == this.ROOT ||
-              (event.target as HTMLElement).closest(`.${this.CLASSES.DEFAULT_VALUE}`)) {
+      else if (event.target == this.ROOT) {
         this.moveLeftHandle(event)
       }
+
+      this.DEFAULT_VALUES?.forEach((item) => {
+        if (event.target == item.ROOT || event.target == item.LABEL) {
+          this.moveLeftHandle(event)
+        }
+      })
     }
   }
 

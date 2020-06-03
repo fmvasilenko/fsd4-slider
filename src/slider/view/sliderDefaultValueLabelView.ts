@@ -3,7 +3,7 @@ class SliderDefaultValueLabel {
   private config: SliderConfig
   private CLASSES: SliderClasses
   ROOT: HTMLElement
-  private LABEL: HTMLElement
+  LABEL: HTMLElement
 
   constructor(parent: SliderView) {
     this.PARENT = parent
