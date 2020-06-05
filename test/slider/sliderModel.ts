@@ -1,5 +1,4 @@
 import { expect } from "chai"
-import { SliderController } from "../../src/slider/sliderController"
 import { SliderModel } from "../../src/slider/sliderModel"
 
 let defaultConfig = {
@@ -45,6 +44,26 @@ describe("sliderModel", () => {
         let sliderModel = new SliderModel(config)
 
         expect(sliderModel.getConfig().leftHandleValue).to.equal(100)
+      })
+
+      it("should change step to 1 if ot`s lower then 1", () => {
+        let config = Object.assign({}, defaultConfig, {
+          step: -4
+        })
+        let sliderModel = new SliderModel(config)
+
+        expect(sliderModel.getConfig().step).to.equal(1)
+      })
+
+      it("should change rightHandleValue to maxValue", () => {
+        let config = Object.assign({}, defaultConfig, {
+          isRange: false,
+          rightHandleValue: 80,
+          maxValue: 100
+        })
+        let sliderModel = new SliderModel(config)
+
+        expect(sliderModel.getConfig().rightHandleValue).to.equal(100)
       })
     })
 
@@ -95,12 +114,56 @@ describe("sliderModel", () => {
         maxValue: 100,
         step: 1,
         leftHandleValue: 50,
-        rightHandleValue: 200,
+        rightHandleValue: 60,
         defaultValues: ["first", "second", "third"]
       })
 
       it("should return maxValue no matter what", () => {
         expect(sliderModel.calculateRightHandleValue(0)).to.equal(100)
+      })
+    })
+
+    describe("setLeftHandleValue", () => {
+      it("should change leftHandleValue to minValue if it`s lower then minValue", () => {
+        let sliderModel = new SliderModel({
+          minValue: 20
+        })
+
+        sliderModel.setLeftHandleValue(10)
+
+        expect(sliderModel.getLeftHandleValue()).to.equal(20)
+      })
+
+      it("should change leftHandleValue to maxValue if it`s higher then maxValue", () => {
+        let sliderModel = new SliderModel({
+          maxValue: 80
+        })
+
+        sliderModel.setLeftHandleValue(90)
+
+        expect(sliderModel.getLeftHandleValue()).to.equal(80)
+      })
+
+      it("should change leftHandleValue to minValue if receiver value == NaN", () => {
+        let sliderModel = new SliderModel({
+          minValue: 20
+        })
+
+        sliderModel.setLeftHandleValue(NaN)
+
+        expect(sliderModel.getLeftHandleValue()).to.equal(20)
+      })
+    })
+
+    describe("setRightHandleValue", () => {
+      it("should change rightHandleValue to maxValue no matter what", () => {
+        let sliderModel = new SliderModel({
+          maxValue: 80
+        })
+
+        sliderModel.setRightHandleValue(70)
+
+        expect(sliderModel.getRightHandleValue()).to.equal(80)
       })
     })
   })
@@ -169,6 +232,56 @@ describe("sliderModel", () => {
         expect(sliderModel.calculateRightHandleValue(0.1)).to.equal(20)
       })
     })
+
+    describe("setLeftHandleValue", () => {
+      it("should change leftHandleValue to rightHandleValue if it`s higher then rightHandleValue", () => {
+        let sliderModel = new SliderModel({
+          isRange: true,
+          rightHandleValue: 50
+        })
+
+        sliderModel.setLeftHandleValue(60)
+
+        expect(sliderModel.getLeftHandleValue()).to.equal(50)
+      })
+    })
+
+    describe("setRightHandleValue", () => {
+      it("should change rightHandleValue to maxValue if it`s higher then maxValue", () => {
+        let sliderModel = new SliderModel({
+          isRange: true,
+          maxValue: 100,
+          rightHandleValue: 80
+        })
+
+        sliderModel.setRightHandleValue(120)
+
+        expect(sliderModel.getRightHandleValue()).to.equal(100)
+      })
+
+      it("should change rightHandleValue to leftHandleValue if it`s lower then leftHandleValue", () => {
+        let sliderModel = new SliderModel({
+          isRange: true,
+          leftHandleValue: 60,
+          rightHandleValue: 80
+        })
+
+        sliderModel.setRightHandleValue(40)
+
+        expect(sliderModel.getRightHandleValue()).to.equal(60)
+      })
+
+      it("should change rightHandleValue to maxValue if received value is NaN", () => {
+        let sliderModel = new SliderModel({
+          isRange: true,
+          maxValue: 100
+        })
+
+        sliderModel.setRightHandleValue(NaN)
+
+        expect(sliderModel.getRightHandleValue()).to.equal(100)
+      })
+    })
   })
 
   describe("defaultValuesMode", () => {
@@ -192,6 +305,17 @@ describe("sliderModel", () => {
         let sliderModel = new SliderModel(config)
 
         expect(sliderModel.getConfig().leftHandleValue).to.equal(sliderModel.getConfig().defaultValues.length - 1)
+      })
+
+      it("should change rightHandleValue to (defaultValues.length - 1)", () => {
+        let config = Object.assign({}, defaultConfig, {
+          isRange: false,
+          hasDefaultValues: true,
+          rightHandleValue: 1
+        })
+        let sliderModel = new SliderModel(config)
+
+        expect(sliderModel.getConfig().rightHandleValue).to.equal(sliderModel.getConfig().defaultValues.length - 1)
       })
     })
 
@@ -242,6 +366,64 @@ describe("sliderModel", () => {
 
       it("should return (defaultValues.length - 1) no matter what", () => {
         expect(sliderModel.calculateRightHandleValue(0)).to.equal(2)
+      })
+    })
+
+    describe("setLeftHandleValue", () => {
+      it("should change leftHandleValue to 0 if it`s lower then 0", () => {
+        let sliderModel = new SliderModel({
+          hasDefaultValues: true,
+          minValue: -10
+        })
+
+        sliderModel.setLeftHandleValue(-1)
+
+        expect(sliderModel.getLeftHandleValue()).to.equal(0)
+      })
+
+      it("should change leftHandleValue to (defaultValues.length - 1) if it`s higher then defaultValues.length - 1", () => {
+        let sliderModel = new SliderModel({
+          hasDefaultValues: true
+        })
+
+        sliderModel.setLeftHandleValue(100)
+
+        expect(sliderModel.getLeftHandleValue()).to.equal(sliderModel.getConfig().defaultValues.length - 1)
+      })
+
+      it("should change leftHandleValue to 0 if receiver value is NaN", () => {
+        let sliderModel = new SliderModel({
+          hasDefaultValues: true
+        })
+
+        sliderModel.setLeftHandleValue(NaN)
+
+        expect(sliderModel.getLeftHandleValue()).to.equal(0)
+      })
+    })
+
+    describe("setRightHandleValue", () => {
+      it("should change rightHandleValue to (defaultValues - 1) if it`s higher then (defaultValues -1)", () => {
+        let sliderModel = new SliderModel({
+          hasDefaultValues: true,
+          rightHandleValue: 1
+        })
+
+        sliderModel.setRightHandleValue(100)
+
+        expect(sliderModel.getRightHandleValue()).to.equal(sliderModel.getConfig().defaultValues.length - 1)
+      })
+
+      it("should change rightHandleValue to leftHandleValue if it`s lower then leftHandleValue", () => {
+        let sliderModel = new SliderModel({
+          hasDefaultValues: true,
+          leftHandleValue: 1,
+          rightHandleValue: 2
+        })
+
+        sliderModel.setRightHandleValue(0)
+
+        expect(sliderModel.getRightHandleValue()).to.equal(1)
       })
     })
   })
@@ -307,6 +489,33 @@ describe("sliderModel", () => {
         let sliderModel = new SliderModel(config)
 
         expect(sliderModel.calculateRightHandleValue(2)).to.equal(sliderModel.getConfig().defaultValues.length - 1)
+      })
+    })
+
+    describe("setLeftHandleValue", () => {
+      it("should change leftHandleValue to rightHandleValue if it`s higher then rightHandleValue", () => {
+        let sliderModel = new SliderModel({
+          isRange: true,
+          hasDefaultValues: true,
+          rightHandleValue: 1
+        })
+  
+        sliderModel.setLeftHandleValue(60)
+  
+        expect(sliderModel.getLeftHandleValue()).to.equal(1)
+      })
+    })
+
+    describe("setRightHandleValue", () => {
+      it("should change rightHandleValue to (defaultValues.length - 1) if received value is NaN", () => {
+        let sliderModel = new SliderModel({
+          isRange: true,
+          hasDefaultValues: true
+        })
+
+        sliderModel.setRightHandleValue(NaN)
+
+        expect(sliderModel.getRightHandleValue()).to.equal(sliderModel.getConfig().defaultValues.length - 1)
       })
     })
   })

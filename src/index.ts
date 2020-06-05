@@ -101,7 +101,7 @@ class DemoSlider {
 
   private bindEventListeners() {
     this.$MIN_VALUE_INPUT[0].addEventListener("change", this.minValueChangeHandler.bind(this))
-    if (this.config == true) this.$MAX_VALUE_INPUT[0].addEventListener("change", this.maxValueChangeHandler.bind(this))
+    if (this.config.isRange == true) this.$MAX_VALUE_INPUT[0].addEventListener("change", this.maxValueChangeHandler.bind(this))
     if (this.$VALUE_LABEL_SWITCHER[0] !== undefined)
       this.$VALUE_LABEL_SWITCHER[0].addEventListener("change", this.valueLabelSwitchHandler.bind(this))
   }
@@ -113,6 +113,7 @@ class DemoSlider {
 
   private maxValueChangeHandler() {
     let value = parseInt((this.$MAX_VALUE_INPUT.val() as string).replace(/\D/g, ""))
+    console.log("changed")
     this.$SLIDER.setSecondValue(value)
   }
 
