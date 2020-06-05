@@ -15,7 +15,7 @@ class SliderController {
     this.config = Object.assign(this.getDefaultConfig(), config)
     this.config = this.checkConfig()
     this.slideFunction = slide
-    this.MODEL = new SliderModel(this)
+    this.MODEL = new SliderModel(this.config)
     this.VIEW = new SliderView(this)
   }
 

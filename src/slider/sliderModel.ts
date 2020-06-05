@@ -1,12 +1,38 @@
 class SliderModel {
-  private CONTROLLER: SliderController
   private config: SliderConfig
   private state: ModelState
 
-  constructor(controller: SliderController) {
-    this.CONTROLLER = controller
-    this.config = this.CONTROLLER.getConfig()
+  constructor(config: SliderConfig) {
+    this.config = this.checkConfig(config)
     this.state = this.getDefaultState()
+  }
+
+  private checkConfig(config: SliderConfig): SliderConfig {
+    if (config.maxValue < config.minValue) config.maxValue = config.minValue
+
+    if (config.hasDefaultValues == true) {
+      if (config.leftHandleValue < 0) config.leftHandleValue = 0
+      if (config.leftHandleValue > config.defaultValues.length - 1) config.leftHandleValue = config.defaultValues.length - 1
+    }
+    else {
+      if (config.leftHandleValue < config.minValue) config.leftHandleValue = config.minValue
+      if (config.leftHandleValue > config.maxValue) config.leftHandleValue = config.maxValue
+    }
+
+    if (config.rightHandleValue < config.leftHandleValue) config.rightHandleValue = config.leftHandleValue
+
+    if (config.hasDefaultValues) {
+      if (config.rightHandleValue > config.defaultValues.length - 1) config.rightHandleValue = config.defaultValues.length - 1
+    }
+    else {
+      if (config.rightHandleValue > config.maxValue) config.rightHandleValue = config.maxValue
+    }
+
+    return config
+  }
+
+  public getConfig(): SliderConfig {
+    return this.config
   }
 
   private getDefaultState(): ModelState {
@@ -17,6 +43,9 @@ class SliderModel {
   }
 
   public calculateLeftHandleValue(position: number): number {
+    if(position < 0) position = 0
+    if(position > 1) position = 1
+
     if (this.config.hasDefaultValues) {
       this.state.leftHandleValue = this.calculateDefaultValue(position)
     }
@@ -30,10 +59,14 @@ class SliderModel {
   }
 
   public calculateRightHandleValue(position: number): number {
+    if (position > 1) position = 1
+
     if (this.config.hasDefaultValues) {
-      this.state.rightHandleValue = this.calculateDefaultValue(position)
+      if (this.config.isRange == false) return this.config.defaultValues.length - 1
+      else this.state.rightHandleValue = this.calculateDefaultValue(position)
     }
     else {
+      if (this.config.isRange == false) return this.config.maxValue
       this.state.rightHandleValue = this.calculateValue(position)
     }
 
