@@ -62,7 +62,7 @@ class SliderView {
   }
 
   private createRangeLine(): SliderRangeLineView {
-    let rangeLine = new SliderRangeLineView(this)
+    let rangeLine = new SliderRangeLineView(this.ROOT, this.config)
     if (this.config.isRange) this.ROOT.appendChild(rangeLine.ROOT)
     return rangeLine
   }

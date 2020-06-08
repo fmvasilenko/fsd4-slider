@@ -1,5 +1,5 @@
 class SliderRangeLineView {
-  private PARENT: SliderView
+  private CONTAINER: HTMLElement
   private config: SliderConfig
   private CLASSES: SliderClasses
   public ROOT: HTMLElement
@@ -8,10 +8,10 @@ class SliderRangeLineView {
     rightHandleValue: number
   }
 
-  constructor(parent: SliderView) {
-    this.PARENT = parent
-    this.config = this.PARENT.getConfig()
-    this.CLASSES = this.PARENT.CLASSES
+  constructor(container: HTMLElement, config: SliderConfig) {
+    this.CONTAINER = container
+    this.config = config
+    this.CLASSES = require("../sliderClasses.json")
     this.ROOT = this.createRootElement()
     this.range = this.getDefaultRange()
     this.render()
@@ -41,33 +41,38 @@ class SliderRangeLineView {
 
   private render() {
     if (this.config.isVertical) {
-      this.ROOT.style.top = `${this.calculateRightShift()}px`
-      this.ROOT.style.bottom = `${this.calculateLeftShift()}px`
+      this.ROOT.style.top = `${this.calculateRightShift()}%`
+      this.ROOT.style.bottom = `${this.calculateLeftShift()}%`
     }
     else {
-      this.ROOT.style.left = `${this.calculateLeftShift()}px`
-      this.ROOT.style.right = `${this.calculateRightShift()}px`
+      this.ROOT.style.left = `${this.calculateLeftShift()}%`
+      this.ROOT.style.right = `${this.calculateRightShift()}%`
     }
   }
 
-  private calculateLeftShift() {
-    let sliderRange: number
-    if (this.config.hasDefaultValues) sliderRange = this.config.defaultValues.length - 1
-    else sliderRange = this.config.maxValue - this.config.minValue
-    let position = (this.range.leftHandleValue - this.config.minValue) / sliderRange
-
-    if (this.config.isVertical) return position * this.PARENT.ROOT.clientHeight
-    else return position * this.PARENT.ROOT.clientWidth
+  private calculateLeftShift(): number {
+    return 100 * this.calculatePosition(this.range.leftHandleValue)
   }
 
-  private calculateRightShift() {
-    let sliderRange: number
-    if (this.config.hasDefaultValues) sliderRange = this.config.defaultValues.length - 1
-    else sliderRange = this.config.maxValue - this.config.minValue
-    let position = (this.range.rightHandleValue - this.config.minValue) / sliderRange
+  private calculateRightShift(): number {
+    let position = this.calculatePosition(this.range.rightHandleValue)
 
-    if (this.config.isVertical) return this.PARENT.ROOT.clientHeight - position * this.PARENT.ROOT.clientHeight
-    else return this.PARENT.ROOT.clientWidth - position * this.PARENT.ROOT.clientWidth
+    if (this.range.leftHandleValue > this.range.rightHandleValue) position = this.calculateLeftShift() / 100
+
+    return (1 - position) * 100
+  }
+
+  private calculatePosition(value: number): number {
+    let sliderRange: number
+    let position: number
+
+    if (this.config.hasDefaultValues) position = value / this.config.defaultValues.length - 1
+    else position = (value - this.config.minValue) / (this.config.maxValue - this.config.minValue)
+
+    if (position < 0) position = 0
+    if (position > 1) position = 1
+
+    return position
   }
 }
 
