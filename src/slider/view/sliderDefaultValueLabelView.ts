@@ -1,14 +1,12 @@
 class SliderDefaultValueLabel {
-  private PARENT: SliderView
   private config: SliderConfig
   private CLASSES: SliderClasses
-  ROOT: HTMLElement
-  LABEL: HTMLElement
+  public ROOT: HTMLElement
+  public LABEL: HTMLElement
 
-  constructor(parent: SliderView) {
-    this.PARENT = parent
-    this.config = this.PARENT.getConfig()
-    this.CLASSES = this.PARENT.CLASSES
+  constructor(config: SliderConfig) {
+    this.config = config
+    this.CLASSES = require("../sliderClasses.json")
     this.ROOT = this.createRootElement()
     this.LABEL = this.createLabel()
   }
@@ -29,10 +27,11 @@ class SliderDefaultValueLabel {
   }
 
   public setShift(shift: number) {
-    if (this.config.isVertical)
-      this.ROOT.style.top = `${shift}%`
-    else
-      this.ROOT.style.left = `${shift}%`
+    if (shift < 0) shift = 0
+    if (shift > 100) shift = 100
+
+    if (this.config.isVertical) this.ROOT.style.top = `${shift}%`
+    else this.ROOT.style.left = `${shift}%`
   }
 
   public setValue(value: number | string) {

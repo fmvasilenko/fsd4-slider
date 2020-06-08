@@ -95,7 +95,7 @@ class SliderView {
 
       this.config.defaultValues?.forEach((element: number | string, index: number) => {
         let shift = this.config.isVertical ? (defaultValues.length - index - 1) * length : index * length
-        labels[index] = new SliderDefaultValueLabel(this)
+        labels[index] = new SliderDefaultValueLabel(this.config)
         labels[index].setValue(defaultValues ? defaultValues[index] : 0)
         labels[index].setShift(shift)
         this.ROOT.appendChild(labels[index].ROOT)
