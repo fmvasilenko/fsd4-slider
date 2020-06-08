@@ -1,7 +1,7 @@
 enum Side{Left, Right}
 
 class SliderHandle {
-  public PARENT: SliderView
+  private CONTAINER: HTMLElement
   private CLASSES: SliderClasses
   public ROOT: HTMLElement
   private LABEL: HTMLElement
@@ -9,11 +9,11 @@ class SliderHandle {
   private state: HandleState
   private config: SliderConfig
 
-  constructor(parent: SliderView, side: Side) {
-    this.PARENT = parent
+  constructor(container: HTMLElement, config: SliderConfig, side: Side) {
+    this.CONTAINER = container
     this.SIDE = side
-    this.config = this.PARENT.getConfig()
-    this.CLASSES = this.PARENT.CLASSES
+    this.config = config
+    this.CLASSES = require("../sliderClasses.json")
     this.ROOT = this.createRootElement()
     this.LABEL = this.createLabel()
     this.state = this.getDefaultState()
@@ -24,10 +24,8 @@ class SliderHandle {
     let handle = document.createElement("div")
     handle.classList.add(this.CLASSES.HANDLE)
 
-    if(this.SIDE == Side.Right)
-      handle.classList.add(this.CLASSES.RIGHT_HANDLE)
-    else
-      handle.classList.add(this.CLASSES.LEFT_HANDLE) 
+    if(this.SIDE == Side.Right) handle.classList.add(this.CLASSES.RIGHT_HANDLE)
+    else handle.classList.add(this.CLASSES.LEFT_HANDLE) 
 
     if (this.config.isVertical) handle.classList.add(this.CLASSES.HANDLE_VERTICAL)
 
@@ -81,24 +79,20 @@ class SliderHandle {
     }
 
     shift += extraShift ? extraShift : 0
-    shift = Math.ceil(shift)
 
-    if (this.config.isVertical) this.ROOT.style.bottom = `${shift}px`
-    else this.ROOT.style.left = `${shift}px`
+    if (this.config.isVertical) this.ROOT.style.bottom = `${shift}%`
+    else this.ROOT.style.left = `${shift}%`
   }
 
   private calculateDefaultValuesShift(): number {
-    let length: number
-    if (this.config.isVertical) length = this.PARENT.ROOT.clientHeight
-    else length = this.PARENT.ROOT.clientWidth
-    return this.config.defaultValues ? this.state.value * length / (this.config.defaultValues.length - 1) : 0
+    if (this.config.hasDefaultValues) return 100* this.state.value / (this.config.defaultValues.length - 1)
+    else return 0
   }
 
   private calculateShift(): number {
     let range = this.config.maxValue - this.config.minValue
     let position = (this.state.value - this.config.minValue) / range
-    if (this.config.isVertical) return position * this.PARENT.ROOT.clientHeight
-    else return position * this.PARENT.ROOT.clientWidth
+    return position * 100
   }
 
   public drag() {
@@ -116,9 +110,11 @@ class SliderHandle {
   public switchValueLabel(switcher: boolean) {
     if (switcher == true && this.config.valueLabelDisplayed == false) {
       this.ROOT.appendChild(this.LABEL)
+      this.config.valueLabelDisplayed = true
     }
     else if (switcher == false && this.config.valueLabelDisplayed == true){
       this.LABEL.remove()
+      this.config.valueLabelDisplayed = false
     }
   }
 }

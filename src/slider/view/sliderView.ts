@@ -50,14 +50,14 @@ class SliderView {
 
   private createLeftHandle(): SliderHandle {
     enum Side{Left, Right}
-    let handle = new SliderHandle(this, Side.Left)
+    let handle = new SliderHandle(this.ROOT, this.config, Side.Left)
     this.ROOT.appendChild(handle.ROOT)
     return handle
   }
 
   private createRightHandle(): SliderHandle {
     enum Side{Left, Right}
-    let handle = new SliderHandle(this, Side.Right)
+    let handle = new SliderHandle(this.ROOT, this.config, Side.Right)
     return handle
   }
 
@@ -188,10 +188,11 @@ class SliderView {
   }
 
   private calculateExtraShift(leftHandleValue: number, rightHandleValue: number): number {
-    let handleSize = this.LEFT_HANDLE.ROOT.offsetWidth
+    let handleSize = this.config.isVertical ? this.LEFT_HANDLE.ROOT.offsetHeight : this.LEFT_HANDLE.ROOT.offsetWidth
     let distanceBetweenHandles = this.calculateDistanceBetweenHandles(leftHandleValue, rightHandleValue)
+    let scaleSize = this.config.isVertical ? this.ROOT.offsetHeight : this.ROOT.offsetWidth
 
-    if (handleSize > distanceBetweenHandles) return (handleSize - distanceBetweenHandles) / 2
+    if (handleSize > distanceBetweenHandles) return 100 * ((handleSize - distanceBetweenHandles) / 2) / scaleSize
     else return 0
   }
 
