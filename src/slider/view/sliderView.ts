@@ -69,7 +69,7 @@ class SliderView {
 
   private createMinValueLabel(): SliderLimitView {
     enum Type{MinVal, MaxVal}
-    let label = new SliderLimitView(this, Type.MinVal)
+    let label = new SliderLimitView(this.config, Type.MinVal)
     label.setValue(this.config.minValue)
     if (this.config.limitsDisplayed) this.ROOT.appendChild(label.ROOT)
     return label
@@ -77,7 +77,7 @@ class SliderView {
 
   private createMaxValueLabel(): SliderLimitView {
     enum Type{MinVal, MaxVal}
-    let label = new SliderLimitView(this, Type.MaxVal)
+    let label = new SliderLimitView(this.config, Type.MaxVal)
     label.setValue(this.config.maxValue)
     if (this.config.limitsDisplayed) this.ROOT.appendChild(label.ROOT)
     return label
