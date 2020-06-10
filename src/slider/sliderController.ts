@@ -14,7 +14,7 @@ class SliderController {
     this.ROOT = root
     this.MODEL = new SliderModel(config)
     this.config = this.MODEL.getConfig()
-    this.VIEW = new SliderView(this)
+    this.VIEW = new SliderView(this, this.config, this.ROOT)
     this.slideFunction = slide
   }
 

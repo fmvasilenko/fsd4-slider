@@ -15,12 +15,12 @@ class SliderView {
   private MAX_VALUE_LABEL: SliderLimitView | undefined
   private DEFAULT_VALUES: SliderDefaultValueLabel[] | undefined
 
-  constructor(controller: SliderController) {
+  constructor(controller: SliderController, config: SliderConfig, root: HTMLElement) {
     this.CONTROLLER = controller
-    this.config = this.CONTROLLER.getConfig()
+    this.config = config
     this.CLASSES = require("../sliderClasses.json")
 
-    this.ROOT = this.CONTROLLER.ROOT
+    this.ROOT = root
     this.ROOT.classList.add(this.CLASSES.SLIDER)
     if (this.config.isVertical) this.ROOT.classList.add(this.CLASSES.SLIDER_VERTICAL)
 
@@ -44,9 +44,9 @@ class SliderView {
     this.bindEventListeners()
   }
 
-  public getConfig() {
+  /*public getConfig() {
     return this.config
-  }
+  }*/
 
   private createLeftHandle(): SliderHandle {
     enum Side{Left, Right}
@@ -233,7 +233,7 @@ class SliderView {
   private calculateVerticalPosition(y: number): number {
     /**
      * function receives y mouse coordinate
-     * and returns handle position on the scale, normalized form 0 to 1
+     * and returns handle position on the scale, normalized from 0 to 1
      */
     //let scaleBeginning = this.ROOT.getBoundingClientRect().bottom
     let length = this.ROOT.clientHeight
