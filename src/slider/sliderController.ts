@@ -1,5 +1,6 @@
 ///<reference path="./slider.d.ts" />
 
+import { Observable } from "../observable"
 import { SliderView } from "./view/sliderView"
 import { SliderModel } from "./sliderModel"
 
@@ -9,13 +10,24 @@ class SliderController {
   private VIEW: SliderView
   private config: SliderConfig
   private slideFunction: SliderCallBackFunction | undefined
+  private leftHandleValueObserver: Observable
+  private leftHandlePositionObserver: Observable
+  private rightHandleValueObserver: Observable
+  private rightHandlePositionObserver: Observable
 
   constructor(root: HTMLElement, config?: ImportedSliderConfig, slide?: SliderCallBackFunction) {
     this.ROOT = root
+    this.leftHandleValueObserver = new Observable()
+    this.leftHandlePositionObserver = new Observable()
+    this.rightHandleValueObserver = new Observable()
+    this.rightHandlePositionObserver = new Observable()
     this.MODEL = new SliderModel(config)
     this.config = this.MODEL.getConfig()
-    this.VIEW = new SliderView(this, this.config, this.ROOT)
+    this.VIEW = new SliderView(this.leftHandlePositionObserver, this.rightHandlePositionObserver, this.config, this.ROOT)
     this.slideFunction = slide
+
+    this.leftHandlePositionObserver.addSubscriber(this.calculateLeftHandleValue.bind(this))
+    this.rightHandlePositionObserver.addSubscriber(this.calculateRightHandleValue.bind(this))
   }
 
   public getConfig(): SliderConfig {

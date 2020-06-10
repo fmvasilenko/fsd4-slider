@@ -1,10 +1,10 @@
+import { Observable } from "../../observable"
 import { SliderHandle } from "./sliderHandleView"
 import { SliderLimitView } from "./sliderLimitView"
 import { SliderDefaultValueLabel } from "./sliderDefaultValueLabelView"
 import { SliderRangeLineView } from "./sliderRangeLineView"
 
 class SliderView {
-  private CONTROLLER: SliderController
   private config: SliderConfig
   public ROOT: HTMLElement
   public CLASSES: SliderClasses
@@ -14,9 +14,13 @@ class SliderView {
   private MIN_VALUE_LABEL: SliderLimitView | undefined
   private MAX_VALUE_LABEL: SliderLimitView | undefined
   private DEFAULT_VALUES: SliderDefaultValueLabel[] | undefined
+  private leftHandlePositionObserver: Observable
+  private rightHandlePositionObserver: Observable
 
-  constructor(controller: SliderController, config: SliderConfig, root: HTMLElement) {
-    this.CONTROLLER = controller
+  constructor(leftHandlePositionObserver: Observable, rightHandlePositionObserver: Observable, config: SliderConfig, root: HTMLElement) {
+    this.leftHandlePositionObserver = leftHandlePositionObserver
+    this.rightHandlePositionObserver = rightHandlePositionObserver
+
     this.config = config
     this.CLASSES = require("../sliderClasses.json")
 
@@ -43,10 +47,6 @@ class SliderView {
     this.setRightHandleValue(this.RIGHT_HANDLE.getValue())
     this.bindEventListeners()
   }
-
-  /*public getConfig() {
-    return this.config
-  }*/
 
   private createLeftHandle(): SliderHandle {
     enum Side{Left, Right}
@@ -136,17 +136,11 @@ class SliderView {
   }
 
   private minValueClickHandler() {
-    if (this.config.isRange == false) {
-      let value = this.CONTROLLER.calculateLeftHandleValue(0)
-      //this.setLeftHandleValue(value)
-    }
+    if (this.config.isRange == false) this.leftHandlePositionObserver.publish(0)
   }
 
   private maxValueClickHandler() {
-    if (this.config.isRange == false) {
-      let value = this.CONTROLLER.calculateLeftHandleValue(1)
-      //this.setLeftHandleValue(value)
-    }
+    if (this.config.isRange == false) this.leftHandlePositionObserver.publish(1)
   }
 
   private watchMouse(event: MouseEvent) {
@@ -156,17 +150,17 @@ class SliderView {
 
   private moveLeftHandle(event: MouseEvent) {
     let position = this.calculatePosition(event)
-    this.CONTROLLER.calculateLeftHandleValue(position)
+    this.leftHandlePositionObserver.publish(position)
+  }
+
+  private moveRightHandle(event: MouseEvent) {
+    let position = this.calculatePosition(event)
+    this.rightHandlePositionObserver.publish(position)
   }
 
   public changeLeftHandleValue(value: number) {
     this.setLeftHandleValue(value)
     this.RANGE_LINE.setRange(this.LEFT_HANDLE.getValue(), this.RIGHT_HANDLE.getValue())
-  }
-
-  private moveRightHandle(event: MouseEvent) {
-    let position = this.calculatePosition(event)
-    this.CONTROLLER.calculateRightHandleValue(position)
   }
 
   public changeRightHandleValue(value: number) {
@@ -220,7 +214,7 @@ class SliderView {
   private calculateHorizontalPosition(x: number): number {
     /**
      * function receives x mouse coordinate
-     * and returns handle position on the scale, normalized form 0 to 1
+     * and returns handle position on the scale, normalized from 0 to 1
      */
     let  scaleBeginning = this.ROOT.getBoundingClientRect().left
     let length = this.ROOT.clientWidth
