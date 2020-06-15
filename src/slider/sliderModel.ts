@@ -1,20 +1,25 @@
 import { SliderConfig } from "./sliderConfig/sliderConfig"
+import { SliderState } from "./sliderState/sliderState"
 
 class SliderModel {
   private config: SliderConfig
+  private state: SliderState
 
-  constructor (config: SliderConfig) {
+  constructor (config: SliderConfig, state: SliderState) {
     this.config = config
+    this.state = state
+    this.state.leftHandlePosition.addSubscriber(this.calculateLeftHandleValue.bind(this))
+    this.state.rightHandlePosition.addSubscriber(this.calculateRightHandleValue.bind(this))
   }
 
-  public calculateLeftHandleValue(position: number): number {
+  private calculateLeftHandleValue(position: number): number {
     if (this.config.hasDefaultValues.get()) this.config.leftHandleValue.set(this.calculateDefaultValue(position))
     else this.config.leftHandleValue.set(this.calculateValue(position))
 
     return this.config.leftHandleValue.get() as number
   }
 
-  public calculateRightHandleValue(position: number): number {
+  private calculateRightHandleValue(position: number): number {
     if (this.config.hasDefaultValues.get()) this.config.rightHandleValue.set(this.calculateDefaultValue(position))
     else this.config.rightHandleValue.set(this.calculateValue(position))
 

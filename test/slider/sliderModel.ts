@@ -1,6 +1,7 @@
 import { expect } from "chai"
 import { SliderConfig } from "../../src/slider/sliderConfig/sliderConfig"
 import { SliderModel } from "../../src/slider/sliderModel"
+import { SliderState } from "../../src/slider/sliderState/sliderState"
 
 let defaultConfig = {
   isRange: false,
@@ -25,9 +26,10 @@ describe("sliderModel", () => {
           maxValue: 100,
           leftHandleValue: 0
         })
-        let sliderModel = new SliderModel(config)
+        let state = new SliderState()
+        let sliderModel = new SliderModel(config, state)
 
-        sliderModel.calculateLeftHandleValue(0.5)
+        state.leftHandlePosition.set(0.5)
 
         expect(config.leftHandleValue.get()).to.equal(50)
       })
@@ -40,9 +42,10 @@ describe("sliderModel", () => {
           defaultValues: ["first", "second", "third"],
           leftHandleValue: 0
         })
-        let sliderModel = new SliderModel(config)
+        let state = new SliderState()
+        let sliderModel = new SliderModel(config, state)
 
-        sliderModel.calculateLeftHandleValue(0.5)
+        state.leftHandlePosition.set(0.5)
 
         expect(config.leftHandleValue.get()).to.equal(1)
       })
@@ -58,9 +61,10 @@ describe("sliderModel", () => {
           maxValue: 100,
           leftHandleValue: 0
         })
-        let sliderModel = new SliderModel(config)
+        let state = new SliderState()
+        let sliderModel = new SliderModel(config, state)
 
-        sliderModel.calculateRightHandleValue(0.5)
+        state.rightHandlePosition.set(0.5)
 
         expect(config.rightHandleValue.get()).to.equal(50)
       })
@@ -74,9 +78,10 @@ describe("sliderModel", () => {
           defaultValues: ["first", "second", "third"],
           leftHandleValue: 0
         })
-        let sliderModel = new SliderModel(config)
+        let state = new SliderState()
+        let sliderModel = new SliderModel(config, state)
 
-        sliderModel.calculateRightHandleValue(0.5)
+        state.rightHandlePosition.set(0.5)
 
         expect(config.rightHandleValue.get()).to.equal(1)
       })

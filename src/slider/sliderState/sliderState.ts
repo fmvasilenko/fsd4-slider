@@ -4,9 +4,9 @@ class SliderState {
   public leftHandlePosition: SliderStateItem
   public rightHandlePosition: SliderStateItem
 
-  constructor(leftHandlePosition: number, rightHandlePosition: number) {
-    this.leftHandlePosition = new SliderStateItem(leftHandlePosition, this.checkPosition)
-    this.rightHandlePosition = new SliderStateItem(rightHandlePosition, this.checkPosition)
+  constructor(leftHandlePosition?: number, rightHandlePosition?: number) {
+    this.leftHandlePosition = new SliderStateItem(leftHandlePosition ? leftHandlePosition : 0, this.checkPosition)
+    this.rightHandlePosition = new SliderStateItem(rightHandlePosition ? rightHandlePosition : 0, this.checkPosition)
   }
 
   private checkPosition(position: number): number {
