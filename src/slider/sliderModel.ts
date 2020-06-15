@@ -1,4 +1,4 @@
-import { SliderConfig } from "./sliderConfig"
+import { SliderConfig } from "./sliderConfig/sliderConfig"
 
 class SliderModel {
   private config: SliderConfig

@@ -1,5 +1,5 @@
 import { expect } from "chai"
-import { SliderConfig } from "../../../src/slider/sliderConfig"
+import { SliderConfig } from "../../../src/slider/sliderConfig/sliderConfig"
 import slider from "../../../src/slider/slider"
 
 let defaultConfig = {
