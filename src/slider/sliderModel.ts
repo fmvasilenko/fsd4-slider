@@ -1,12 +1,48 @@
-///<reference path="./slider.d.ts" />
+import { SliderConfig } from "./sliderConfig"
 
 class SliderModel {
   private config: SliderConfig
-  //private state: ModelState
 
-  constructor(config?: ImportedSliderConfig) {
+  constructor (config: SliderConfig) {
+    this.config = config
+  }
+
+  private calculateLeftHandleValue(position: number) {
+    if(position < 0) position = 0
+    if(position > 1) position = 1
+
+    if (this.config.hasDefaultValues) this.config.leftHandleValue.set(this.calculateDefaultValue(position))
+    else this.config.leftHandleValue.set(this.calculateValue(position))
+
+    //if (this.config.rightHandleValue < this.config.leftHandleValue) this.config.leftHandleValue = this.config.rightHandleValue
+
+    return this.config.leftHandleValue
+  }
+
+  private calculateValue(position: number): number {
+    let minValue = this.config.minValue.get() as number
+    let maxValue = this.config.maxValue.get() as number
+    let step = this.config.step.get() as number
+
+    let range = maxValue - minValue
+    let value = Math.floor(position * range)
+
+    if (value % step > step / 2) value += step
+    value = value - value % step + minValue
+
+    return value
+  }
+
+  private calculateDefaultValue(position: number): number {
+    if (this.config.defaultValues !== undefined) {
+      let defaultValuesLength = (this.config.defaultValues.get() as number[] | string[]).length
+      return Math.round((defaultValuesLength - 1) * position)
+    }
+    else return 0
+  }
+
+  /*constructor(config?: ImportedSliderConfig) {
     this.config = this.createConfig(config)
-    //this.state = this.getDefaultState()
   }
 
   private createConfig(importedConfig?: ImportedSliderConfig) {
@@ -56,13 +92,6 @@ class SliderModel {
   public getConfig(): SliderConfig {
     return Object.assign({}, this.config)
   }
-
-  /*private getDefaultState(): ModelState {
-    return {
-      leftHandleValue: this.config.leftHandleValue,
-      rightHandleValue: this.config.rightHandleValue
-    }
-  }*/
 
   public calculateLeftHandleValue(position: number): number {
     if(position < 0) position = 0
@@ -159,7 +188,7 @@ class SliderModel {
 
   public getRightHandleValue(): number {
     return this.config.rightHandleValue
-  }
+  }*/
 }
 
 export { SliderModel }

@@ -1,4 +1,5 @@
 import { expect } from "chai"
+import { SliderConfig } from "../../src/slider/sliderConfig"
 import { SliderModel } from "../../src/slider/sliderModel"
 
 let defaultConfig = {
@@ -16,6 +17,14 @@ let defaultConfig = {
 }
 
 describe("sliderModel", () => {
+  describe("calculateLeftHandleValue", () => {
+    describe("default mode", () => {
+      
+    })
+  })
+})
+
+/*describe("sliderModel", () => {
   describe("defaultMode", () => {
     describe("config checking", () => {
       it("should change maxValue to minValue if it`s less then minValue", () => {
@@ -519,4 +528,4 @@ describe("sliderModel", () => {
       })
     })
   })
-})
+})*/
