@@ -46,20 +46,28 @@ class SliderConfig {
   }
 
   private setIsRange(value: boolean): SliderConfigItem {
-    return new SliderConfigItem(value, this.checkIsRange.bind(this))
+    let isRange = new SliderConfigItem(value)
+    isRange.addSubscriber(this.updateHandlesValues.bind(this))
+    return isRange
   }
 
   private setHasDefaultValues(value: boolean): SliderConfigItem {
-    return new SliderConfigItem(value, this.checkHasDefaultValues.bind(this))
+    let hasDefaultValues = new SliderConfigItem(value)
+    hasDefaultValues.addSubscriber(this.updateHandlesValues.bind(this))
+    return hasDefaultValues
   }
 
   private setMinValue(value: number): SliderConfigItem {
-    return new SliderConfigItem(value, this.checkMinValue.bind(this))
+    let minValue = new SliderConfigItem(value, this.checkMinValue.bind(this))
+    minValue.addSubscriber(this.updateHandlesValues.bind(this))
+    return minValue
   }
 
   private setMaxValue(value: number): SliderConfigItem {
     if (value < this.minValue.get()) value = this.minValue.get() as number
-    return new SliderConfigItem(value, this.checkMaxValue.bind(this))
+    let maxValue = new SliderConfigItem(value, this.checkMaxValue.bind(this))
+    maxValue.addSubscriber(this.updateHandlesValues.bind(this))
+    return maxValue
   }
 
   private setStep(step: number): SliderConfigItem {
@@ -68,83 +76,33 @@ class SliderConfig {
   }
 
   private setDefaultValues(values: number[] | string[]): SliderConfigItem {
-    return new SliderConfigItem(values)
+    let defaultValues =  new SliderConfigItem(values)
+    defaultValues.addSubscriber(this.updateHandlesValues.bind(this))
+    return defaultValues
   }
 
   private setLeftHandleValue(value: number): SliderConfigItem {
-    if (this.hasDefaultValues.get() == true) {
-      if (value < 0) value = 0
-      let defaultValuesSize = (this.defaultValues.get() as number[] | string[]).length
-      if (value > defaultValuesSize - 1) value = defaultValuesSize - 1
-    }
-    else {
-      if (value < this.minValue.get()) value = this.minValue.get() as number
-      if (value > this.maxValue.get()) value = this.maxValue.get() as number
-    }
+    value = this.checkHandleValue(value)
     return new SliderConfigItem(value, this.checkLeftHandleValue.bind(this))
   }
 
   private setRightHandleValue(value: number): SliderConfigItem {
-    if (this.isRange.get()) {
-      if (value < this.leftHandleValue.get()) value = this.leftHandleValue.get() as number
-      if (value > this.maxValue.get()) value = this.maxValue.get() as number
-      if (this.hasDefaultValues.get()) {
-        let defaultValuesSize = (this.defaultValues.get() as number[] | string[]).length
-        if (value > defaultValuesSize - 1) value = defaultValuesSize - 1
-      }
-    }
-    else {
-      let defaultValuesSize = (this.defaultValues.get() as number[] | string[]).length
-      if (this.hasDefaultValues.get()) value = defaultValuesSize - 1
-      else value = this.maxValue.get() as number
-    }
+    value = this.checkRightHandleValue(value)
     return new SliderConfigItem(value, this.checkRightHandleValue.bind(this))
   }
 
-  private checkIsRange(value: boolean): boolean {
-    if (value == true) {
-      if(this.rightHandleValue.get() < this.leftHandleValue.get()) this.rightHandleValue.set(this.leftHandleValue.get())
-    }
-    else {
-      if (this.hasDefaultValues.get()) {
-        let defaultValuesSize = (this.defaultValues.get() as number[] | string[]).length
-        this.rightHandleValue.set(defaultValuesSize - 1)
-      }
-      else {
-        this.rightHandleValue.set(this.maxValue.get())
-      }
-    }
-    return value
-  }
-
-  private checkHasDefaultValues(value: boolean): boolean {
-    if (value == true) {
-      if (this.rightHandleValue.get() < 0) this.rightHandleValue.set(0)
-      if (this.leftHandleValue.get() < 0) this.leftHandleValue.set(0)
-      let defaultValuesSize = (this.defaultValues.get() as number[] | string[]).length
-      if (this.leftHandleValue.get() > defaultValuesSize - 1) this.leftHandleValue.set(defaultValuesSize - 1)
-      if (this.rightHandleValue.get() > defaultValuesSize - 1) this.rightHandleValue.set(defaultValuesSize - 1)
-      if (this.rightHandleValue.get() < this.leftHandleValue.get()) this.rightHandleValue.set(this.leftHandleValue.get())
-    }
-    else {
-
-    }
-    return value
+  private updateHandlesValues() {
+    this.leftHandleValue.set(this.leftHandleValue.get())
+    this.rightHandleValue.set(this.rightHandleValue.get())
   }
 
   private checkMinValue(value: number): number {
     if (value > this.maxValue.get()) value = this.maxValue.get() as number
-    if (value > this.leftHandleValue.get()) this.leftHandleValue.set(value)
-    if (value > this.rightHandleValue.get()) this.rightHandleValue.set(value)
     return value
   }
 
   private checkMaxValue(value: number): number {
     if (value < this.minValue.get()) value = this.minValue.get() as number
-    if (value < this.leftHandleValue.get()) this.leftHandleValue.set(value)
-    if (this.isRange.get() === true) {
-      if (value < this.rightHandleValue.get()) this.rightHandleValue.set(value)
-    }
     return value
   }
 
@@ -154,15 +112,7 @@ class SliderConfig {
   }
 
   private checkLeftHandleValue(value: number): number {
-    if (this.hasDefaultValues.get()) {
-      if (value < 0) value = 0
-      let defaultValuesSize = (this.defaultValues.get() as number[] | string[]).length
-      if (value > defaultValuesSize - 1) value = defaultValuesSize - 1
-    }
-    else {
-      if (value < this.minValue.get()) value = this.minValue.get() as number
-      if (value > this.maxValue.get()) value = this.maxValue.get() as number
-    }
+    value = this.checkHandleValue(value)
 
     if (this.isRange.get()) {
       if (value > this.rightHandleValue.get()) value = this.rightHandleValue.get() as number
@@ -173,17 +123,26 @@ class SliderConfig {
 
   private checkRightHandleValue(value: number): number {
     if (this.isRange.get()) {
-      if (this.hasDefaultValues.get()) {
-        let defaultValuesSize = (this.defaultValues.get() as number[] | string[]).length
-        if (value > defaultValuesSize - 1) value = defaultValuesSize - 1
-      }
-      else {
-        if (value > this.maxValue.get()) value = this.maxValue.get() as number
-      }
+      value = this.checkHandleValue(value)
       if (value < this.leftHandleValue.get()) value = this.leftHandleValue.get() as number
     }
     else {
-      value = this.maxValue.get() as number
+      let defaultValuesSize = (this.defaultValues.get() as number[] | string[]).length
+      if (this.hasDefaultValues.get()) value = defaultValuesSize - 1
+      else value = this.maxValue.get() as number
+    }
+    return value
+  }
+
+  private checkHandleValue(value: number): number {
+    if (this.hasDefaultValues.get()) {
+      let defaultValuesSize = (this.defaultValues.get() as number[] | string[]).length
+      if (value < 0) value = 0
+      if (value > defaultValuesSize - 1) value = defaultValuesSize - 1
+    }
+    else {
+      if (value < this.minValue.get()) value = this.minValue.get() as number
+      if (value > this.maxValue.get()) value = this.maxValue.get() as number
     }
     return value
   }

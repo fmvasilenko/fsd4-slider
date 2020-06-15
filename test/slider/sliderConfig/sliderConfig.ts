@@ -270,7 +270,7 @@ describe("sliderConfig", () => {
         })
       })
 
-      describe("defaultValues mode", () => {
+      /*describe("defaultValues mode", () => {
         it("should change rigthHandleValue to (defaultValues.length - 1)", () => {
           let config = Object.assign({}, defaultConfig, {
             isRange: true,
@@ -285,7 +285,7 @@ describe("sliderConfig", () => {
 
           expect(sliderConfig.rightHandleValue.get()).to.equal(2)
         })
-      })
+      })*/
     })
   })
 
@@ -358,7 +358,68 @@ describe("sliderConfig", () => {
 
     describe("given false", () => {
       describe("defaultMode", () => {
-        it("should change leftHandleValue to minValue if it`s lower then ")
+        it("should change leftHandleValue to minValue if it`s lower then minValue", () => {
+          let config = Object.assign({}, defaultConfig, {
+            hasDefaultValues: true,
+            defaultValues: ["first", "second", "third"],
+            minValue: 20,
+            leftHandleValue: 0
+          })
+          let sliderConfig = new SliderConfig(config)
+
+          sliderConfig.hasDefaultValues.set(false)
+
+          expect(sliderConfig.leftHandleValue.get()).to.equal(20)
+        })
+
+        it("should change leftHandleValue to maxValue if it`s higher then miaxValue", () => {
+          let config = Object.assign({}, defaultConfig, {
+            hasDefaultValues: true,
+            defaultValues: ["first", "second", "third"],
+            maxValue: 1,
+            leftHandleValue: 2
+          })
+          let sliderConfig = new SliderConfig(config)
+
+          sliderConfig.hasDefaultValues.set(false)
+
+          expect(sliderConfig.leftHandleValue.get()).to.equal(1)
+        })
+      })
+
+      describe("ranhe mode", () => {
+        it("should change rightHandleValue to leftHandleValue if it`s lower then leftHandleValue", () => {
+          let config = Object.assign({}, defaultConfig, {
+            isRange: true,
+            hasDefaultValues: true,
+            defaultValues: ["first", "second", "third"],
+            minValue: 20,
+            leftHandleValue: 1,
+            rightHandleValue: 2
+          })
+          let sliderConfig = new SliderConfig(config)
+
+          sliderConfig.hasDefaultValues.set(false)
+
+          expect(sliderConfig.rightHandleValue.get()).to.equal(20)
+        })
+
+        it("should change rightHandle to maxValue if it`s higher then maxValue", () => {
+          let config = Object.assign({}, defaultConfig, {
+            isRange: true,
+            hasDefaultValues: true,
+            defaultValues: ["first", "second", "third"],
+            minValue: -20,
+            maxValue: -10,
+            leftHandleValue: 0,
+            rightHandleValue: 2
+          })
+          let sliderConfig = new SliderConfig(config)
+
+          sliderConfig.hasDefaultValues.set(false)
+
+          expect(sliderConfig.rightHandleValue.get()).to.equal(-10)
+        })
       })
     })
   })
@@ -689,6 +750,35 @@ describe("sliderConfig", () => {
   
         expect(sliderConfig.rightHandleValue.get()).to.equal(1)
       })
+    })
+  })
+
+  describe("defaultValues.set()", () => {
+    it("should change leftHandleValue to (defaultValues.length - 1) if it`s higher then (defaultValues.length - 1)", () => {
+      let config = Object.assign({}, defaultConfig, {
+        hasDefaultValues: true,
+        defaultValues: ["first", "second", "third"],
+        leftHandleValue: 2
+      })
+      let sliderConfig = new SliderConfig(config)
+
+      sliderConfig.defaultValues.set(["fisrt", "second"])
+
+      expect(sliderConfig.leftHandleValue.get()).to.equal(1)
+    })
+
+    it("should change rightHandleValue to (defaultValues.length - 1) if it`s higher then (defaultValues.length - 1)", () => {
+      let config = Object.assign({}, defaultConfig, {
+        isRange: true,
+        hasDefaultValues: true,
+        defaultValues: ["first", "second", "third"],
+        rightHandleValue: 2
+      })
+      let sliderConfig = new SliderConfig(config)
+
+      sliderConfig.defaultValues.set(["fisrt", "second"])
+
+      expect(sliderConfig.rightHandleValue.get()).to.equal(1)
     })
   })
 })
