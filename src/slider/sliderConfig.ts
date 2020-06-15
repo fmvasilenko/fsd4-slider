@@ -1,17 +1,17 @@
 import { SliderConfigItem } from "./sliderConfigItem"
 
 interface ImportedSliderConfig {
-  isRange: boolean
-  hasDefaultValues: boolean
-  isVertical: boolean
-  valueLabelDisplayed: boolean
-  limitsDisplayed: boolean
-  minValue: number
-  maxValue: number
-  step: number
-  leftHandleValue: number
-  rightHandleValue: number
-  defaultValues: number[] | string[]
+  isRange?: boolean
+  hasDefaultValues?: boolean
+  isVertical?: boolean
+  valueLabelDisplayed?: boolean
+  limitsDisplayed?: boolean
+  minValue?: number
+  maxValue?: number
+  step?: number
+  leftHandleValue?: number
+  rightHandleValue?: number
+  defaultValues?: number[] | string[]
 }
 
 class SliderConfig {
@@ -27,18 +27,35 @@ class SliderConfig {
   public rightHandleValue: SliderConfigItem
   public defaultValues: SliderConfigItem
 
-  constructor(importedConfig: ImportedSliderConfig) {
-    this.isRange = this.setIsRange(importedConfig.isRange)
-    this.hasDefaultValues = this.setHasDefaultValues(importedConfig.hasDefaultValues)
-    this.isVertical = this.boolean(importedConfig.isVertical)
-    this.valueLabelDisplayed = this.boolean(importedConfig.valueLabelDisplayed)
-    this.limitsDisplayed = this.boolean(importedConfig.limitsDisplayed)
-    this.minValue = this.setMinValue(importedConfig.minValue)
-    this.maxValue = this.setMaxValue(importedConfig.maxValue)
-    this.step = this.setStep(importedConfig.step)
-    this.defaultValues = this.setDefaultValues(importedConfig.defaultValues)
-    this.leftHandleValue = this.setLeftHandleValue(importedConfig.leftHandleValue)
-    this.rightHandleValue = this.setRightHandleValue(importedConfig.rightHandleValue)
+  constructor(importedConfig?: ImportedSliderConfig) {
+    let config = Object.assign(this.getDefaultConfig(), importedConfig)
+    this.isRange = this.setIsRange(config.isRange)
+    this.hasDefaultValues = this.setHasDefaultValues(config.hasDefaultValues)
+    this.isVertical = this.boolean(config.isVertical)
+    this.valueLabelDisplayed = this.boolean(config.valueLabelDisplayed)
+    this.limitsDisplayed = this.boolean(config.limitsDisplayed)
+    this.minValue = this.setMinValue(config.minValue)
+    this.maxValue = this.setMaxValue(config.maxValue)
+    this.step = this.setStep(config.step)
+    this.defaultValues = this.setDefaultValues(config.defaultValues)
+    this.leftHandleValue = this.setLeftHandleValue(config.leftHandleValue)
+    this.rightHandleValue = this.setRightHandleValue(config.rightHandleValue)
+  }
+
+  private getDefaultConfig() {
+    return {
+      isRange: false,
+      hasDefaultValues: false,
+      isVertical: false,
+      valueLabelDisplayed: true,
+      limitsDisplayed: true,
+      minValue: 0,
+      maxValue: 0,
+      step: 1,
+      defaultValues: ["first", "second", "third"],
+      leftHandleValue: 20,
+      rightHandleValue: 80
+    }
   }
 
   private boolean(value: boolean): SliderConfigItem {
