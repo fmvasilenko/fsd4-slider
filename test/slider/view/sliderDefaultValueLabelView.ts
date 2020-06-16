@@ -1,7 +1,7 @@
 import { expect } from "chai"
 import { SliderDefaultValueLabel } from "../../../src/slider/view/sliderDefaultValueLabelView"
+import { SliderConfig } from "../../../src/slider/sliderConfig/sliderConfig";
 
-enum Side{Left, Right}
 const jsdom = require("jsdom")
 const { JSDOM } = jsdom
 const dom = new JSDOM("<!doctype html><html><body><div class='slider'></div></body></html>");
@@ -9,96 +9,144 @@ const dom = new JSDOM("<!doctype html><html><body><div class='slider'></div></bo
 (global as any).document = window.document;
 
 const CLASSES: SliderClasses = require("../../../src/slider/sliderClasses.json")
-const defaultConfig = {
-  isRange: false,
-  hasDefaultValues: false,
-  isVertical: false,
-  valueLabelDisplayed: true,
-  limitsDisplayed: true,
-  minValue: 0,
-  maxValue: 100,
-  step: 1,
-  leftHandleValue: 0,
-  rightHandleValue: 100,
-  defaultValues: ["first", "second", "third"]
-}
 
 describe("sliderDefaultValueLabelView", () => {
-  it("should create rootElement with DEFAULT_VALUE class", () => {
-    let defaultValue = new SliderDefaultValueLabel(defaultConfig)
+  it("should create root element with defaulValue class and add it to the container", () => {
+    let container = document.createElement("div")
+    let config = new SliderConfig({
+      hasDefaultValues: true,
+      defaultValues: ["first", "second", "third"]
+    })
+    let defaultValue = new SliderDefaultValueLabel(container, config, 0)
 
-    expect(defaultValue.ROOT).to.exist
-    expect(defaultValue.ROOT.classList.item(0)).to.equal(CLASSES.DEFAULT_VALUE)
+    expect(container.querySelectorAll(`.${CLASSES.DEFAULT_VALUE}`).length).to.equal(1)
   })
 
-  it("should create LABEL inside of ROOT with DEFAULT_VALUE_LABEL class", () => {
-    let defaultValue = new SliderDefaultValueLabel(defaultConfig)
+  it("should create label element and add it to the root", () => {
+    let container = document.createElement("div")
+    let config = new SliderConfig({
+      hasDefaultValues: true,
+      defaultValues: ["first", "second", "third"]
+    })
+    let defaultValue = new SliderDefaultValueLabel(container, config, 0)
 
-    expect(defaultValue.ROOT.querySelectorAll(`.${CLASSES.DEFAULT_VALUE_LABEL}`)).to.have.lengthOf(1)
+    expect(container.querySelectorAll(`.${CLASSES.DEFAULT_VALUE_LABEL}`).length).to.equal(1)
   })
 
-  describe("setShift", () => {
-    describe("defaultMode", () => {
-      let config = Object.assign({}, defaultConfig, {
-        isVertical: false
-      })
-      let defaultValue = new SliderDefaultValueLabel(config)
+  it("should add vertical class if config.isVertical == true", () => {
+    let container = document.createElement("div")
+    let config = new SliderConfig({
+      isVertical: true,
+      hasDefaultValues: true,
+      defaultValues: ["first", "second", "third"]
+    })
+    let defaultValue = new SliderDefaultValueLabel(container, config, 0)
 
-      it("should set `left` position to 0% when given 0", () => {
-        defaultValue.setShift(0)
-        expect(defaultValue.ROOT.style.left).to.equal("0%")
-      })
+    expect(container.querySelectorAll(`.${CLASSES.DEFAULT_VALUE_VERTICAL}`).length).to.equal(1)
+  })
 
-      it("should set `left` position to 100% when given 100", () => {
-        defaultValue.setShift(100)
-        expect(defaultValue.ROOT.style.left).to.equal("100%")
-      })
+  it("should display value from defaultValues list according with the index", () => {
+    let container = document.createElement("div")
+    let config = new SliderConfig({
+      hasDefaultValues: true,
+      defaultValues: ["first", "second", "third"]
+    })
+    let defaultValue = new SliderDefaultValueLabel(container, config, 1)
 
-      it("should set `left` position to 0% when given less then 0", () => {
-        defaultValue.setShift(-100)
-        expect(defaultValue.ROOT.style.left).to.equal("0%")
-      })
+    expect(container.querySelector(`.${CLASSES.DEFAULT_VALUE_LABEL}`)?.innerHTML).to.equal("second")
+  })
 
-      it("should set `left` position to 100% when given more then 100", () => {
-        defaultValue.setShift(200)
-        expect(defaultValue.ROOT.style.left).to.equal("100%")
+  it("should set shift according with the index", () => {
+    let container = document.createElement("div")
+    let config = new SliderConfig({
+      hasDefaultValues: true,
+      defaultValues: ["first", "second", "third"]
+    })
+    let defaultValue = new SliderDefaultValueLabel(container, config, 1)
+
+    let foundDefaultValue = container.querySelector(`.${CLASSES.DEFAULT_VALUE}`)
+    expect((foundDefaultValue as HTMLElement).style.left).to.equal("50%")
+  })
+
+  it("should not append root to container if hasDefaultValues == false", () => {
+    let container = document.createElement("div")
+    let config = new SliderConfig({
+      hasDefaultValues: false,
+      defaultValues: ["first", "second", "third"]
+    })
+    let defaultValue = new SliderDefaultValueLabel(container, config, 0)
+
+    expect(container.querySelectorAll(`.${CLASSES.DEFAULT_VALUE}`).length).to.equal(0)
+  })
+
+  describe("defaultValues.set()", () => {
+    it("should display a new value if defaultValues[index] changed", () => {
+      let container = document.createElement("div")
+      let config = new SliderConfig({
+        hasDefaultValues: true,
+        defaultValues: ["first", "second", "third"]
       })
+      let defaultValue = new SliderDefaultValueLabel(container, config, 1)
+
+      config.defaultValues.set(["first", "newValue", "third"])
+
+      let label = container.querySelector(`.${CLASSES.DEFAULT_VALUE_LABEL}`) as HTMLElement
+      expect(label.innerHTML).to.equal("newValue")
     })
 
-    describe("verticalMode", () => {
-      let config = Object.assign({}, defaultConfig, {
-        isVertical: true
+    it("should change the shift if defaultValues.length changed", () => {
+      let container = document.createElement("div")
+      let config = new SliderConfig({
+        hasDefaultValues: true,
+        defaultValues: ["first", "second", "third"]
       })
-      let defaultValue = new SliderDefaultValueLabel(config)
+      let defaultValue = new SliderDefaultValueLabel(container, config, 1)
 
-      it("should set `top` position to 0% when given 0", () => {
-        defaultValue.setShift(0)
-        expect(defaultValue.ROOT.style.top).to.equal("0%")
-      })
+      config.defaultValues.set(["first", "second", "third", "fourth", "fifth"])
 
-      it("should set `top` position to 100% when given 100", () => {
-        defaultValue.setShift(100)
-        expect(defaultValue.ROOT.style.top).to.equal("100%")
-      })
-
-      it("should set `top` position to 0% when given less then 0", () => {
-        defaultValue.setShift(-100)
-        expect(defaultValue.ROOT.style.top).to.equal("0%")
-      })
-
-      it("should set `top` position to 100% when given more then 100", () => {
-        defaultValue.setShift(200)
-        expect(defaultValue.ROOT.style.top).to.equal("100%")
-      })
+      let foundDefaultValue = container.querySelector(`.${CLASSES.DEFAULT_VALUE}`) as HTMLElement
+      expect(foundDefaultValue.style.left).to.equal("25%")
     })
   })
 
-  describe("setValue", () => {
-    let defaultValue = new SliderDefaultValueLabel(defaultConfig)
+  describe("hasDefaultValues.set()", () => {
+    it("should append root to container if given true", () => {
+      let container = document.createElement("div")
+      let config = new SliderConfig({
+        hasDefaultValues: false,
+        defaultValues: ["first", "second", "third"]
+      })
+      let defaultValue = new SliderDefaultValueLabel(container, config, 1)
 
-    it("should change innerHTML of the label to the given one", () => {
-      defaultValue.setValue(100)
-      expect(defaultValue.LABEL.innerHTML).to.equal("100")
+      config.hasDefaultValues.set(true)
+
+      expect(container.querySelectorAll(`.${CLASSES.DEFAULT_VALUE}`).length).to.equal(1)
+    })
+
+    it("should remove root from container if given false", () => {
+      let container = document.createElement("div")
+      let config = new SliderConfig({
+        hasDefaultValues: true,
+        defaultValues: ["first", "second", "third"]
+      })
+      let defaultValue = new SliderDefaultValueLabel(container, config, 1)
+
+      config.hasDefaultValues.set(false)
+
+      expect(container.querySelectorAll(`.${CLASSES.DEFAULT_VALUE}`).length).to.equal(0)
+    })
+
+    it("should not create an extra copy of root in container if config.hasDefaultValues == true and given true", () => {
+      let container = document.createElement("div")
+      let config = new SliderConfig({
+        hasDefaultValues: true,
+        defaultValues: ["first", "second", "third"]
+      })
+      let defaultValue = new SliderDefaultValueLabel(container, config, 1)
+
+      config.hasDefaultValues.set(true)
+
+      expect(container.querySelectorAll(`.${CLASSES.DEFAULT_VALUE}`).length).to.equal(1)
     })
   })
 })
