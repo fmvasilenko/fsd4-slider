@@ -1,21 +1,33 @@
-import { toughCookie } from "jsdom"
+import { SliderConfig } from "../sliderConfig/sliderConfig"
 
 enum Type{MinVal, MaxVal}
 
 class SliderLimitView {
+  private CONTAINER: HTMLElement
+  private ROOT: HTMLElement
   private CLASSES: SliderClasses
   private TYPE: Type
   private config: SliderConfig
-  public ROOT: HTMLElement
-  private value: number
 
-  constructor(config: SliderConfig, type: Type) {
+  constructor(container: HTMLElement, config: SliderConfig, type: Type) {
+    this.CONTAINER = container
     this.CLASSES = require("../sliderClasses.json")
     this.TYPE = type
     this.config = config
     this.ROOT = this.createRootElement()
-    this.value = 0
-    this.render()
+
+    this.config.limitsDisplayed.addSubscriber(this.switch.bind(this))
+
+    this.switch(this.config.limitsDisplayed.get() as boolean)
+
+    if (this.TYPE == Type.MinVal) {
+      this.setValue(this.config.minValue.get() as number)
+      this.config.minValue.addSubscriber(this.setValue.bind(this))
+    }
+    else {
+      this.setValue(this.config.maxValue.get() as number)
+      this.config.maxValue.addSubscriber(this.setValue.bind(this))
+    }
   }
 
   private createRootElement() {
@@ -33,13 +45,19 @@ class SliderLimitView {
     return root
   }
 
-  public setValue(value: number) {
-    this.value = value
-    this.render()
+  private switch(value: boolean) {
+    if (value === true && this.config.hasDefaultValues.get() === false) {
+      if (this.CONTAINER.querySelectorAll(`.${this.CLASSES.MIN_VALUE}`).length == 0) {
+        this.CONTAINER.appendChild(this.ROOT)
+      }
+    }
+    else {
+      this.ROOT.remove()
+    }
   }
 
-  private render() {
-    this.ROOT.innerHTML = `${this.value}`
+  private setValue(value: number) {
+    this.ROOT.innerHTML = `${value}`
   }
 }
 

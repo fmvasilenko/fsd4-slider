@@ -50,7 +50,7 @@ class SliderConfig {
       valueLabelDisplayed: true,
       limitsDisplayed: true,
       minValue: 0,
-      maxValue: 0,
+      maxValue: 100,
       step: 1,
       defaultValues: ["first", "second", "third"],
       leftHandleValue: 20,
