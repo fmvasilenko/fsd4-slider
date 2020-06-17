@@ -3,35 +3,36 @@ import { SliderHandle } from "./sliderHandleView"
 import { SliderLimitView } from "./sliderLimitView"
 import { SliderDefaultValueLabel } from "./sliderDefaultValueLabelView"
 import { SliderRangeLineView } from "./sliderRangeLineView"
+import { SliderConfig } from "../sliderConfig/sliderConfig"
 
 class SliderView {
   private config: SliderConfig
   public ROOT: HTMLElement
   public CLASSES: SliderClasses
-  private LEFT_HANDLE: SliderHandle
-  private RIGHT_HANDLE: SliderHandle
-  private RANGE_LINE: SliderRangeLineView
-  private MIN_VALUE_LABEL: SliderLimitView | undefined
-  private MAX_VALUE_LABEL: SliderLimitView | undefined
-  private DEFAULT_VALUES: SliderDefaultValueLabel[] | undefined
-  private leftHandlePositionObserver: Observable
-  private rightHandlePositionObserver: Observable
+  //private LEFT_HANDLE: SliderHandle
+  //private RIGHT_HANDLE: SliderHandle
+  //private RANGE_LINE: SliderRangeLineView
+  //private MIN_VALUE_LABEL: SliderLimitView | undefined
+  //private MAX_VALUE_LABEL: SliderLimitView | undefined
+  //private DEFAULT_VALUES: SliderDefaultValueLabel[] | undefined
+  //private leftHandlePositionObserver: Observable
+  //private rightHandlePositionObserver: Observable
 
-  constructor(leftHandlePositionObserver: Observable, rightHandlePositionObserver: Observable, config: SliderConfig, root: HTMLElement) {
-    this.leftHandlePositionObserver = leftHandlePositionObserver
-    this.rightHandlePositionObserver = rightHandlePositionObserver
+  constructor(root: HTMLElement, config: SliderConfig) {
+    //this.leftHandlePositionObserver = leftHandlePositionObserver
+    //this.rightHandlePositionObserver = rightHandlePositionObserver
 
     this.config = config
     this.CLASSES = require("../sliderClasses.json")
 
     this.ROOT = root
     this.ROOT.classList.add(this.CLASSES.SLIDER)
-    if (this.config.isVertical) this.ROOT.classList.add(this.CLASSES.SLIDER_VERTICAL)
+    if (this.config.isVertical.get() === true) this.ROOT.classList.add(this.CLASSES.SLIDER_VERTICAL)
 
-    this.LEFT_HANDLE = this.createLeftHandle()
+    /*this.LEFT_HANDLE = this.createLeftHandle()
     this.RIGHT_HANDLE = this.createRightHandle()
 
-    if (this.config.isRange) this.ROOT.appendChild(this.RIGHT_HANDLE.ROOT)
+    //if (this.config.isRange) this.ROOT.appendChild(this.RIGHT_HANDLE.ROOT)
 
     this.RANGE_LINE = this.createRangeLine()
 
@@ -45,13 +46,13 @@ class SliderView {
 
     this.setLeftHandleValue(this.LEFT_HANDLE.getValue())
     this.setRightHandleValue(this.RIGHT_HANDLE.getValue())
-    this.bindEventListeners()
+    this.bindEventListeners()*/
   }
 
-  private createLeftHandle(): SliderHandle {
+  /*private createLeftHandle(): SliderHandle {
     enum Side{Left, Right}
     let handle = new SliderHandle(this.ROOT, this.config, Side.Left)
-    this.ROOT.appendChild(handle.ROOT)
+    //this.ROOT.appendChild(handle.ROOT)
     return handle
   }
 
@@ -63,23 +64,23 @@ class SliderView {
 
   private createRangeLine(): SliderRangeLineView {
     let rangeLine = new SliderRangeLineView(this.ROOT, this.config)
-    if (this.config.isRange) this.ROOT.appendChild(rangeLine.ROOT)
+    //if (this.config.isRange) this.ROOT.appendChild(rangeLine.ROOT)
     return rangeLine
   }
 
   private createMinValueLabel(): SliderLimitView {
     enum Type{MinVal, MaxVal}
     let label = new SliderLimitView(this.config, Type.MinVal)
-    label.setValue(this.config.minValue)
-    if (this.config.limitsDisplayed) this.ROOT.appendChild(label.ROOT)
+    //label.setValue(this.config.minValue)
+    //if (this.config.limitsDisplayed) this.ROOT.appendChild(label.ROOT)
     return label
   }
 
   private createMaxValueLabel(): SliderLimitView {
     enum Type{MinVal, MaxVal}
     let label = new SliderLimitView(this.config, Type.MaxVal)
-    label.setValue(this.config.maxValue)
-    if (this.config.limitsDisplayed) this.ROOT.appendChild(label.ROOT)
+    //label.setValue(this.config.maxValue)
+    //if (this.config.limitsDisplayed) this.ROOT.appendChild(label.ROOT)
     return label
   }
 
@@ -216,7 +217,7 @@ class SliderView {
      * function receives x mouse coordinate
      * and returns handle position on the scale, normalized from 0 to 1
      */
-    let  scaleBeginning = this.ROOT.getBoundingClientRect().left
+    /*let  scaleBeginning = this.ROOT.getBoundingClientRect().left
     let length = this.ROOT.clientWidth
 
     if (x < scaleBeginning) return 0
@@ -230,7 +231,7 @@ class SliderView {
      * and returns handle position on the scale, normalized from 0 to 1
      */
     //let scaleBeginning = this.ROOT.getBoundingClientRect().bottom
-    let length = this.ROOT.clientHeight
+    /*let length = this.ROOT.clientHeight
     let scaleBeginning = this.ROOT.offsetTop + length
 
     if (y < scaleBeginning - length) return 1
@@ -249,7 +250,7 @@ class SliderView {
       this.RIGHT_HANDLE.switchValueLabel(switcher)
       this.config.valueLabelDisplayed = false
     }
-  }
+  }*/
 }
 
 export { SliderView }

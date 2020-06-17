@@ -1,5 +1,6 @@
-/*import { expect } from "chai"
+import { expect } from "chai"
 import { SliderView } from "../../../src/slider/view/sliderView"
+import { SliderConfig } from "../../../src/slider/sliderConfig/sliderConfig"
 
 const jsdom = require("jsdom")
 const { JSDOM } = jsdom
@@ -9,7 +10,7 @@ const dom = new JSDOM(html, {resources: "usable", pretendToBeVisual: true});
 (global as any).document = window.document;
 
 const CLASSES: SliderClasses = require("../../../src/slider/sliderClasses.json")
-const defaultConfig = {
+/*const defaultConfig = {
   isRange: false,
   hasDefaultValues: false,
   isVertical: false,
@@ -21,9 +22,48 @@ const defaultConfig = {
   leftHandleValue: 0,
   rightHandleValue: 100,
   defaultValues: ["first", "second", "third"]
-}
+}*/
 
-class SliderController {
+describe("sliderView", () => {
+  describe("constructor", () => {
+    it("should add slider class to the root", () => {
+      let root = document.createElement("div")
+      let config = new SliderConfig()
+      let sliderView = new SliderView(root, config)
+
+      expect(root.classList.contains(CLASSES.SLIDER)).to.equal(true)
+    })
+
+    it("should add slider vertical class to the root if isVertical == true", () => {
+      let root = document.createElement("div")
+      let config = new SliderConfig({
+        isVertical: true
+      })
+      let sliderView = new SliderView(root, config)
+
+      expect(root.classList.contains(CLASSES.SLIDER_VERTICAL)).to.equal(true)
+    })
+
+    it("should add leftHandleView")
+    it("should add rightHandleView")
+    it("should add rangeLineView")
+    it("should add minValue limitView")
+    it("should add maxValue limitView")
+    it("should add defaultValueLabelView for each defaultValue")
+  })
+
+  describe("defaultValue.set()", () => {
+    it("should create new defaultValueLabelViews if needed")
+    it("should remove non used defaultValueLabelViews")
+  })
+
+  describe("isVertical.set()", () => {
+    it("should add sliderVertical class if given true")
+    it("should remove sliderVertical class if given false")
+  })
+})
+
+/*class SliderController {
   ROOT = document.createElement("div")
 
   getConfig = function() {
