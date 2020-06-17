@@ -1,23 +1,33 @@
+import { SliderConfig } from "../sliderConfig/sliderConfig"
 enum Side{Left, Right}
 
 class SliderHandle {
   private CONTAINER: HTMLElement
-  private CLASSES: SliderClasses
-  public ROOT: HTMLElement
-  private LABEL: HTMLElement
-  private SIDE: Side
-  private state: HandleState
   private config: SliderConfig
+  private SIDE: Side
+  private CLASSES: SliderClasses
+  private ROOT: HTMLElement
+  //private LABEL: HTMLElement
+  //private state: HandleState
 
   constructor(container: HTMLElement, config: SliderConfig, side: Side) {
     this.CONTAINER = container
-    this.SIDE = side
     this.config = config
+    this.SIDE = side
     this.CLASSES = require("../sliderClasses.json")
     this.ROOT = this.createRootElement()
-    this.LABEL = this.createLabel()
-    this.state = this.getDefaultState()
+    //this.LABEL = this.createLabel()
+    
+    if (this.SIDE == Side.Left || this.config.isRange.get() === true) this.CONTAINER.appendChild(this.ROOT)
+
     this.render()
+
+    this.config.isRange.addSubscriber(this.switchRightHandle.bind(this))
+    this.config.hasDefaultValues.addSubscriber(this.render.bind(this))
+    this.config.isVertical.addSubscriber(this.switchVertical.bind(this))
+    this.config.isVertical.addSubscriber(this.render.bind(this))
+    this.config.leftHandleValue.addSubscriber(this.render.bind(this))
+    this.config.rightHandleValue.addSubscriber(this.render.bind(this))
   }
 
   private createRootElement() {
@@ -27,12 +37,12 @@ class SliderHandle {
     if(this.SIDE == Side.Right) handle.classList.add(this.CLASSES.RIGHT_HANDLE)
     else handle.classList.add(this.CLASSES.LEFT_HANDLE) 
 
-    if (this.config.isVertical) handle.classList.add(this.CLASSES.HANDLE_VERTICAL)
+    if (this.config.isVertical.get() === true) handle.classList.add(this.CLASSES.HANDLE_VERTICAL)
 
     return handle
   }
 
-  private createLabel(): HTMLElement {
+  /*private createLabel(): HTMLElement {
     let label = document.createElement("div")
     label.classList.add(this.CLASSES.VALUE_LABEL)
 
@@ -48,9 +58,55 @@ class SliderHandle {
     if (this.config.valueLabelDisplayed) this.ROOT.appendChild(label)
 
     return label
+  }*/
+
+  private switchRightHandle() {
+    if (this.config.isRange.get() === true) this.CONTAINER.appendChild(this.ROOT)
+    else this.ROOT.remove()
   }
 
-  private getDefaultState() {
+  private switchVertical() {
+    if (this.config.isVertical.get() === true) this.ROOT.classList.add(this.CLASSES.HANDLE_VERTICAL)
+    else this.ROOT.classList.remove(this.CLASSES.HANDLE_VERTICAL)
+  }
+
+  private render() {
+    let shift: number
+  
+    if (this.config.hasDefaultValues.get() === true) shift = this.calculateDefaultValuesShift()
+    else shift = this.calculateShift()
+
+    //shift += extraShift ? extraShift : 0
+
+    if (this.config.isVertical.get() === true) {
+      this.ROOT.style.left = ""
+      this.ROOT.style.bottom = `${shift}%`
+    }
+    else {
+      this.ROOT.style.bottom = ""
+      this.ROOT.style.left = `${shift}%`
+    }
+  }
+
+  private calculateDefaultValuesShift(): number {
+    let handleValue = this.SIDE == Side.Left ? this.config.leftHandleValue.get() as number : this.config.rightHandleValue.get() as number
+    let defaultValues = this.config.defaultValues.get() as number[] | string[]
+
+    if (this.config.hasDefaultValues.get() === true) return 100 * handleValue / (defaultValues.length - 1)
+    else return 0
+  }
+
+  private calculateShift(): number {
+    let minValue = this.config.minValue.get() as number
+    let maxValue = this.config.maxValue.get() as number
+    let value = this.SIDE == Side.Left ? this.config.leftHandleValue.get() as number : this.config.rightHandleValue.get() as number
+    
+    let range = maxValue - minValue
+    let position = (value - minValue) / range
+    return position * 100
+  }
+
+  /*private getDefaultState() {
     return {
       isDragged: false,
       value: this.SIDE == Side.Left ? this.config.leftHandleValue : this.config.rightHandleValue
@@ -64,36 +120,7 @@ class SliderHandle {
 
   public getValue(): number {
     return this.state.value
-  }
-
-  private render(extraShift?: number) {
-    let shift: number
-
-    if (this.config.hasDefaultValues == true) {
-      shift = this.calculateDefaultValuesShift()
-      this.LABEL.innerHTML = `${this.config.defaultValues ? this.config.defaultValues[this.state.value] : 0}`
-    }
-    else {
-      shift = this.calculateShift()
-      this.LABEL.innerHTML = `${this.state.value}`
-    }
-
-    shift += extraShift ? extraShift : 0
-
-    if (this.config.isVertical) this.ROOT.style.bottom = `${shift}%`
-    else this.ROOT.style.left = `${shift}%`
-  }
-
-  private calculateDefaultValuesShift(): number {
-    if (this.config.hasDefaultValues) return 100* this.state.value / (this.config.defaultValues.length - 1)
-    else return 0
-  }
-
-  private calculateShift(): number {
-    let range = this.config.maxValue - this.config.minValue
-    let position = (this.state.value - this.config.minValue) / range
-    return position * 100
-  }
+  }  
 
   public drag() {
     this.state.isDragged = true
@@ -116,7 +143,7 @@ class SliderHandle {
       this.LABEL.remove()
       this.config.valueLabelDisplayed = false
     }
-  }
+  }*/
 }
 
 export { SliderHandle }
