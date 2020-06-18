@@ -1,22 +1,24 @@
 import { SliderConfig } from "../sliderConfig/sliderConfig"
+import { SliderState } from "../sliderState/sliderState"
 enum Side{Left, Right}
 
 class SliderHandle {
   private CONTAINER: HTMLElement
   private config: SliderConfig
+  private state: SliderState
   private SIDE: Side
   private CLASSES: SliderClasses
   private ROOT: HTMLElement
-  //private LABEL: HTMLElement
-  //private state: HandleState
+  private isDragged: boolean
 
-  constructor(container: HTMLElement, config: SliderConfig, side: Side) {
+  constructor(container: HTMLElement, config: SliderConfig, state: SliderState, side: Side) {
     this.CONTAINER = container
     this.config = config
+    this.state = state
     this.SIDE = side
     this.CLASSES = require("../sliderClasses.json")
     this.ROOT = this.createRootElement()
-    //this.LABEL = this.createLabel()
+    this.isDragged = false
     
     if (this.SIDE == Side.Left || this.config.isRange.get() === true) this.CONTAINER.appendChild(this.ROOT)
 
@@ -28,6 +30,8 @@ class SliderHandle {
     this.config.isVertical.addSubscriber(this.render.bind(this))
     this.config.leftHandleValue.addSubscriber(this.render.bind(this))
     this.config.rightHandleValue.addSubscriber(this.render.bind(this))
+
+    this.bindEventListeners()
   }
 
   private createRootElement() {
@@ -41,24 +45,6 @@ class SliderHandle {
 
     return handle
   }
-
-  /*private createLabel(): HTMLElement {
-    let label = document.createElement("div")
-    label.classList.add(this.CLASSES.VALUE_LABEL)
-
-    if (this.SIDE == Side.Right) {
-      label.classList.add(this.CLASSES.RIGHT_HANDLE_LABEL)
-      if (this.config.isVertical) label.classList.add(this.CLASSES.RIGHT_HANDLE_LABEL_VERTICAL)
-    }
-    else {
-      label.classList.add(this.CLASSES.LEFT_HANDLE_LABEL)
-      if (this.config.isVertical) label.classList.add(this.CLASSES.LEFT_HANDLE_LABEL_VERTICAL)
-    }
-
-    if (this.config.valueLabelDisplayed) this.ROOT.appendChild(label)
-
-    return label
-  }*/
 
   private switchRightHandle() {
     if (this.config.isRange.get() === true) this.CONTAINER.appendChild(this.ROOT)
@@ -76,7 +62,8 @@ class SliderHandle {
     if (this.config.hasDefaultValues.get() === true) shift = this.calculateDefaultValuesShift()
     else shift = this.calculateShift()
 
-    //shift += extraShift ? extraShift : 0
+    if (this.SIDE === Side.Left) shift -= this.calculateExtraShift()
+    else shift += this.calculateExtraShift()
 
     if (this.config.isVertical.get() === true) {
       this.ROOT.style.left = ""
@@ -104,6 +91,90 @@ class SliderHandle {
     let range = maxValue - minValue
     let position = (value - minValue) / range
     return position * 100
+  }
+
+  private bindEventListeners() {
+    this.ROOT.addEventListener("mousedown", this.drag.bind(this))
+    document.addEventListener("mouseup", this.drop.bind(this))
+    document.addEventListener("mousemove", this.watchMouse.bind(this))
+  }
+
+  private drag() {
+    this.isDragged = true
+  }
+
+  private drop() {
+    this.isDragged = false
+  }
+
+  private watchMouse(event: MouseEvent) {
+    if (this.isDragged === true) {
+      let position = this.calculatePosition(event)
+      if (this.SIDE === Side.Left) this.state.leftHandlePosition.set(position)
+      else this.state.rightHandlePosition.set(position)
+    }
+  }
+
+  private calculatePosition(event: MouseEvent): number {
+    if (this.config.isVertical.get() === true) return this.calculateVerticalPosition(event.clientY)
+    else return this.calculateHorizontalPosition(event.clientX)
+  }
+
+  private calculateHorizontalPosition(x: number): number {
+    /**
+     * function receives x mouse coordinate
+     * and returns handle position on the scale, normalized from 0 to 1
+     */
+    //let  scaleBeginning = this.ROOT.getBoundingClientRect().left
+    let scaleBeginning = this.CONTAINER.offsetLeft
+    let length = this.CONTAINER.clientWidth
+
+    if (x < scaleBeginning) return 0
+    else if (x > scaleBeginning + length) return 1
+    else return (x - scaleBeginning) / length
+  }
+
+  private calculateVerticalPosition(y: number): number {
+    /**
+     * function receives y mouse coordinate
+     * and returns handle position on the scale, normalized from 0 to 1
+     */
+    //let scaleBeginning = this.ROOT.getBoundingClientRect().bottom
+    let length = this.CONTAINER.clientHeight
+    let scaleBeginning = this.CONTAINER.offsetTop + length
+
+    if (y < scaleBeginning - length) return 1
+    else if (y > scaleBeginning) return 0
+    else return (scaleBeginning - y) / length
+  }
+
+  private calculateExtraShift(): number {
+    let leftHandleValue = this.config.leftHandleValue.get() as number
+    let rightHandleValue = this.config.rightHandleValue.get() as number
+    let handleSize = this.config.isVertical.get() === true ? this.ROOT.offsetHeight : this.ROOT.offsetWidth
+    let distanceBetweenHandles = this.calculateDistanceBetweenHandles(leftHandleValue, rightHandleValue)
+    let scaleSize = this.config.isVertical.get() === true ? this.CONTAINER.offsetHeight : this.CONTAINER.offsetWidth
+
+    if (handleSize > distanceBetweenHandles) return 100 * ((handleSize - distanceBetweenHandles) / 2) / scaleSize
+    else return 0
+  }
+
+  private calculateDistanceBetweenHandles(leftHandleValue: number, rightHandleValue: number): number {
+    let stepLength = 0
+    let scaleLength = this.config.isVertical.get() === true ? this.CONTAINER.clientHeight : this.CONTAINER.clientWidth
+
+    if (this.config.hasDefaultValues.get() === true) {
+      let defaultValues = this.config.defaultValues.get() as number[] | string[]
+      stepLength = scaleLength / defaultValues.length
+    }
+    else {
+      let minValue = this.config.minValue.get() as number
+      let maxValue = this.config.maxValue.get() as number
+      let valuesRange = maxValue - minValue
+      stepLength = scaleLength / valuesRange
+    }
+
+    return (rightHandleValue - leftHandleValue) * stepLength
   }
 
   /*private getDefaultState() {
