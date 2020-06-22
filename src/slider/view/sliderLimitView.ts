@@ -28,6 +28,8 @@ class SliderLimitView {
       this.setValue(this.config.maxValue.get() as number)
       this.config.maxValue.addSubscriber(this.setValue.bind(this))
     }
+
+    this.config.isVertical.addSubscriber(this.switchVertical.bind(this))
   }
 
   private createRootElement() {
@@ -51,6 +53,17 @@ class SliderLimitView {
     }
     else {
       this.ROOT.remove()
+    }
+  }
+
+  private switchVertical(value: boolean) {
+    if (value === true) {
+      if (this.TYPE === Type.MinVal) this.ROOT.classList.add(this.CLASSES.MIN_VALUE_VERTICAL)
+      else this.ROOT.classList.add(this.CLASSES.MAX_VALUE_VERTICAL)
+    }
+    else {
+      if (this.TYPE === Type.MinVal) this.ROOT.classList.remove(this.CLASSES.MIN_VALUE_VERTICAL)
+      else this.ROOT.classList.remove(this.CLASSES.MAX_VALUE_VERTICAL)
     }
   }
 

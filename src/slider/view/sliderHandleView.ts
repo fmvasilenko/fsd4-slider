@@ -30,7 +30,6 @@ class SliderHandle {
     this.config.isRange.addSubscriber(this.switchRightHandle.bind(this))
     this.config.hasDefaultValues.addSubscriber(this.render.bind(this))
     this.config.isVertical.addSubscriber(this.switchVertical.bind(this))
-    this.config.isVertical.addSubscriber(this.render.bind(this))
     this.config.leftHandleValue.addSubscriber(this.render.bind(this))
     this.config.rightHandleValue.addSubscriber(this.render.bind(this))
 
@@ -50,11 +49,18 @@ class SliderHandle {
   }
 
   private switchRightHandle() {
-    if (this.config.isRange.get() === true) this.CONTAINER.appendChild(this.ROOT)
-    else this.ROOT.remove()
+    if (this.SIDE === Side.Right) {
+      if (this.config.isRange.get() === true) this.CONTAINER.appendChild(this.ROOT)
+      else this.ROOT.remove()
+    }
   }
 
-  private switchVertical() {
+  private async switchVertical() {
+    await this.changeVerticaslClass.bind(this)()
+    this.render()
+  }
+
+  private changeVerticaslClass() {
     if (this.config.isVertical.get() === true) this.ROOT.classList.add(this.CLASSES.HANDLE_VERTICAL)
     else this.ROOT.classList.remove(this.CLASSES.HANDLE_VERTICAL)
   }

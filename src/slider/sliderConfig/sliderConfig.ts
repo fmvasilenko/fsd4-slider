@@ -33,7 +33,7 @@ class SliderConfig {
     this.hasDefaultValues = this.setHasDefaultValues(config.hasDefaultValues)
     this.isVertical = this.boolean(config.isVertical)
     this.valueLabelDisplayed = this.boolean(config.valueLabelDisplayed)
-    this.limitsDisplayed = this.boolean(config.limitsDisplayed)
+    this.limitsDisplayed = this.setLimitsDisplayed(config.limitsDisplayed)
     this.minValue = this.setMinValue(config.minValue)
     this.maxValue = this.setMaxValue(config.maxValue)
     this.step = this.setStep(config.step)
@@ -69,9 +69,15 @@ class SliderConfig {
   }
 
   private setHasDefaultValues(value: boolean): SliderConfigItem {
-    let hasDefaultValues = new SliderConfigItem(value)
+    let hasDefaultValues = new SliderConfigItem(value, this.checkHasDefaultValues.bind(this))
     hasDefaultValues.addSubscriber(this.updateHandlesValues.bind(this))
     return hasDefaultValues
+  }
+
+  private setLimitsDisplayed(value: boolean): SliderConfigItem {
+    if (this.hasDefaultValues.get() === true) value = false
+    let limitsDisplayed = new SliderConfigItem(value, this.checkLimitsDisplayed.bind(this))
+    return limitsDisplayed
   }
 
   private setMinValue(value: number): SliderConfigItem {
@@ -111,6 +117,16 @@ class SliderConfig {
   private updateHandlesValues() {
     this.leftHandleValue.set(this.leftHandleValue.get())
     this.rightHandleValue.set(this.rightHandleValue.get())
+  }
+
+  private checkHasDefaultValues(value: boolean): boolean {
+    if (value === true) this.limitsDisplayed.set(false)
+    return value
+  }
+
+  private checkLimitsDisplayed(value: boolean): boolean {
+    if (value === true) this.hasDefaultValues.set(false)
+    return value
   }
 
   private checkMinValue(value: number): number {
@@ -158,6 +174,8 @@ class SliderConfig {
       if (value > defaultValuesSize - 1) value = defaultValuesSize - 1
     }
     else {
+      let step = this.step.get() as number
+      if (value % step != 0) value -= value % step
       if (value < this.minValue.get()) value = this.minValue.get() as number
       if (value > this.maxValue.get()) value = this.maxValue.get() as number
     }

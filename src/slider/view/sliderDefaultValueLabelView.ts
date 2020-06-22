@@ -23,6 +23,8 @@ class SliderDefaultValueLabel {
     this.config.defaultValues.addSubscriber(this.updateValue.bind(this))
     this.config.defaultValues.addSubscriber(this.updateShift.bind(this))
     this.config.hasDefaultValues.addSubscriber(this.switch.bind(this))
+    this.config.isVertical.addSubscriber(this.switchVertical.bind(this))
+    this.config.isVertical.addSubscriber(this.updateShift.bind(this))
   }
 
   private createRootElement(): HTMLElement {
@@ -47,7 +49,7 @@ class SliderDefaultValueLabel {
   private updateShift() {
     let shift = 100 * this.index / ((this.config.defaultValues.get() as number[] | string[]).length - 1)
 
-    if (this.config.isVertical.get()) this.ROOT.style.top = `${shift}%`
+    if (this.config.isVertical.get() === true) this.ROOT.style.bottom = `${shift}%`
     else this.ROOT.style.left = `${shift}%`
   }
 
@@ -58,6 +60,19 @@ class SliderDefaultValueLabel {
   private switch() {
     if (this.config.hasDefaultValues.get() === true) this.CONTAINER.appendChild(this.ROOT)
     else this.ROOT.remove()
+  }
+
+  private switchVertical(value: boolean) {
+    if (value === true) {
+      this.ROOT.style.left = ""
+      this.ROOT.classList.add(this.CLASSES.DEFAULT_VALUE_VERTICAL)
+      this.LABEL.classList.add(this.CLASSES.DEFAULT_VALUE_LABEL_VERTICAL)
+    }
+    else {
+      this.ROOT.style.top = ""
+      this.ROOT.classList.remove(this.CLASSES.DEFAULT_VALUE_VERTICAL)
+      this.LABEL.classList.remove(this.CLASSES.DEFAULT_VALUE_LABEL_VERTICAL)
+    }
   }
 
   public remove() {
