@@ -3,15 +3,23 @@ interface SliderFunction {
     slide?: SliderCallBackFunction): JQuery;
 }
 
+interface config {
+  isRange: Function
+  hasDefaultValues: Function
+  isVertical: Function
+  valueLabelDisplayed: Function
+  limitsDisplayed: Function
+  minValue: Function
+  maxValue: Function
+  step: Function
+  leftHandleValue: Function
+  rightHandleValue: Function
+  defaultValues: Function
+}
+
 interface JQuery {
+  config: config
   slider: ISlider
-  setValue(value: number): void
-  setFirstValue(value: number): void
-  setSecondValue(value: number): void
-  getFirstValue(): number
-  getSecondValue(): number
-  switchValueLabel(switcher: boolean): void
-  getValueLabelDisplayed(): boolean
 }
 
 interface ISlider extends SliderFunction {}

@@ -1,77 +1,34 @@
 ///<reference path="./slider.d.ts" />
 
-import { Observable } from "../observable"
 import { SliderView } from "./view/sliderView"
 import { SliderModel } from "./sliderModel"
+import { SliderConfig } from "./sliderConfig/sliderConfig"
+import { SliderState } from "./sliderState/sliderState"
 
 class SliderController {
-  ROOT: HTMLElement
+  private ROOT: HTMLElement
+  private config: SliderConfig
+  private state: SliderState
   private MODEL: SliderModel
   private VIEW: SliderView
-  private config: SliderConfig
-  private slideFunction: SliderCallBackFunction | undefined
-  private leftHandleValueObserver: Observable
-  private leftHandlePositionObserver: Observable
-  private rightHandleValueObserver: Observable
-  private rightHandlePositionObserver: Observable
+  private slide: SliderCallBackFunction
 
-  constructor(root: HTMLElement, config?: ImportedSliderConfig, slide?: SliderCallBackFunction) {
+  constructor(root: HTMLElement, config: SliderConfig, slide?: SliderCallBackFunction) {
     this.ROOT = root
-    this.leftHandleValueObserver = new Observable()
-    this.leftHandlePositionObserver = new Observable()
-    this.rightHandleValueObserver = new Observable()
-    this.rightHandlePositionObserver = new Observable()
-    this.MODEL = new SliderModel(config)
-    this.config = this.MODEL.getConfig()
-    this.VIEW = new SliderView(this.leftHandlePositionObserver, this.rightHandlePositionObserver, this.config, this.ROOT)
-    this.slideFunction = slide
+    this.config = config
+    this.state = new SliderState()
+    this.MODEL = new SliderModel(this.config, this.state)
+    this.VIEW = new SliderView(this.ROOT, this.config, this.state)
+    this.slide = slide ? slide : () => {}
 
-    this.leftHandlePositionObserver.addSubscriber(this.calculateLeftHandleValue.bind(this))
-    this.rightHandlePositionObserver.addSubscriber(this.calculateRightHandleValue.bind(this))
+    this.config.leftHandleValue.addSubscriber(this.slideFunction.bind(this))
+    this.config.rightHandleValue.addSubscriber(this.slideFunction.bind(this))
   }
 
-  public getConfig(): SliderConfig {
-    return this.config
-  }
-
-  public calculateLeftHandleValue(position: number) {
-    let value = this.MODEL.calculateLeftHandleValue(position)
-    this.VIEW.changeLeftHandleValue(value)
-    if (this.slideFunction !== undefined) 
-      this.slideFunction(this.MODEL.getLeftHandleValue(), this.MODEL.getRightHandleValue())
-  }
-
-  public calculateRightHandleValue(position: number) {
-    let value = this.MODEL.calculateRightHandleValue(position)
-    this.VIEW.changeRightHandleValue(value)
-    if (this.slideFunction !== undefined) 
-      this.slideFunction(this.MODEL.getLeftHandleValue(), this.MODEL.getRightHandleValue())
-  }
-
-  public setLeftHandleValue(value: number) {
-    value = this.MODEL.setLeftHandleValue(value)
-    this.VIEW.changeLeftHandleValue(value)
-  }
-
-  public setRightHandleValue(value: number) {
-    value = this.MODEL.setRightHandleValue(value)
-    this.VIEW.changeRightHandleValue(value)
-  }
-
-  public getLeftHandleValue(): number {
-    return this.MODEL.getLeftHandleValue()
-  }
-
-  public getRightHandleValue(): number {
-    return this.MODEL.getRightHandleValue()
-  }
-
-  public switchValueLabel(switcher: boolean) {
-    this.VIEW.switchValueLabel(switcher)
-  }
-
-  public getValueLabelDisplayed(): boolean {
-    return this.config.valueLabelDisplayed
+  private slideFunction() {
+    let leftHandleValue = this.config.leftHandleValue.get() as number
+    let rightHandleValue = this.config.rightHandleValue.get() as number
+    this.slide(leftHandleValue, rightHandleValue)
   }
 }
 

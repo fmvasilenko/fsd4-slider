@@ -127,7 +127,7 @@ class SliderHandle {
      */
     //let  scaleBeginning = this.ROOT.getBoundingClientRect().left
     let scaleBeginning = this.CONTAINER.offsetLeft
-    let length = this.CONTAINER.clientWidth
+    let length = this.CONTAINER.offsetWidth
 
     if (x < scaleBeginning) return 0
     else if (x > scaleBeginning + length) return 1
@@ -140,7 +140,7 @@ class SliderHandle {
      * and returns handle position on the scale, normalized from 0 to 1
      */
     //let scaleBeginning = this.ROOT.getBoundingClientRect().bottom
-    let length = this.CONTAINER.clientHeight
+    let length = this.CONTAINER.offsetHeight
     let scaleBeginning = this.CONTAINER.offsetTop + length
 
     if (y < scaleBeginning - length) return 1
@@ -161,7 +161,7 @@ class SliderHandle {
 
   private calculateDistanceBetweenHandles(leftHandleValue: number, rightHandleValue: number): number {
     let stepLength = 0
-    let scaleLength = this.config.isVertical.get() === true ? this.CONTAINER.clientHeight : this.CONTAINER.clientWidth
+    let scaleLength = this.config.isVertical.get() === true ? this.CONTAINER.offsetHeight : this.CONTAINER.offsetWidth
 
     if (this.config.hasDefaultValues.get() === true) {
       let defaultValues = this.config.defaultValues.get() as number[] | string[]
