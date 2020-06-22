@@ -8,8 +8,8 @@ import { SliderState } from "../sliderState/sliderState"
 class SliderView {
   private config: SliderConfig
   private state: SliderState
-  public ROOT: HTMLElement
-  public CLASSES: SliderClasses
+  private ROOT: HTMLElement
+  private CLASSES: SliderClasses
   private LEFT_HANDLE: SliderHandle
   private RIGHT_HANDLE: SliderHandle
   private RANGE_LINE: SliderRangeLineView

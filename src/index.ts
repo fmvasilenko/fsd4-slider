@@ -85,11 +85,11 @@ class DemoSlider {
   }
 
   private setInitialState() {
-    this.$MIN_VALUE_INPUT.val(this.$SLIDER.getFirstValue())
-    this.$MAX_VALUE_INPUT.val(this.$SLIDER.getSecondValue())
+    this.$MIN_VALUE_INPUT.val(this.$SLIDER.config.leftHandleValue())
+    this.$MAX_VALUE_INPUT.val(this.$SLIDER.config.rightHandleValue())
 
-    if (this.$SLIDER.getValueLabelDisplayed()) {
-      let checked = this.$SLIDER.getValueLabelDisplayed()
+    if (this.$SLIDER.config.valueLabelDisplayed()) {
+      let checked = this.$SLIDER.config.valueLabelDisplayed()
       this.$VALUE_LABEL_SWITCHER.attr("checked", `${checked}`)
     }
   }
@@ -108,17 +108,17 @@ class DemoSlider {
 
   private minValueChangeHandler() {
     let value = parseInt((this.$MIN_VALUE_INPUT.val() as string).replace(/\D/g, ""))
-    this.$SLIDER.setFirstValue(value)
+    this.$SLIDER.config.leftHandleValue(value)
   }
 
   private maxValueChangeHandler() {
     let value = parseInt((this.$MAX_VALUE_INPUT.val() as string).replace(/\D/g, ""))
     console.log("changed")
-    this.$SLIDER.setSecondValue(value)
+    this.$SLIDER.config.rightHandleValue(value)
   }
 
   private valueLabelSwitchHandler() {
-    this.$SLIDER.switchValueLabel(this.$VALUE_LABEL_SWITCHER.prop("checked"))
+    this.$SLIDER.config.valueLabelDisplayed(this.$VALUE_LABEL_SWITCHER.prop("checked"))
   }
 }
 

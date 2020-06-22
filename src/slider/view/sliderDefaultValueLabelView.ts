@@ -29,7 +29,7 @@ class SliderDefaultValueLabel {
     let root = document.createElement("div")
 
     root.classList.add(this.CLASSES.DEFAULT_VALUE)
-    if (this.config.isVertical) root.classList.add(this.CLASSES.DEFAULT_VALUE_VERTICAL)
+    if (this.config.isVertical.get() === true) root.classList.add(this.CLASSES.DEFAULT_VALUE_VERTICAL)
 
     return root
   }
@@ -38,7 +38,7 @@ class SliderDefaultValueLabel {
     let label = document.createElement("div")
 
     label.classList.add(`${this.CLASSES.DEFAULT_VALUE_LABEL}`)
-    if (this.config.isVertical) label.classList.add(`${this.CLASSES.DEFAULT_VALUE_LABEL_VERTICAL}`)
+    if (this.config.isVertical.get() === true) label.classList.add(`${this.CLASSES.DEFAULT_VALUE_LABEL_VERTICAL}`)
     
     this.ROOT.appendChild(label)
     return label

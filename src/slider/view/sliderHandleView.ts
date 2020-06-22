@@ -1,5 +1,6 @@
 import { SliderConfig } from "../sliderConfig/sliderConfig"
 import { SliderState } from "../sliderState/sliderState"
+import { SliderValueLabelView } from "./sliderValueLabelView"
 enum Side{Left, Right}
 
 class SliderHandle {
@@ -9,6 +10,7 @@ class SliderHandle {
   private SIDE: Side
   private CLASSES: SliderClasses
   private ROOT: HTMLElement
+  private LABEL: SliderValueLabelView
   private isDragged: boolean
 
   constructor(container: HTMLElement, config: SliderConfig, state: SliderState, side: Side) {
@@ -18,6 +20,7 @@ class SliderHandle {
     this.SIDE = side
     this.CLASSES = require("../sliderClasses.json")
     this.ROOT = this.createRootElement()
+    this.LABEL = new SliderValueLabelView(this.ROOT, this.config, this.SIDE)
     this.isDragged = false
     
     if (this.SIDE == Side.Left || this.config.isRange.get() === true) this.CONTAINER.appendChild(this.ROOT)
@@ -126,7 +129,7 @@ class SliderHandle {
      * and returns handle position on the scale, normalized from 0 to 1
      */
     //let  scaleBeginning = this.ROOT.getBoundingClientRect().left
-    let scaleBeginning = this.CONTAINER.offsetLeft
+    let scaleBeginning = this.CONTAINER.getBoundingClientRect().left
     let length = this.CONTAINER.offsetWidth
 
     if (x < scaleBeginning) return 0
@@ -141,7 +144,7 @@ class SliderHandle {
      */
     //let scaleBeginning = this.ROOT.getBoundingClientRect().bottom
     let length = this.CONTAINER.offsetHeight
-    let scaleBeginning = this.CONTAINER.offsetTop + length
+    let scaleBeginning = this.CONTAINER.getBoundingClientRect().top + length
 
     if (y < scaleBeginning - length) return 1
     else if (y > scaleBeginning) return 0
@@ -149,6 +152,8 @@ class SliderHandle {
   }
 
   private calculateExtraShift(): number {
+    if (this.config.isRange.get() === false) return 0
+
     let leftHandleValue = this.config.leftHandleValue.get() as number
     let rightHandleValue = this.config.rightHandleValue.get() as number
     let handleSize = this.config.isVertical.get() === true ? this.ROOT.offsetHeight : this.ROOT.offsetWidth

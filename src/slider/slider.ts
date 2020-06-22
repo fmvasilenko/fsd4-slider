@@ -3,62 +3,64 @@ import { SliderConfig } from "./sliderConfig/sliderConfig"
 
 export default $.fn.slider = function (this: JQuery, options?: ImportedSliderConfig, slide?: SliderCallBackFunction) {
   
-  let config = new SliderConfig(options)
-  let slider = new SliderController(this[0], config, slide)
+  let sliderConfig = new SliderConfig(options)
+  let slider = new SliderController(this[0], sliderConfig, slide)
 
-  this.config.isRange = function(value?: boolean): boolean {
-    if (value !== undefined) config.isRange.set(value)
-    return config.isRange.get() as boolean
-  }
+  this.config = {
+    isRange: function(value?: boolean): boolean {
+      if (value !== undefined) sliderConfig.isRange.set(value)
+      return sliderConfig.isRange.get() as boolean
+    },
 
-  this.config.hasDefaultValues = function(value?: boolean): boolean {
-    if (value !== undefined) config.hasDefaultValues.set(value)
-    return config.hasDefaultValues.get() as boolean
-  }
+    hasDefaultValues: function(value?: boolean): boolean {
+      if (value !== undefined) sliderConfig.hasDefaultValues.set(value)
+      return sliderConfig.hasDefaultValues.get() as boolean
+    },
 
-  this.config.isVertical = function(value?: boolean): boolean {
-    if (value !== undefined) config.isVertical.set(value)
-    return config.isVertical.get() as boolean
-  }
+    isVertical: function(value?: boolean): boolean {
+      if (value !== undefined) sliderConfig.isVertical.set(value)
+      return sliderConfig.isVertical.get() as boolean
+    },
+    
+    valueLabelDisplayed: function(value?: boolean): boolean {
+      if (value !== undefined) sliderConfig.valueLabelDisplayed.set(value)
+      return sliderConfig.valueLabelDisplayed.get() as boolean
+    },
 
-  this.config.valueLabelDisplayed = function(value?: boolean): boolean {
-    if (value !== undefined) config.valueLabelDisplayed.set(value)
-    return config.valueLabelDisplayed.get() as boolean
-  }
+    limitsDisplayed: function(value?: boolean): boolean {
+      if (value !== undefined) sliderConfig.limitsDisplayed.set(value)
+      return sliderConfig.limitsDisplayed.get() as boolean
+    },
 
-  this.config.limitsDisplayed = function(value?: boolean): boolean {
-    if (value !== undefined) config.limitsDisplayed.set(value)
-    return config.limitsDisplayed.get() as boolean
-  }
+    minValue: function(value?: number): number {
+      if (value !== undefined) sliderConfig.minValue.set(value)
+      return sliderConfig.minValue.get() as number
+    },
 
-  this.config.minValue = function(value?: number): number {
-    if (value !== undefined) config.minValue.set(value)
-    return config.minValue.get() as number
-  }
+    maxValue: function(value?: number): number {
+      if (value !== undefined) sliderConfig.maxValue.set(value)
+      return sliderConfig.maxValue.get() as number
+    },
 
-  this.config.maxValue = function(value?: number): number {
-    if (value !== undefined) config.maxValue.set(value)
-    return config.maxValue.get() as number
-  }
+    step: function(value?: number): number {
+      if (value !== undefined) sliderConfig.step.set(value)
+      return sliderConfig.step.get() as number
+    },
 
-  this.config.step = function(value?: number): number {
-    if (value !== undefined) config.step.set(value)
-    return config.step.get() as number
-  }
+    leftHandleValue: function(value?: number): number {
+      if (value !== undefined) sliderConfig.leftHandleValue.set(value)
+      return sliderConfig.leftHandleValue.get() as number
+    },
 
-  this.config.leftHandleValue = function(value?: number): number {
-    if (value !== undefined) config.leftHandleValue.set(value)
-    return config.leftHandleValue.get() as number
-  }
+    rightHandleValue: function(value?: number): number {
+      if (value !== undefined) sliderConfig.rightHandleValue.set(value)
+      return sliderConfig.rightHandleValue.get() as number
+    },
 
-  this.config.rightHandleValue = function(value?: number): number {
-    if (value !== undefined) config.rightHandleValue.set(value)
-    return config.rightHandleValue.get() as number
-  }
-
-  this.config.defaultValues = function(value?: number[] | string[]): number[] | string[] {
-    if (value !== undefined) config.defaultValues.set(value)
-    return config.defaultValues.get() as number[] | string[]
+    defaultValues: function(value?: number[] | string[]): number[] | string[] {
+      if (value !== undefined) sliderConfig.defaultValues.set(value)
+      return sliderConfig.defaultValues.get() as number[] | string[]
+    }
   }
 
   return this

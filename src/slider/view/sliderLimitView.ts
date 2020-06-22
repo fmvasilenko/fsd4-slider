@@ -35,11 +35,11 @@ class SliderLimitView {
 
     if (this.TYPE == Type.MinVal) {
       root.classList.add(this.CLASSES.MIN_VALUE)
-      if (this.config.isVertical) root.classList.add(this.CLASSES.MIN_VALUE_VERTICAL)
+      if (this.config.isVertical.get() === true) root.classList.add(this.CLASSES.MIN_VALUE_VERTICAL)
     }
     else {
       root.classList.add(this.CLASSES.MAX_VALUE)
-      if (this.config.isVertical) root.classList.add(this.CLASSES.MAX_VALUE_VERTICAL)
+      if (this.config.isVertical.get() === true) root.classList.add(this.CLASSES.MAX_VALUE_VERTICAL)
     }
 
     return root
