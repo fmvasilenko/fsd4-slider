@@ -47,9 +47,7 @@ class SliderLimitView {
 
   private switch(value: boolean) {
     if (value === true && this.config.hasDefaultValues.get() === false) {
-      if (this.CONTAINER.querySelectorAll(`.${this.CLASSES.MIN_VALUE}`).length == 0) {
-        this.CONTAINER.appendChild(this.ROOT)
-      }
+      this.CONTAINER.appendChild(this.ROOT)
     }
     else {
       this.ROOT.remove()

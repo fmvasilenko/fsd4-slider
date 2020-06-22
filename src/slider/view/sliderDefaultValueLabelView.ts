@@ -59,6 +59,10 @@ class SliderDefaultValueLabel {
     if (this.config.hasDefaultValues.get() === true) this.CONTAINER.appendChild(this.ROOT)
     else this.ROOT.remove()
   }
+
+  public remove() {
+    this.ROOT.remove()
+  }
 }
 
 export { SliderDefaultValueLabel }
