@@ -1,16 +1,19 @@
 import { SliderConfig } from "../sliderConfig/sliderConfig"
+import { SliderState } from "../sliderState/sliderState"
 
 class SliderDefaultValueLabel {
   private CONTAINER: HTMLElement
   private config: SliderConfig
+  private state: SliderState
   private CLASSES: SliderClasses
   private ROOT: HTMLElement
   private LABEL: HTMLElement
   private index: number
 
-  constructor(container: HTMLElement, config: SliderConfig, index: number) {
+  constructor(container: HTMLElement, config: SliderConfig, state: SliderState, index: number) {
     this.CONTAINER = container
     this.config = config
+    this.state = state
     this.index = index
     this.CLASSES = require("../sliderClasses.json")
     this.ROOT = this.createRootElement()
@@ -25,6 +28,8 @@ class SliderDefaultValueLabel {
     this.config.hasDefaultValues.addSubscriber(this.switch.bind(this))
     this.config.isVertical.addSubscriber(this.switchVertical.bind(this))
     this.config.isVertical.addSubscriber(this.updateShift.bind(this))
+
+    this.bindEventListeners()
   }
 
   private createRootElement(): HTMLElement {
@@ -77,6 +82,18 @@ class SliderDefaultValueLabel {
 
   public remove() {
     this.ROOT.remove()
+  }
+
+  private bindEventListeners() {
+    this.ROOT.addEventListener("click", this.clickHandler.bind(this))
+  }
+
+  private clickHandler() {
+    if (this.config.isRange.get() === false) {
+      let defaultValues = this.config.defaultValues.get() as number[] | string[]
+      let position = this.index / (defaultValues.length - 1)
+      this.state.leftHandlePosition.set(position)
+    }
   }
 }
 

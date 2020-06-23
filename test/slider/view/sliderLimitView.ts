@@ -1,6 +1,7 @@
 import { expect } from "chai"
 import { SliderLimitView } from "../../../src/slider/view/sliderLimitView"
 import { SliderConfig } from "../../../src/slider/sliderConfig/sliderConfig";
+import { SliderState } from "../../../src/slider/sliderState/sliderState";
 
 enum Type{MinVal, MaxVal}
 const jsdom = require("jsdom")
@@ -18,7 +19,8 @@ describe("sliderLimitView", () => {
       let config = new SliderConfig({
         limitsDisplayed: true
       })
-      let limit = new SliderLimitView(container, config, Type.MinVal)
+      let state = new SliderState()
+      let limit = new SliderLimitView(container, config, state, Type.MinVal)
 
       expect(container.querySelectorAll(`.${CLASSES.MIN_VALUE}`).length).to.equal(1)
     })
@@ -28,7 +30,8 @@ describe("sliderLimitView", () => {
       let config = new SliderConfig({
         limitsDisplayed: true
       })
-      let limit = new SliderLimitView(container, config, Type.MaxVal)
+      let state = new SliderState()
+      let limit = new SliderLimitView(container, config, state, Type.MaxVal)
 
       expect(container.querySelectorAll(`.${CLASSES.MAX_VALUE}`).length).to.equal(1)
     })
@@ -38,7 +41,8 @@ describe("sliderLimitView", () => {
       let config = new SliderConfig({
         limitsDisplayed: false
       })
-      let limit = new SliderLimitView(container, config, Type.MinVal)
+      let state = new SliderState()
+      let limit = new SliderLimitView(container, config, state, Type.MinVal)
 
       expect(container.querySelectorAll(`.${CLASSES.MIN_VALUE}`).length).to.equal(0)
     })
@@ -49,7 +53,8 @@ describe("sliderLimitView", () => {
         limitsDisplayed: true,
         isVertical: true
       })
-      let limit = new SliderLimitView(container, config, Type.MinVal)
+      let state = new SliderState()
+      let limit = new SliderLimitView(container, config, state, Type.MinVal)
 
       let foundLimit = container.querySelector(`.${CLASSES.MIN_VALUE}`)
       expect(foundLimit?.classList.contains(`${CLASSES.MIN_VALUE_VERTICAL}`)).to.equal(true)
@@ -61,7 +66,8 @@ describe("sliderLimitView", () => {
         minValue: 10,
         limitsDisplayed: true
       })
-      let limit = new SliderLimitView(container, config, Type.MinVal)
+      let state = new SliderState()
+      let limit = new SliderLimitView(container, config, state, Type.MinVal)
 
       let foundLimit = container.querySelector(`.${CLASSES.MIN_VALUE}`)
       expect(foundLimit?.innerHTML).to.equal("10")
@@ -73,7 +79,8 @@ describe("sliderLimitView", () => {
         maxValue: 120,
         limitsDisplayed: true
       })
-      let limit = new SliderLimitView(container, config, Type.MaxVal)
+      let state = new SliderState()
+      let limit = new SliderLimitView(container, config, state, Type.MaxVal)
 
       let foundLimit = container.querySelector(`.${CLASSES.MAX_VALUE}`)
       expect(foundLimit?.innerHTML).to.equal("120")
@@ -87,7 +94,8 @@ describe("sliderLimitView", () => {
         hasDefaultValues: true,
         limitsDisplayed: true
       })
-      let limit = new SliderLimitView(container, config, Type.MinVal)
+      let state = new SliderState()
+      let limit = new SliderLimitView(container, config, state, Type.MinVal)
 
       expect(container.querySelectorAll(`.${CLASSES.MIN_VALUE}`).length).to.equal(0)
     })
@@ -100,7 +108,8 @@ describe("sliderLimitView", () => {
         limitsDisplayed: true,
         minValue: 10
       })
-      let limit = new SliderLimitView(container, config, Type.MinVal)
+      let state = new SliderState()
+      let limit = new SliderLimitView(container, config, state, Type.MinVal)
 
       config.minValue.set(20)
 
@@ -116,7 +125,8 @@ describe("sliderLimitView", () => {
         limitsDisplayed: true,
         maxValue: 100
       })
-      let limit = new SliderLimitView(container, config, Type.MaxVal)
+      let state = new SliderState()
+      let limit = new SliderLimitView(container, config, state, Type.MaxVal)
 
       config.maxValue.set(200)
 
@@ -131,7 +141,8 @@ describe("sliderLimitView", () => {
       let config = new SliderConfig({
         limitsDisplayed: false
       })
-      let limit = new SliderLimitView(container, config, Type.MinVal)
+      let state = new SliderState()
+      let limit = new SliderLimitView(container, config, state, Type.MinVal)
 
       config.limitsDisplayed.set(true)
 
@@ -143,7 +154,8 @@ describe("sliderLimitView", () => {
       let config = new SliderConfig({
         limitsDisplayed: true
       })
-      let limit = new SliderLimitView(container, config, Type.MinVal)
+      let state = new SliderState()
+      let limit = new SliderLimitView(container, config, state, Type.MinVal)
 
       config.limitsDisplayed.set(false)
 
@@ -155,7 +167,8 @@ describe("sliderLimitView", () => {
       let config = new SliderConfig({
         limitsDisplayed: true
       })
-      let limit = new SliderLimitView(container, config, Type.MinVal)
+      let state = new SliderState()
+      let limit = new SliderLimitView(container, config, state, Type.MinVal)
 
       config.limitsDisplayed.set(true)
 

@@ -117,6 +117,7 @@ class SliderConfig {
   private updateHandlesValues() {
     this.leftHandleValue.set(this.leftHandleValue.get())
     this.rightHandleValue.set(this.rightHandleValue.get())
+    this.leftHandleValue.set(this.leftHandleValue.get())
   }
 
   private checkHasDefaultValues(value: boolean): boolean {
@@ -147,7 +148,7 @@ class SliderConfig {
   private checkLeftHandleValue(value: number): number {
     value = this.checkHandleValue(value)
 
-    if (this.isRange.get()) {
+    if (this.isRange.get() === true) {
       if (value > this.rightHandleValue.get()) value = this.rightHandleValue.get() as number
     }
 

@@ -1,4 +1,5 @@
 import { SliderConfig } from "../sliderConfig/sliderConfig"
+import { SliderState } from "../sliderState/sliderState"
 
 enum Type{MinVal, MaxVal}
 
@@ -8,12 +9,14 @@ class SliderLimitView {
   private CLASSES: SliderClasses
   private TYPE: Type
   private config: SliderConfig
+  private state: SliderState
 
-  constructor(container: HTMLElement, config: SliderConfig, type: Type) {
+  constructor(container: HTMLElement, config: SliderConfig, state: SliderState, type: Type) {
     this.CONTAINER = container
     this.CLASSES = require("../sliderClasses.json")
     this.TYPE = type
     this.config = config
+    this.state = state
     this.ROOT = this.createRootElement()
 
     this.config.limitsDisplayed.addSubscriber(this.switch.bind(this))
@@ -30,6 +33,8 @@ class SliderLimitView {
     }
 
     this.config.isVertical.addSubscriber(this.switchVertical.bind(this))
+
+    this.bindEventListeners()
   }
 
   private createRootElement() {
@@ -69,6 +74,17 @@ class SliderLimitView {
 
   private setValue(value: number) {
     this.ROOT.innerHTML = `${value}`
+  }
+
+  private bindEventListeners() {
+    this.ROOT.addEventListener("click", this.clickHandler.bind(this))
+  }
+
+  private clickHandler() {
+    if (this.config.isRange.get() === false) {
+      if (this.TYPE === Type.MinVal) this.state.leftHandlePosition.set(0)
+      else this.state.leftHandlePosition.set(1)
+    }
   }
 }
 

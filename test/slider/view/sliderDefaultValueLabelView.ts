@@ -1,6 +1,7 @@
 import { expect } from "chai"
 import { SliderDefaultValueLabel } from "../../../src/slider/view/sliderDefaultValueLabelView"
 import { SliderConfig } from "../../../src/slider/sliderConfig/sliderConfig";
+import { SliderState } from "../../../src/slider/sliderState/sliderState";
 
 const jsdom = require("jsdom")
 const { JSDOM } = jsdom
@@ -17,7 +18,8 @@ describe("sliderDefaultValueLabelView", () => {
       hasDefaultValues: true,
       defaultValues: ["first", "second", "third"]
     })
-    let defaultValue = new SliderDefaultValueLabel(container, config, 0)
+    let state = new SliderState()
+    let defaultValue = new SliderDefaultValueLabel(container, config, state, 0)
 
     expect(container.querySelectorAll(`.${CLASSES.DEFAULT_VALUE}`).length).to.equal(1)
   })
@@ -28,7 +30,8 @@ describe("sliderDefaultValueLabelView", () => {
       hasDefaultValues: true,
       defaultValues: ["first", "second", "third"]
     })
-    let defaultValue = new SliderDefaultValueLabel(container, config, 0)
+    let state = new SliderState()
+    let defaultValue = new SliderDefaultValueLabel(container, config, state, 0)
 
     expect(container.querySelectorAll(`.${CLASSES.DEFAULT_VALUE_LABEL}`).length).to.equal(1)
   })
@@ -40,7 +43,8 @@ describe("sliderDefaultValueLabelView", () => {
       hasDefaultValues: true,
       defaultValues: ["first", "second", "third"]
     })
-    let defaultValue = new SliderDefaultValueLabel(container, config, 0)
+    let state = new SliderState()
+    let defaultValue = new SliderDefaultValueLabel(container, config, state, 0)
 
     expect(container.querySelectorAll(`.${CLASSES.DEFAULT_VALUE_VERTICAL}`).length).to.equal(1)
   })
@@ -51,7 +55,8 @@ describe("sliderDefaultValueLabelView", () => {
       hasDefaultValues: true,
       defaultValues: ["first", "second", "third"]
     })
-    let defaultValue = new SliderDefaultValueLabel(container, config, 1)
+    let state = new SliderState()
+    let defaultValue = new SliderDefaultValueLabel(container, config, state, 1)
 
     expect(container.querySelector(`.${CLASSES.DEFAULT_VALUE_LABEL}`)?.innerHTML).to.equal("second")
   })
@@ -62,7 +67,8 @@ describe("sliderDefaultValueLabelView", () => {
       hasDefaultValues: true,
       defaultValues: ["first", "second", "third"]
     })
-    let defaultValue = new SliderDefaultValueLabel(container, config, 1)
+    let state = new SliderState()
+    let defaultValue = new SliderDefaultValueLabel(container, config, state, 1)
 
     let foundDefaultValue = container.querySelector(`.${CLASSES.DEFAULT_VALUE}`)
     expect((foundDefaultValue as HTMLElement).style.left).to.equal("50%")
@@ -74,7 +80,8 @@ describe("sliderDefaultValueLabelView", () => {
       hasDefaultValues: false,
       defaultValues: ["first", "second", "third"]
     })
-    let defaultValue = new SliderDefaultValueLabel(container, config, 0)
+    let state = new SliderState()
+    let defaultValue = new SliderDefaultValueLabel(container, config, state, 0)
 
     expect(container.querySelectorAll(`.${CLASSES.DEFAULT_VALUE}`).length).to.equal(0)
   })
@@ -86,7 +93,8 @@ describe("sliderDefaultValueLabelView", () => {
         hasDefaultValues: true,
         defaultValues: ["first", "second", "third"]
       })
-      let defaultValue = new SliderDefaultValueLabel(container, config, 1)
+      let state = new SliderState()
+      let defaultValue = new SliderDefaultValueLabel(container, config, state, 1)
 
       config.defaultValues.set(["first", "newValue", "third"])
 
@@ -100,7 +108,8 @@ describe("sliderDefaultValueLabelView", () => {
         hasDefaultValues: true,
         defaultValues: ["first", "second", "third"]
       })
-      let defaultValue = new SliderDefaultValueLabel(container, config, 1)
+      let state = new SliderState()
+      let defaultValue = new SliderDefaultValueLabel(container, config, state, 1)
 
       config.defaultValues.set(["first", "second", "third", "fourth", "fifth"])
 
@@ -116,7 +125,8 @@ describe("sliderDefaultValueLabelView", () => {
         hasDefaultValues: false,
         defaultValues: ["first", "second", "third"]
       })
-      let defaultValue = new SliderDefaultValueLabel(container, config, 1)
+      let state = new SliderState()
+      let defaultValue = new SliderDefaultValueLabel(container, config, state, 1)
 
       config.hasDefaultValues.set(true)
 
@@ -129,7 +139,8 @@ describe("sliderDefaultValueLabelView", () => {
         hasDefaultValues: true,
         defaultValues: ["first", "second", "third"]
       })
-      let defaultValue = new SliderDefaultValueLabel(container, config, 1)
+      let state = new SliderState()
+      let defaultValue = new SliderDefaultValueLabel(container, config, state, 1)
 
       config.hasDefaultValues.set(false)
 
@@ -142,7 +153,8 @@ describe("sliderDefaultValueLabelView", () => {
         hasDefaultValues: true,
         defaultValues: ["first", "second", "third"]
       })
-      let defaultValue = new SliderDefaultValueLabel(container, config, 1)
+      let state = new SliderState()
+      let defaultValue = new SliderDefaultValueLabel(container, config, state, 1)
 
       config.hasDefaultValues.set(true)
 
