@@ -21,6 +21,22 @@ describe("sliderValuLabelView", () => {
       expect(container.querySelectorAll(`.${CLASSES.VALUE_LABEL}`).length).to.equal(1)
     })
 
+    it("should add leftValueLabel class if it`s leftHandle label", () => {
+      let container = document.createElement("div")
+      let config = new SliderConfig()
+      let valueLabel = new SliderValueLabelView(container, config, Side.Left)
+
+      expect(container.querySelectorAll(`.${CLASSES.LEFT_HANDLE_LABEL}`).length).to.equal(1)
+    })
+
+    it("should add rightValueLabel class if it`s rightHandle label", () => {
+      let container = document.createElement("div")
+      let config = new SliderConfig()
+      let valueLabel = new SliderValueLabelView(container, config, Side.Right)
+
+      expect(container.querySelectorAll(`.${CLASSES.RIGHT_HANDLE_LABEL}`).length).to.equal(1)
+    })
+
     it("should not append root to container if valueLabelDisplayed == false", () => {
       let container = document.createElement("div")
       let config = new SliderConfig({
@@ -59,7 +75,7 @@ describe("sliderValuLabelView", () => {
   })
   
   describe("vertical mode", () => {
-    it("should add valueLabelVertical class if isVertical == true", () => {
+    it("should add leftHandleLabelVertical class if it`s leftHandle and isVertical === true", () => {
       let container = document.createElement("div")
       let config = new SliderConfig({
         valueLabelDisplayed: true,
@@ -68,6 +84,39 @@ describe("sliderValuLabelView", () => {
       let valueLabel = new SliderValueLabelView(container, config, Side.Left)
 
       expect(container.querySelectorAll(`.${CLASSES.LEFT_HANDLE_LABEL_VERTICAL}`).length).to.equal(1)
+    })
+
+    it("should add rightHandleLabelVertical class if it`s rightHandle and isVertical === true", () => {
+      let container = document.createElement("div")
+      let config = new SliderConfig({
+        valueLabelDisplayed: true,
+        isVertical: true
+      })
+      let valueLabel = new SliderValueLabelView(container, config, Side.Right)
+
+      expect(container.querySelectorAll(`.${CLASSES.RIGHT_HANDLE_LABEL_VERTICAL}`).length).to.equal(1)
+    })
+
+    it("should not add leftHandleLabelVertical class if it`s leftHandle and isVertical === false", () => {
+      let container = document.createElement("div")
+      let config = new SliderConfig({
+        valueLabelDisplayed: true,
+        isVertical: false
+      })
+      let valueLabel = new SliderValueLabelView(container, config, Side.Left)
+
+      expect(container.querySelectorAll(`.${CLASSES.LEFT_HANDLE_LABEL_VERTICAL}`).length).to.equal(0)
+    })
+
+    it("should not add rightHandleLabelVertical class if it`s rightHandle and isVertical === false", () => {
+      let container = document.createElement("div")
+      let config = new SliderConfig({
+        valueLabelDisplayed: true,
+        isVertical: false
+      })
+      let valueLabel = new SliderValueLabelView(container, config, Side.Right)
+
+      expect(container.querySelectorAll(`.${CLASSES.RIGHT_HANDLE_LABEL_VERTICAL}`).length).to.equal(0)
     })
   })
 
@@ -267,6 +316,60 @@ describe("sliderValuLabelView", () => {
 
       let foundValueLabel = container.querySelector(`.${CLASSES.VALUE_LABEL}`) as HTMLElement
       expect(foundValueLabel.innerHTML).to.equal("newValue")
+    })
+  })
+
+  describe("isVertical.set()", () => {
+    it("should add leftHandleLabelVertical class if it`s leftHandle label and given true", () => {
+      let container = document.createElement("div")
+      let config = new SliderConfig({
+        valueLabelDisplayed: true,
+        isVertical: false
+      })
+      let valueLabel = new SliderValueLabelView(container, config, Side.Left)
+
+      config.isVertical.set(true)
+
+      expect(container.querySelectorAll(`.${CLASSES.LEFT_HANDLE_LABEL_VERTICAL}`).length).to.equal(1)
+    })
+
+    it("should add rightHandleLabelVertical class if it`s rightHandle label and given true", () => {
+      let container = document.createElement("div")
+      let config = new SliderConfig({
+        valueLabelDisplayed: true,
+        isVertical: false
+      })
+      let valueLabel = new SliderValueLabelView(container, config, Side.Right)
+
+      config.isVertical.set(true)
+
+      expect(container.querySelectorAll(`.${CLASSES.RIGHT_HANDLE_LABEL_VERTICAL}`).length).to.equal(1)
+    })
+
+    it("should remove leftHandleLabelVertical class if it`s leftHandle label and given false", () => {
+      let container = document.createElement("div")
+      let config = new SliderConfig({
+        valueLabelDisplayed: true,
+        isVertical: true
+      })
+      let valueLabel = new SliderValueLabelView(container, config, Side.Left)
+
+      config.isVertical.set(false)
+
+      expect(container.querySelectorAll(`.${CLASSES.LEFT_HANDLE_LABEL_VERTICAL}`).length).to.equal(0)
+    })
+
+    it("should remove rightHandleLabelVertical class if it`s rightHandle label and given false", () => {
+      let container = document.createElement("div")
+      let config = new SliderConfig({
+        valueLabelDisplayed: true,
+        isVertical: true
+      })
+      let valueLabel = new SliderValueLabelView(container, config, Side.Right)
+
+      config.isVertical.set(false)
+
+      expect(container.querySelectorAll(`.${CLASSES.RIGHT_HANDLE_LABEL_VERTICAL}`).length).to.equal(0)
     })
   })
 })

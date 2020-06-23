@@ -11,6 +11,12 @@ const dom = new JSDOM("<!doctype html><html><body><div class='slider'></div></bo
 
 const CLASSES: SliderClasses = require("../../../src/slider/sliderClasses.json")
 
+function createMouseEvent(type: string, x: number, y: number): MouseEvent {
+  let mouseEvent = document.createEvent("MouseEvents")
+  mouseEvent.initMouseEvent(type, true, true, window, 1, 0, 0, x, y, false, false, false, false, 0, null)
+  return mouseEvent
+}
+
 describe("sliderDefaultValueLabelView", () => {
   it("should create root element with defaulValue class and add it to the container", () => {
     let container = document.createElement("div")
@@ -22,6 +28,32 @@ describe("sliderDefaultValueLabelView", () => {
     let defaultValue = new SliderDefaultValueLabel(container, config, state, 0)
 
     expect(container.querySelectorAll(`.${CLASSES.DEFAULT_VALUE}`).length).to.equal(1)
+  })
+
+  it("should add vertical class to the root if isVertical === true", () => {
+    let container = document.createElement("div")
+    let config = new SliderConfig({
+      isVertical: true,
+      hasDefaultValues: true,
+      defaultValues: ["first", "second", "third"]
+    })
+    let state = new SliderState()
+    let defaultValue = new SliderDefaultValueLabel(container, config, state, 0)
+
+    expect(container.querySelectorAll(`.${CLASSES.DEFAULT_VALUE_VERTICAL}`).length).to.equal(1)
+  })
+
+  it("should not add vertical class to the root if isVertical === false", () => {
+    let container = document.createElement("div")
+    let config = new SliderConfig({
+      isVertical: false,
+      hasDefaultValues: true,
+      defaultValues: ["first", "second", "third"]
+    })
+    let state = new SliderState()
+    let defaultValue = new SliderDefaultValueLabel(container, config, state, 0)
+
+    expect(container.querySelectorAll(`.${CLASSES.DEFAULT_VALUE_VERTICAL}`).length).to.equal(0)
   })
 
   it("should create label element and add it to the root", () => {
@@ -36,7 +68,7 @@ describe("sliderDefaultValueLabelView", () => {
     expect(container.querySelectorAll(`.${CLASSES.DEFAULT_VALUE_LABEL}`).length).to.equal(1)
   })
 
-  it("should add vertical class if config.isVertical == true", () => {
+  it("should add vertical class to the label if isVertical === true", () => {
     let container = document.createElement("div")
     let config = new SliderConfig({
       isVertical: true,
@@ -46,7 +78,20 @@ describe("sliderDefaultValueLabelView", () => {
     let state = new SliderState()
     let defaultValue = new SliderDefaultValueLabel(container, config, state, 0)
 
-    expect(container.querySelectorAll(`.${CLASSES.DEFAULT_VALUE_VERTICAL}`).length).to.equal(1)
+    expect(container.querySelectorAll(`.${CLASSES.DEFAULT_VALUE_LABEL_VERTICAL}`).length).to.equal(1)
+  })
+
+  it("should not add vertical class to the label if isVertical === false", () => {
+    let container = document.createElement("div")
+    let config = new SliderConfig({
+      isVertical: false,
+      hasDefaultValues: true,
+      defaultValues: ["first", "second", "third"]
+    })
+    let state = new SliderState()
+    let defaultValue = new SliderDefaultValueLabel(container, config, state, 0)
+
+    expect(container.querySelectorAll(`.${CLASSES.DEFAULT_VALUE_LABEL_VERTICAL}`).length).to.equal(0)
   })
 
   it("should display value from defaultValues list according with the index", () => {
@@ -61,7 +106,7 @@ describe("sliderDefaultValueLabelView", () => {
     expect(container.querySelector(`.${CLASSES.DEFAULT_VALUE_LABEL}`)?.innerHTML).to.equal("second")
   })
 
-  it("should set shift according with the index", () => {
+  it("should set left shift according with the index if isVertical === false", () => {
     let container = document.createElement("div")
     let config = new SliderConfig({
       hasDefaultValues: true,
@@ -72,6 +117,20 @@ describe("sliderDefaultValueLabelView", () => {
 
     let foundDefaultValue = container.querySelector(`.${CLASSES.DEFAULT_VALUE}`)
     expect((foundDefaultValue as HTMLElement).style.left).to.equal("50%")
+  })
+
+  it("should set bottom shift according with the index if isVertical === true", () => {
+    let container = document.createElement("div")
+    let config = new SliderConfig({
+      isVertical: true,
+      hasDefaultValues: true,
+      defaultValues: ["first", "second", "third"]
+    })
+    let state = new SliderState()
+    let defaultValue = new SliderDefaultValueLabel(container, config, state, 1)
+
+    let foundDefaultValue = container.querySelector(`.${CLASSES.DEFAULT_VALUE}`)
+    expect((foundDefaultValue as HTMLElement).style.bottom).to.equal("50%")
   })
 
   it("should not append root to container if hasDefaultValues == false", () => {
@@ -102,7 +161,7 @@ describe("sliderDefaultValueLabelView", () => {
       expect(label.innerHTML).to.equal("newValue")
     })
 
-    it("should change the shift if defaultValues.length changed", () => {
+    it("should change left shift if defaultValues.length changed and isVertical === false", () => {
       let container = document.createElement("div")
       let config = new SliderConfig({
         hasDefaultValues: true,
@@ -115,6 +174,22 @@ describe("sliderDefaultValueLabelView", () => {
 
       let foundDefaultValue = container.querySelector(`.${CLASSES.DEFAULT_VALUE}`) as HTMLElement
       expect(foundDefaultValue.style.left).to.equal("25%")
+    })
+
+    it("should change bottom shift if defaultValues.length changed and isVertical === true", () => {
+      let container = document.createElement("div")
+      let config = new SliderConfig({
+        isVertical: true,
+        hasDefaultValues: true,
+        defaultValues: ["first", "second", "third"]
+      })
+      let state = new SliderState()
+      let defaultValue = new SliderDefaultValueLabel(container, config, state, 1)
+
+      config.defaultValues.set(["first", "second", "third", "fourth", "fifth"])
+
+      let foundDefaultValue = container.querySelector(`.${CLASSES.DEFAULT_VALUE}`) as HTMLElement
+      expect(foundDefaultValue.style.bottom).to.equal("25%")
     })
   })
 
@@ -146,19 +221,41 @@ describe("sliderDefaultValueLabelView", () => {
 
       expect(container.querySelectorAll(`.${CLASSES.DEFAULT_VALUE}`).length).to.equal(0)
     })
+  })
 
-    it("should not create an extra copy of root in container if config.hasDefaultValues == true and given true", () => {
+  describe("click", () => {
+    it("should change leftHandlePosition to 0 if index == 0 and isRange === false", () => {
       let container = document.createElement("div")
       let config = new SliderConfig({
         hasDefaultValues: true,
         defaultValues: ["first", "second", "third"]
       })
-      let state = new SliderState()
-      let defaultValue = new SliderDefaultValueLabel(container, config, state, 1)
+      let state = new SliderState(0.2, 0.8)
+      let defaultValue = new SliderDefaultValueLabel(container, config, state, 0)
 
-      config.hasDefaultValues.set(true)
+      let mouseClick = createMouseEvent("click", 100, 100)
 
-      expect(container.querySelectorAll(`.${CLASSES.DEFAULT_VALUE}`).length).to.equal(1)
+      let foundDefaultValue = container.querySelector(`.${CLASSES.DEFAULT_VALUE}`)
+      foundDefaultValue?.dispatchEvent(mouseClick)
+
+      expect(state.leftHandlePosition.get()).to.equal(0)
+    })
+
+    it("should change leftHandlePosition to 1 if index == (defaultValues.length - 1) and isRange === false", () => {
+      let container = document.createElement("div")
+      let config = new SliderConfig({
+        hasDefaultValues: true,
+        defaultValues: ["first", "second", "third"]
+      })
+      let state = new SliderState(0.2, 0.8)
+      let defaultValue = new SliderDefaultValueLabel(container, config, state, 2)
+
+      let mouseClick = createMouseEvent("click", 100, 100)
+
+      let foundDefaultValue = container.querySelector(`.${CLASSES.DEFAULT_VALUE}`)
+      foundDefaultValue?.dispatchEvent(mouseClick)
+
+      expect(state.leftHandlePosition.get()).to.equal(1)
     })
   })
 })

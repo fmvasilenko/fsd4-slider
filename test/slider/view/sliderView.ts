@@ -13,6 +13,47 @@ const dom = new JSDOM(html, {resources: "usable", pretendToBeVisual: true});
 
 const CLASSES: SliderClasses = require("../../../src/slider/sliderClasses.json")
 
+function defineHTMLElementParameters() {
+  Object.defineProperties(window.HTMLElement.prototype, {
+    offsetLeft: {
+      get: function() { return parseFloat(window.getComputedStyle(this).marginLeft) || 0; }
+    },
+    offsetTop: {
+      get: function() { return parseFloat(window.getComputedStyle(this).marginTop) || 0; }
+    },
+    offsetHeight: {
+      get: function() { return parseFloat(window.getComputedStyle(this).height) || 0; }
+    },
+    offsetWidth: {
+      get: function() { return parseFloat(window.getComputedStyle(this).width) || 0; }
+    }
+  })
+}
+
+function defineDOMRect() {
+  window.HTMLElement.prototype.getBoundingClientRect = function() {
+    let rect: DOMRect = {
+      width: parseFloat(window.getComputedStyle(this).width),
+      height: parseFloat(window.getComputedStyle(this).height),
+      x: 0,
+      y: 0,
+      top: parseFloat(window.getComputedStyle(this).marginTop),
+      bottom: 0,
+      left: parseFloat(window.getComputedStyle(this).marginLeft),
+      right: 0,
+      toJSON: () => {}
+    }
+
+    return rect
+  }
+}
+
+function createMouseEvent(type: string, x: number, y: number): MouseEvent {
+  let mouseEvent = document.createEvent("MouseEvents")
+  mouseEvent.initMouseEvent(type, true, true, window, 1, 0, 0, x, y, false, false, false, false, 0, null)
+  return mouseEvent
+}
+
 describe("sliderView", () => {
   describe("constructor", () => {
     it("should add slider class to the root", () => {
@@ -152,6 +193,29 @@ describe("sliderView", () => {
       config.isVertical.set(false)
 
       expect(root.classList.contains(CLASSES.SLIDER_VERTICAL)).to.equal(false)
+    })
+  })
+
+  describe("click", () => {
+    it("should change leftHandlePosition to 0.5 if click is in the middle and isRange === false", () => {
+      defineHTMLElementParameters()
+      defineDOMRect()
+      let root = document.createElement("div")
+      let state = new SliderState()
+      let config = new SliderConfig()
+      let sliderView = new SliderView(root, config, state)
+
+      //setting up DOM properties
+      root.style.marginLeft = "100px"
+      root.style.width = "100px"
+      root.style.height = "100px"
+
+      //setting up the event
+      let mouseClick = createMouseEvent("click", 150, 50)
+
+      root.dispatchEvent(mouseClick)
+
+      expect(state.leftHandlePosition.get()).to.equal(0.5)
     })
   })
 })

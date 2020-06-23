@@ -10,19 +10,6 @@ const dom = new JSDOM("<!doctype html><html><body><div class='slider'></div></bo
 (global as any).document = window.document;
 
 const CLASSES: SliderClasses = require("../../../src/slider/sliderClasses.json")
-/*const defaultConfig = {
-  isRange: false,
-  hasDefaultValues: false,
-  isVertical: false,
-  valueLabelDisplayed: true,
-  limitsDisplayed: true,
-  minValue: 0,
-  maxValue: 100,
-  step: 1,
-  leftHandleValue: 0,
-  rightHandleValue: 100,
-  defaultValues: ["first", "second", "third"]
-}*/
 
 describe("sliderRangeLineView", () => {
   describe("default mode", () => {

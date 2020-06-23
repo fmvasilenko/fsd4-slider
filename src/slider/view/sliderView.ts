@@ -48,22 +48,15 @@ class SliderView {
   }
 
   private checkDefaultValues() {
-    console.log(`1. Default values: ${this.DEFAULT_VALUES}`)
-
     this.DEFAULT_VALUES.forEach((value: SliderDefaultValueLabel) => {
       value.remove()
-      console.log(value)
     })
     this.DEFAULT_VALUES.length = 0
-
-    console.log(`2. Default values: ${this.DEFAULT_VALUES}`)
 
     let defaultValues = this.config.defaultValues.get() as number[] | string[]
     defaultValues.forEach((value: string | number, index: number, array: string[] | number[]) => {
       this.DEFAULT_VALUES[index] = new SliderDefaultValueLabel(this.ROOT, this.config, this.state, index)
     })
-
-    console.log(`3. Default values: ${this.DEFAULT_VALUES}`)
   }
 
   private switchVertical() {

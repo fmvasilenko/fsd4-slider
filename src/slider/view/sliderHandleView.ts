@@ -55,8 +55,8 @@ class SliderHandle {
     }
   }
 
-  private async switchVertical() {
-    await this.changeVerticaslClass.bind(this)()
+  private switchVertical() {
+    this.changeVerticaslClass.bind(this)()
     this.render()
   }
 
@@ -187,45 +187,6 @@ class SliderHandle {
 
     return (rightHandleValue - leftHandleValue) * stepLength
   }
-
-  /*private getDefaultState() {
-    return {
-      isDragged: false,
-      value: this.SIDE == Side.Left ? this.config.leftHandleValue : this.config.rightHandleValue
-    }
-  }
-
-  public setValue(value: number, extraShift?: number) {
-    this.state.value = value
-    this.render(extraShift)
-  }
-
-  public getValue(): number {
-    return this.state.value
-  }  
-
-  public drag() {
-    this.state.isDragged = true
-  }
-
-  public drop() {
-    this.state.isDragged = false
-  }
-
-  public isDragged(): boolean {
-    return this.state.isDragged
-  }
-
-  public switchValueLabel(switcher: boolean) {
-    if (switcher == true && this.config.valueLabelDisplayed == false) {
-      this.ROOT.appendChild(this.LABEL)
-      this.config.valueLabelDisplayed = true
-    }
-    else if (switcher == false && this.config.valueLabelDisplayed == true){
-      this.LABEL.remove()
-      this.config.valueLabelDisplayed = false
-    }
-  }*/
 }
 
 export { SliderHandle }

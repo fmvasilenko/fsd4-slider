@@ -36,40 +36,29 @@ function defineHTMLElementParameters() {
   })
 }
 
+function defineDOMRect() {
+  window.HTMLElement.prototype.getBoundingClientRect = function() {
+    let rect: DOMRect = {
+      width: parseFloat(window.getComputedStyle(this).width),
+      height: parseFloat(window.getComputedStyle(this).height),
+      x: 0,
+      y: 0,
+      top: parseFloat(window.getComputedStyle(this).marginTop),
+      bottom: 0,
+      left: parseFloat(window.getComputedStyle(this).marginLeft),
+      right: 0,
+      toJSON: () => {}
+    }
+
+    return rect
+  }
+}
+
 function createMouseEvent(type: string, x: number, y: number): MouseEvent {
   let mouseEvent = document.createEvent("MouseEvents")
   mouseEvent.initMouseEvent(type, true, true, window, 1, 0, 0, x, y, false, false, false, false, 0, null)
   return mouseEvent
 }
-
-/*window.HTMLElement.prototype.getBoundingClientRect = function() {
-  let DOMRect: DOMRect = {
-    x: 100,
-    y: 100,
-    width: 100,
-    height: 100,
-    top: 100,
-    right: 200,
-    bottom: 200,
-    left: 100,
-    toJSON: function() {}
-  }
-  return DOMRect
-}*/
-
-/*const defaultConfig = {
-  isRange: false,
-  hasDefaultValues: false,
-  isVertical: false,
-  valueLabelDisplayed: true,
-  limitsDisplayed: true,
-  minValue: 0,
-  maxValue: 100,
-  step: 1,
-  leftHandleValue: 0,
-  rightHandleValue: 100,
-  defaultValues: ["first", "second", "third"]
-}*/
 
 describe("SliderHandleView", () => {
   describe("default mode", () => {
@@ -79,7 +68,27 @@ describe("SliderHandleView", () => {
       let config = new SliderConfig()
       let handle = new SliderHandle(container, config, state, Side.Left)
   
+      expect(container.querySelectorAll(`.${CLASSES.HANDLE}`).length).to.equal(1)
+    })
+
+    it("should add leftHandle class to the root if it`s left handle", () => {
+      let container = document.createElement("div")
+      let state = new SliderState()
+      let config = new SliderConfig()
+      let handle = new SliderHandle(container, config, state, Side.Left)
+  
       expect(container.querySelectorAll(`.${CLASSES.LEFT_HANDLE}`).length).to.equal(1)
+    })
+
+    it("should add rightHandle class to the root if it`s right handle", () => {
+      let container = document.createElement("div")
+      let state = new SliderState()
+      let config = new SliderConfig({
+        isRange: true
+      })
+      let handle = new SliderHandle(container, config, state, Side.Right)
+  
+      expect(container.querySelectorAll(`.${CLASSES.RIGHT_HANDLE}`).length).to.equal(1)
     })
   
     it("should add vertical class if isVertical == true", () => {
@@ -474,6 +483,7 @@ describe("SliderHandleView", () => {
       it("should change position according with current position of the mouse if mousedown on the handle", () => {
         //setting up the enviroment
         defineHTMLElementParameters()
+        defineDOMRect()
         let container = document.createElement("div")
         let state = new SliderState()
         let config = new SliderConfig({
@@ -573,7 +583,7 @@ describe("SliderHandleView", () => {
   })
 
   describe("extraShift", () => {
-    it("should subtract extraShift leftHandle if leftHandleValue and rightHandleValue are equal o close", () => {
+    it("should subtract extraShift from leftHandle if leftHandleValue and rightHandleValue are equal o close", () => {
       let container = document.createElement("div")
         let state = new SliderState()
         let config = new SliderConfig({

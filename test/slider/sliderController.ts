@@ -27,6 +27,24 @@ function defineHTMLElementParameters() {
   })
 }
 
+function defineDOMRect() {
+  window.HTMLElement.prototype.getBoundingClientRect = function() {
+    let rect: DOMRect = {
+      width: parseFloat(window.getComputedStyle(this).width),
+      height: parseFloat(window.getComputedStyle(this).height),
+      x: 0,
+      y: 0,
+      top: parseFloat(window.getComputedStyle(this).marginTop),
+      bottom: 0,
+      left: parseFloat(window.getComputedStyle(this).marginLeft),
+      right: 0,
+      toJSON: () => {}
+    }
+
+    return rect
+  }
+}
+
 function createMouseEvent(type: string, x: number, y: number): MouseEvent {
   let mouseEvent = document.createEvent("MouseEvents")
   mouseEvent.initMouseEvent(type, true, true, window, 1, 0, 0, x, y, false, false, false, false, 0, null)
@@ -51,6 +69,7 @@ class Tester {
 describe("sliderController", () => {
   it("should create sliderModel", () => {
     defineHTMLElementParameters()
+    defineDOMRect()
     let root = document.createElement("div")
     let config = new SliderConfig({
       minValue: 0,
