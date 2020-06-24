@@ -56,18 +56,23 @@ class SliderHandle {
   }
 
   private switchVertical() {
-    this.changeVerticaslClass.bind(this)()
-    this.render()
+    let changeVertical = new Promise((resolve, reject) => {
+      this.changeVerticalClass()
+      resolve()
+    })
+    changeVertical.then(() => {
+      this.render()
+    })
   }
 
-  private changeVerticaslClass() {
+  private changeVerticalClass() {
     if (this.config.isVertical.get() === true) this.ROOT.classList.add(this.CLASSES.HANDLE_VERTICAL)
     else this.ROOT.classList.remove(this.CLASSES.HANDLE_VERTICAL)
   }
 
   private render() {
     let shift: number
-  
+
     if (this.config.hasDefaultValues.get() === true) shift = this.calculateDefaultValuesShift()
     else shift = this.calculateShift()
 

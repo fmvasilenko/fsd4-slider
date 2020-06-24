@@ -338,11 +338,16 @@ describe("SliderHandleView", () => {
       })
       let handle = new SliderHandle(container, config, state, Side.Left)
 
-      config.isVertical.set(true)
+      let makeChanges = new Promise((resolve, reject) => {
+        config.isVertical.set(true)
+        resolve()
+      })
 
-      let foundHandle = container.querySelector(`.${CLASSES.LEFT_HANDLE}`) as HTMLElement
-      expect(foundHandle.style.left).to.equal("")
-      expect(foundHandle.style.bottom).to.equal("20%")
+      makeChanges.then(() => {
+        let foundHandle = container.querySelector(`.${CLASSES.LEFT_HANDLE}`) as HTMLElement
+        expect(foundHandle.style.left).to.equal("")
+        expect(foundHandle.style.bottom).to.equal("20%")
+      })
     })
 
     it("should set rightHandle left shift to bottom shift if true was given", () => {
@@ -357,11 +362,16 @@ describe("SliderHandleView", () => {
       })
       let handle = new SliderHandle(container, config, state, Side.Right)
 
-      config.isVertical.set(true)
+      let makeChanges = new Promise((resolve, reject) => {
+        config.isVertical.set(true)
+        resolve()
+      })
 
-      let foundHandle = container.querySelector(`.${CLASSES.RIGHT_HANDLE}`) as HTMLElement
-      expect(foundHandle.style.left).to.equal("")
-      expect(foundHandle.style.bottom).to.equal("80%")
+      makeChanges.then(() => {
+        let foundHandle = container.querySelector(`.${CLASSES.RIGHT_HANDLE}`) as HTMLElement
+        expect(foundHandle.style.left).to.equal("")
+        expect(foundHandle.style.bottom).to.equal("80%")
+      })
     })
 
     it("should set leftHandle bottom shift to left shift if false was given", () => {
@@ -375,11 +385,16 @@ describe("SliderHandleView", () => {
       })
       let handle = new SliderHandle(container, config, state, Side.Left)
 
-      config.isVertical.set(false)
+      let makeChanges = new Promise((resolve, reject) => {
+        config.isVertical.set(false)
+        resolve()
+      })
 
-      let foundHandle = container.querySelector(`.${CLASSES.LEFT_HANDLE}`) as HTMLElement
-      expect(foundHandle.style.left).to.equal("20%")
-      expect(foundHandle.style.bottom).to.equal("")
+      makeChanges.then(() => {
+        let foundHandle = container.querySelector(`.${CLASSES.LEFT_HANDLE}`) as HTMLElement
+        expect(foundHandle.style.left).to.equal("20%")
+        expect(foundHandle.style.bottom).to.equal("")
+      })
     })
 
     it("should set rightHandle bottom shift to left shift if false was given", () => {
@@ -394,11 +409,16 @@ describe("SliderHandleView", () => {
       })
       let handle = new SliderHandle(container, config, state, Side.Right)
 
-      config.isVertical.set(false)
+      let makeChanges = new Promise((resolve, reject) => {
+        config.isVertical.set(false)
+        resolve()
+      })
 
-      let foundHandle = container.querySelector(`.${CLASSES.RIGHT_HANDLE}`) as HTMLElement
-      expect(foundHandle.style.left).to.equal("80%")
-      expect(foundHandle.style.bottom).to.equal("")
+      makeChanges.then(() => {
+        let foundHandle = container.querySelector(`.${CLASSES.RIGHT_HANDLE}`) as HTMLElement
+        expect(foundHandle.style.left).to.equal("80%")
+        expect(foundHandle.style.bottom).to.equal("")
+      })
     })
   })
 
