@@ -9,7 +9,7 @@ This is a jQuery slider plugin
     1. [MinValue](#minValue)
     2. [MaxValue](#maxValue)
     3. [Step](#step)
-    4. [Default values](#defaulValues)
+    4. [Default values](#defaultValues)
     5. [Left handle value](#leftHandleValue)
     6. [Right handle value](#rightHandleValue)
 3. [Range mode](#rangeMode)
@@ -17,7 +17,7 @@ This is a jQuery slider plugin
 5. [Vertical mode](#verticalMode)
 6. [Hide limits](#hideLimits)
 7. [Hide value label](#hideValueLabel)
-8. Callback function
+8. [Callback function](#callbackFunction)
 
 
 <a name="basicUsage"></a>
@@ -33,7 +33,7 @@ $(element).slider()
 
 ## 2. Config
 
-To controll the slider provide config object:
+To controll the slider use config object:
 ```js
 $(element).slider({
   //parameters
@@ -98,9 +98,17 @@ slider.config.leftHandleValue()
 
 ##### Initialization:
 You can choose any minValue you want
+```js
+{
+  minValue: 0
+}
+```
 
 ##### "In action":
-minValue cannot be lower then maxValue or it will be changed to maxValue
+minValue cannot be higher then maxValue or it will be changed to maxValue
+```js
+slider.config.minValue(newValue)
+```
 
 
 <a name="maxValue"></a>
@@ -110,9 +118,17 @@ minValue cannot be lower then maxValue or it will be changed to maxValue
 
 ##### Initialization:
 maxValue cannot be lower then minValue or it will be changed to minValue
+```js
+{
+  maxValue: 100
+}
+```
 
 ##### "In action":
 The same as for initialization
+```js
+slider.config.maxValue(newValue)
+```
 
 
 <a name="step"></a>
@@ -122,9 +138,17 @@ The same as for initialization
 
 ##### Initialization:
 step cannot be lower then 1 or it will be change to 1
+```js
+{
+  step: 100
+}
+```
 
 ##### "In action":
 The same as for initialization
+```js
+slider.config.step(newValue)
+```
 
 
 <a name="defaultValues"></a>
@@ -135,6 +159,18 @@ The same as for initialization
 defaultValues contains number or string array.
 If hasDefaultValues === true, handle values will contain indexes for defaultValues array
 
+##### Initialization:
+```js
+{
+  defaultValues: ["first", "second", "third"]
+}
+```
+
+##### "In action":
+```js
+slider.config.defaultValues(["first", "second", "third"])
+```
+
 
 <a name="leftHandleValue"></a>
 
@@ -144,9 +180,17 @@ If hasDefaultValues === true, handle values will contain indexes for defaultValu
 ##### Initialization:
 If hasDefaultValues === false, leftHandleValue cannot be lower then minValue and higher then maxValue
 If hasDefaultValues === true, leftHandleValue cannot be lower then 0 and higher then defaultValues.length - 1
+```js
+{
+  leftHandleValue: 20
+}
+```
 
 ##### "In action":
 The same as for initialization but if isRange === true, leftHandleValue cannot be higher then rightHandleValue
+```js
+slider.config.leftHandleValue(20)
+```
 
 
 <a name="rightHandleValue"></a>
@@ -159,9 +203,17 @@ If isRange === false, rightHandleValue will also contain maxValue or defaultValu
 ##### Initialization:
 If hasDefaultValues === false, rightHandleValue cannot be lower then minValue and higher then maxValue
 If hasDefaultValues === true, rightHandleValue cannot be lower then 0 and higher then defaultValues.length - 1
+```js
+{
+  rightHandleValue: 80
+}
+```
 
 ##### "In action":
 The same as for initialization but if isRange === true, rightHandleValue cannot be lower then leftHandleValue
+```js
+slider.config.rightHandleValue(80)
+```
 
 
 <a name="rangeMode"></a>
@@ -272,4 +324,21 @@ Can be switched on and off by
 For "in action" change use
 ```js
 slider.config.valueLabelDisplayed(newValue)
+```
+
+
+<a name="callbackFunction"></a>
+
+
+## 7. Callback function
+
+This function will be called if leftHandleValue or rightHandleValue are changed.
+```js
+//function will receive leftHandleValue and rightHandleValue as parameters
+function callbackFunction(leftHandleValue, rightHandleValue) {
+  //some code
+}
+
+//it should be given to slider while initializing as a second parameter
+$(element).slider({}, callbackFunction)
 ```
