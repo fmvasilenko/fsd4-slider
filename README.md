@@ -140,7 +140,7 @@ slider.config.maxValue(newValue)
 step cannot be lower then 1 or it will be change to 1
 ```js
 {
-  step: 100
+  step: 1
 }
 ```
 
@@ -340,5 +340,5 @@ function callbackFunction(leftHandleValue, rightHandleValue) {
 }
 
 //it should be given to slider while initializing as a second parameter
-$(element).slider({}, callbackFunction)
+$(element).slider(config, callbackFunction)
 ```
