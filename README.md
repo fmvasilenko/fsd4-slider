@@ -8,15 +8,16 @@ This is a jQuery slider plugin
 2. [Config](#config)
   1. [MinValue](#minValue)
   2. [MaxValue](#maxValue)
-  3. Step
-  4. Default Values
-  5. Left handle value
-  6. Right handle value
-3. Range mode
-4. Default values mode
-5. Vertical mode
-6. Hide limits
-7. Hide value label
+  3. [Step](#step)
+  4. [Default values](#defaulValues)
+  5. [Left handle value](#leftHandleValue)
+  6. [Right handle value](#rightHandleValue)
+3. [Range mode](#rangeMode)
+4. [Default values mode](#defaultValuesMode)
+5. [Vertical mode](#verticalMode)
+6. [Hide limits](#hideLimits)
+7. [Hide value label](#hideValueLabel)
+8. Callback function
 
 
 <a name="basicUsage"></a>
@@ -42,19 +43,20 @@ $(element).slider({
 By default slider will be created with following parameters:
 ```js
 {
-minValue: 0,
-maxValue: 100,
-step: 1,
-defaultValues: ["first", "second", "third"],
-leftHandleValue: 20,
-rightHandleValue: 80,
-isRange: false,
-hasDefaultValues: false,
-isVertical: false,
-limitsDisplayed: true,
-valueLabelDisplayed: true
+  minValue: 0,
+  maxValue: 100,
+  step: 1,
+  defaultValues: ["first", "second", "third"],
+  leftHandleValue: 20,
+  rightHandleValue: 80,
+  isRange: false,
+  hasDefaultValues: false,
+  isVertical: false,
+  limitsDisplayed: true,
+  valueLabelDisplayed: true
 }
 ```
+
 
 #### Controll slider "in action"
 To controll slider "in action" jQuery object will have a config property
@@ -79,6 +81,7 @@ let leftHandleValue = slider.config.leftHandleValue(-10)
 alert(leftHandleValue) // 0
 ```
 
+
 #### Getting a property
 To get value use the same function with no arguments:
 ```js
@@ -89,6 +92,7 @@ slider.config.leftHandleValue()
 ```
 
 <a name="minValue"></a>
+
 
 ### 2.1 MinValue
 
@@ -101,10 +105,171 @@ minValue cannot be lower then maxValue or it will be changed to maxValue
 
 <a name="maxValue"></a>
 
+
 ### 2.2 MaxValue
 
 ##### Initialization:
-maxValue cannot be lower then minValue and will be changed to minValue if it is so
+maxValue cannot be lower then minValue or it will be changed to minValue
 
 ##### "In action":
-The same for "in action" change
+The same as for initialization
+
+
+<a name="step"></a>
+
+
+### 2.3 Step
+
+##### Initialization:
+step cannot be lower then 1 or it will be change to 1
+
+##### "In action":
+The same as for initialization
+
+
+<a name="defaultValues"></a>
+
+
+### 2.4 Default values
+
+defaultValues contains number or string array.
+If hasDefaultValues === true, handle values will contain indexes for defaultValues array
+
+
+<a name="leftHandleValue"></a>
+
+
+### 2.5 Left handle value
+
+##### Initialization:
+If hasDefaultValues === false, leftHandleValue cannot be lower then minValue and higher then maxValue
+If hasDefaultValues === true, leftHandleValue cannot be lower then 0 and higher then defaultValues.length - 1
+
+##### "In action":
+The same as for initialization but if isRange === true, leftHandleValue cannot be higher then rightHandleValue
+
+
+<a name="rightHandleValue"></a>
+
+
+### 2.5 Right handle value
+
+If isRange === false, rightHandleValue will also contain maxValue or defaultValues.length -1 if hasDefaultValues === true
+
+##### Initialization:
+If hasDefaultValues === false, rightHandleValue cannot be lower then minValue and higher then maxValue
+If hasDefaultValues === true, rightHandleValue cannot be lower then 0 and higher then defaultValues.length - 1
+
+##### "In action":
+The same as for initialization but if isRange === true, rightHandleValue cannot be lower then leftHandleValue
+
+
+<a name="rangeMode"></a>
+
+
+## 3. Range mode
+
+In range mode rightHandle will be appended to the scale.
+To initialize it use:
+```js
+{
+  isRange: true
+}
+```
+
+Or, for "in action" changing:
+```js
+slider.config.isRange(newValue)
+```
+
+If isRange === false, rightHandle will be removed from the scale, 
+but rightHandle object will still exist and contain maxValue or defaultValues.length - 1
+
+
+<a name="defaultValuesMode"></a>
+
+
+## 4. Default values mode
+
+In default values mode slider uses defaultValues instead of calculating value accroding with step, minValue and maxValue
+
+Can be switched on and off by
+```js
+{
+  hasDefaultValues: true
+}
+```
+
+For "in action" change use
+```js
+slider.config.hasDefaultValues(newValue)
+```
+
+When it`s on, minValue and maxValue will be ignored.
+Can be used with range and vertical modes
+
+> Notice!
+> When hasDefaultValues === true, limitsDisplayed will be automatically turned off
+
+
+<a name="verticalMode"></a>
+
+
+## 5. Vertical mode
+
+Switching between vertical and horizontal modes
+
+Can be switched on and off by
+```js
+{
+  isVertical: true
+}
+```
+
+For "in action" change use
+```js
+slider.config.isVertical(newValue)
+```
+
+
+<a name="hideLimits"></a>
+
+
+## 6. Hide limits
+
+In this mode slider hides or shows minValue and maxValue labels
+
+Can be switched on and off by
+```js
+{
+  limitsDisplayed: true
+}
+```
+
+For "in action" change use
+```js
+slider.config.limitsDisplayed(newValue)
+```
+
+> Notice!
+> When turned on, hasDefaultValues will be turned off automatically
+
+
+<a name="hideValueLabel"></a>
+
+
+## 7. Hide value label
+
+In this mode slider hides or shows value labels above the handles
+
+Can be switched on and off by
+```js
+{
+  valueLabelDisplayed: true
+}
+```
+
+For "in action" change use
+```js
+slider.config.valueLabelDisplayed(newValue)
+```
