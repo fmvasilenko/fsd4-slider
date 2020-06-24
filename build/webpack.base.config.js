@@ -24,7 +24,7 @@ module.exports = {
   output: {
     filename: `${PATHS.assets}js/[name].js`,
     path: PATHS.root,
-    publicPath: '/'
+    publicPath: '/FSD4_Slider/'
   },
   module: {
     rules: [{
