@@ -6,17 +6,20 @@ To transmit data between modules, each module is subscibed on `SliderConfig` par
 
 ## Table of contents
 
-1. SliderConfig
-2. SliderState
-3. SliderController
-4. SliderModel
+1. [SliderConfig](#sliderConfig)
+2. [SliderState](#sliderState)
+3. [SliderController](#sliderController)
+4. [SliderModel](#sliderModel)
 5. View
-    1. SliderView
-    2. SliderHandleView
-    3. SliderLimitView
-    4. SliderValueLabelView
-    5. SliderRangeLineView
-    6. SliderDefaultValueLabel
+    1. [SliderView](#sliderView)
+    2. [SliderHandleView](#sliderHandleView)
+    3. [SliderLimitView](#sliderLimitView)
+    4. [SliderValueLabelView](#sliderValueLabelView)
+    5. [SliderRangeLineView](#sliderRangeLineView)
+    6. [SliderDefaultValueLabel](#sliderDefaultValueLabel)
+6. [Diagram](https://drive.google.com/file/d/1sOsdVlcexU3EpdpMsxgbixfRdaUNzaQy/view?usp=sharing)
+
+<a name="sliderConfig"></a>
 
 ## 1. SliderConfig
 
@@ -66,16 +69,22 @@ constructor() {
 }
 ```
 
+<a name="sliderState"></a>
+
 ## 2. SliderState
 
 `SliderState` is basically the same with `SliderConfig` but contains `leftHandlePosition` and `rightHandlePosition`.
 Both parameters represent current handle position regarding the scale, normalised from 0 to 1.
+
+<a name="sliderController"></a>
 
 ## 3. SliderController
 
 The main function of `SliderController` is to create `SliderModel` and `SliderView`.
 It also contains `slideFunction` which is subscribed to `leftHandleValue` and `rightHandleValue`,
 and calls `slide` callback function with `leftHandleValue` and `rightHandleValue`.
+
+<a name="sliderModel"></a>
 
 ## 4. SliderModel
 
@@ -85,10 +94,14 @@ if `hasDefaultValues.get() === true`.
 
 ## 5. View
 
+<a name="sliderView"></a>
+
 ## 5.1 SliderView
 
 `SliderView` creates all the subViews.
 It also creates slider scale and is responsible for scale events, such as click.
+
+<a name="sliderHandleView"></a>
 
 ## 5.2 SliderHandleView
 
@@ -96,20 +109,28 @@ It also creates slider scale and is responsible for scale events, such as click.
 `SliderView` always has two instances of `SliderHandleView` for left and right handle.
 Right handle is not displayed and has `maxValue` or `(defaultValues.length - 1)` if `hasDefaultValue.get() === false`.
 
+<a name="sliderLimitView"></a>
+
 ## 5.3 SliderLimitView
 
 `SliderLimitView` is responsible for rendering a limit label and reacting limit label events.
 Will be displayed only if `limitsDisplayed.get() === true` and `hasDefaultValues === true`.
+
+<a name="sliderValueLabelView"></a>
 
 ## 5.4 SliderValueLabelView
 
 `SliderValueLabelView` is responsible for rendering value label above a handle.
 Will be displayed only if `valueLabelDisplayed.get() === true`.
 
-## 5.5 SliderRangeView
+<a name="sliderRangeLineView"></a>
+
+## 5.5 SliderRangeLineView
 
 `SliderRangeView` is responsible for rendering range line between handles.
 Will be displayed only if `isRange.get() === true`.
+
+<a name="sliderDefaultValuesLabel"></a>
 
 ## 5.6 SliderDefaultValueLabel
 
