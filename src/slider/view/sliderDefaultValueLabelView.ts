@@ -16,12 +16,15 @@ class SliderDefaultValueLabel {
 
   private index: number;
 
-  constructor(
-    container: HTMLElement,
-    config: SliderConfig,
-    state: SliderState,
-    index: number,
-  ) {
+  private updateValueLink: Function;
+
+  private updateShiftLink: Function;
+
+  private switchLink: Function;
+
+  private switchVerticalLink: Function;
+
+  constructor(container: HTMLElement, config: SliderConfig, state: SliderState, index: number) {
     this.CONTAINER = container;
     this.config = config;
     this.state = state;
@@ -34,16 +37,26 @@ class SliderDefaultValueLabel {
     this.updateShift();
     this.switch();
 
-    this.config.defaultValues.addSubscriber(this.updateValue.bind(this));
-    this.config.defaultValues.addSubscriber(this.updateShift.bind(this));
-    this.config.hasDefaultValues.addSubscriber(this.switch.bind(this));
-    this.config.isVertical.addSubscriber(this.switchVertical.bind(this));
-    this.config.isVertical.addSubscriber(this.updateShift.bind(this));
+    this.updateValueLink = this.updateValue.bind(this);
+    this.updateShiftLink = this.updateShift.bind(this);
+    this.switchLink = this.switch.bind(this);
+    this.switchVerticalLink = this.switchVertical.bind(this);
+
+    this.config.defaultValues.addSubscriber(this.updateValueLink);
+    this.config.defaultValues.addSubscriber(this.updateShiftLink);
+    this.config.hasDefaultValues.addSubscriber(this.switchLink);
+    this.config.isVertical.addSubscriber(this.switchVerticalLink);
+    this.config.isVertical.addSubscriber(this.updateShiftLink);
 
     this.bindEventListeners();
   }
 
   public remove() {
+    this.config.defaultValues.removeSubscriber(this.updateValueLink);
+    this.config.defaultValues.removeSubscriber(this.updateShiftLink);
+    this.config.hasDefaultValues.removeSubscriber(this.switchLink);
+    this.config.isVertical.removeSubscriber(this.switchVerticalLink);
+    this.config.isVertical.removeSubscriber(this.updateShiftLink);
     this.ROOT.remove();
   }
 
