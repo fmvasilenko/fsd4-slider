@@ -18,6 +18,7 @@ This is a jQuery slider plugin
 6. [Hide limits](#hideLimits)
 7. [Hide value label](#hideValueLabel)
 8. [Callback function](#callbackFunction)
+9. [Architecture](https://github.com/fmvasilenko/FSD4_Slider/blob/master/docs/architecture.md)
 
 
 <a name="basicUsage"></a>
