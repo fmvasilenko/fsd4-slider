@@ -1,9 +1,9 @@
 interface SliderFunction {
-  (config?: ImportedSliderConfig, 
+  (config?: ImportedSliderConfig,
     slide?: SliderCallBackFunction): JQuery;
 }
 
-interface config {
+interface JQuerySliderConfig {
   isRange: Function
   hasDefaultValues: Function
   isVertical: Function
@@ -18,18 +18,11 @@ interface config {
 }
 
 interface JQuery {
-  config: config
+  config: JQuerySliderConfig
   slider: ISlider
 }
 
 interface ISlider extends SliderFunction {}
-
-interface SliderController {
-  ROOT: HTMLElement
-  getConfig(): SliderConfig
-  calculateLeftHandleValue(position: number): void
-  calculateRightHandleValue(position: number): void
-}
 
 interface ImportedSliderConfig {
   isRange?: boolean
@@ -43,20 +36,6 @@ interface ImportedSliderConfig {
   leftHandleValue?: number
   rightHandleValue?: number
   defaultValues?: number[] | string[]
-}
-
-interface SliderConfig {
-  isRange: boolean
-  hasDefaultValues: boolean
-  isVertical: boolean
-  valueLabelDisplayed: boolean
-  limitsDisplayed: boolean
-  minValue: number
-  maxValue: number
-  step: number
-  leftHandleValue: number
-  rightHandleValue: number
-  defaultValues: number[] | string[]
 }
 
 interface SliderCallBackFunction {
@@ -85,20 +64,4 @@ interface SliderClasses {
   DEFAULT_VALUE_VERTICAL: string
   DEFAULT_VALUE_LABEL: string
   DEFAULT_VALUE_LABEL_VERTICAL: string
-}
-
-interface SliderView {
-  ROOT: HTMLElement
-  CLASSES: SliderClasses
-  getConfig(): SliderConfig
-}
-
-interface HandleState {
-  isDragged: boolean,
-  value: number
-}
-
-interface ModelState {
-  leftHandleValue: number
-  rightHandleValue: number
 }
