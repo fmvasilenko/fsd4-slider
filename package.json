@@ -1,5 +1,5 @@
 {
-  "name": "fsd4",
+  "name": "fsd4-slider",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
@@ -12,6 +12,10 @@
   "_moduleAliases": {},
   "author": "",
   "license": "ISC",
+  "files": [
+    "/assets/js/index.js",
+    "/assets/css/index.css"
+  ],
   "devDependencies": {
     "@types/chai": "^4.2.11",
     "@types/mocha": "^7.0.2",

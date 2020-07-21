@@ -8,23 +8,35 @@ const PATHS = {
   root: path.join(__dirname, '../'),
   src: path.join(__dirname, '../src'),
   dist: path.join(__dirname, '../dist'),
-  assets: 'assets/'
+  assets: 'assets/',
 };
 
 const PAGES_DIR = `${PATHS.src}/pages/`;
-const PAGES = fs.readdirSync(PAGES_DIR).filter(fileName => fileName.endsWith('.pug'));
+const PAGES = fs.readdirSync(PAGES_DIR).filter((fileName) => fileName.endsWith('.pug'));
 
 module.exports = {
   externals: {
-    paths: PATHS
+    paths: PATHS,
   },
   entry: {
-    app: `${PATHS.src}/index.ts`
+    index: `${PATHS.src}/index.ts`,
   },
   output: {
     filename: `${PATHS.assets}js/[name].js`,
     path: PATHS.root,
-    publicPath: '/FSD4_Slider/'
+    publicPath: '/FSD4_Slider/',
+  },
+  optimization: {
+    splitChunks: {
+      cacheGroups: {
+        vendor: {
+          name: 'vendors',
+          test: /node_modules/,
+          chunks: 'all',
+          enforce: true,
+        },
+      },
+    },
   },
   module: {
     rules: [{
@@ -33,7 +45,7 @@ module.exports = {
       exclude: /node_modules/,
     }, {
       test: /\.pug$/,
-      loader: 'pug-loader'
+      loader: 'pug-loader',
     }, {
       test: /\.scss$/,
       use: [
@@ -41,15 +53,15 @@ module.exports = {
         MiniCssExtractPlugin.loader,
         {
           loader: 'css-loader',
-          options: {sourceMap: true}
+          options: { sourceMap: true },
         }, {
           loader: 'postcss-loader',
-          options: {sourceMap: true, config: {path: `${PATHS.root}/postcss.config.js`}}
+          options: { sourceMap: true, config: { path: `${PATHS.root}/postcss.config.js` } },
         }, {
           loader: 'sass-loader',
-          options: {sourceMap: true}
-        }
-      ]
+          options: { sourceMap: true },
+        },
+      ],
     }, {
       test: /\.css$/,
       use: [
@@ -57,30 +69,29 @@ module.exports = {
         MiniCssExtractPlugin.loader,
         {
           loader: 'css-loader',
-          options: {sourceMap: true}
+          options: { sourceMap: true },
         }, {
           loader: 'postcss-loader',
-          options: {sourceMap: true}
-        }
-      ]
-    }]
+          options: { sourceMap: true },
+        },
+      ],
+    }],
   },
   resolve: {
-    extensions: [ '.tsx', '.ts', '.js' ],
+    extensions: ['.tsx', '.ts', '.js'],
   },
   plugins: [
     new MiniCssExtractPlugin({
-      filename: `${PATHS.assets}css/[name].css`
+      filename: `${PATHS.assets}css/[name].css`,
     }),
     new webpack.ProvidePlugin({
       $: 'jquery',
       jQuery: 'jquery',
-      'window.jQuery': 'jquery'
+      'window.jQuery': 'jquery',
     }),
-    ...PAGES.map(page => new HtmlWebpackPlugin({
+    ...PAGES.map((page) => new HtmlWebpackPlugin({
       template: `${PAGES_DIR}/${page}`,
-      filename: `./${page.replace(".pug", "")}.html`,
-      //inject: false
-    }))
-  ]
+      filename: `./${page.replace('.pug', '')}.html`,
+    })),
+  ],
 };
