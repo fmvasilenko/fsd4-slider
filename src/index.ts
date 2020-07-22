@@ -1,7 +1,7 @@
 /* eslint-disable no-restricted-globals */
-import './slider/slider.scss';
-import './slider/slider';
 import './main.scss';
+
+($ as any).fn.slider = (window as any).$.fn.slider;
 
 class DemoSlider {
   private ROOT: HTMLElement;

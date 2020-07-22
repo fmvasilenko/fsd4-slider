@@ -19,12 +19,13 @@ module.exports = {
     paths: PATHS,
   },
   entry: {
-    index: `${PATHS.src}/index.ts`,
+    index: `${PATHS.src}/slider/index.ts`,
+    app: `${PATHS.src}/index.ts`,
   },
   output: {
     filename: `${PATHS.assets}js/[name].js`,
     path: PATHS.root,
-    publicPath: '/FSD4_Slider/',
+    publicPath: '/fsd4-slider/',
   },
   optimization: {
     splitChunks: {
