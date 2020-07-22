@@ -11,7 +11,11 @@
   },
   "_moduleAliases": {},
   "author": "",
-  "license": "ISC",
+  "license": "MIT",
+  "repository": {
+    "type" : "git",
+    "url" : "git://github.com/fmvasilenko/fsd4-slider.git"
+  },
   "files": [
     "/assets/js/index.js",
     "/assets/css/index.css"
