@@ -4,12 +4,12 @@ module.exports = {
     require('css-mqpacker'),
     require('cssnano')({
       preset: [
-        'default',{
+        'default', {
           discardCpmments: {
-            removeAll: true
-          }
-        }
-      ]
-    })
-  ]
-}
+            removeAll: true,
+          },
+        },
+      ],
+    }),
+  ],
+};

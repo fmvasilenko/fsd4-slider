@@ -1,8 +1,5 @@
 const path = require('path');
-const fs = require('fs');
-const webpack = require('webpack');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
-const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 const PATHS = {
   root: path.join(__dirname, '../'),
@@ -11,20 +8,16 @@ const PATHS = {
   assets: 'assets/',
 };
 
-const PAGES_DIR = `${PATHS.src}/pages/`;
-const PAGES = fs.readdirSync(PAGES_DIR).filter((fileName) => fileName.endsWith('.pug'));
-
 module.exports = {
   externals: {
     paths: PATHS,
   },
-  entry: {
-    app: `${PATHS.src}/index.ts`,
-  },
+  entry: `${PATHS.src}/slider/index.ts`,
   output: {
-    filename: `${PATHS.assets}js/[name].js`,
-    path: `${PATHS.root}/demo`,
-    publicPath: '/fsd4-slider/',
+    filename: 'slider.js',
+    path: `${PATHS.root}/dist`,
+    library: 'slider',
+    libraryTarget: 'umd',
   },
   optimization: {
     splitChunks: {
@@ -43,9 +36,6 @@ module.exports = {
       test: /\.tsx?$/,
       use: 'ts-loader',
       exclude: /node_modules/,
-    }, {
-      test: /\.pug$/,
-      loader: 'pug-loader',
     }, {
       test: /\.scss$/,
       use: [
@@ -82,17 +72,7 @@ module.exports = {
   },
   plugins: [
     new MiniCssExtractPlugin({
-      filename: `${PATHS.assets}css/[name].css`,
+      filename: 'slider.css',
     }),
-    new webpack.ProvidePlugin({
-      $: 'jquery',
-      jQuery: 'jquery',
-      'window.jQuery': 'jquery',
-    }),
-    ...PAGES.map((page) => new HtmlWebpackPlugin({
-      template: `${PAGES_DIR}/${page}`,
-      filename: `./${page.replace('.pug', '')}.html`,
-      inject: false,
-    })),
   ],
 };
