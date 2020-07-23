@@ -1,0 +1,16 @@
+{
+  "name": "fsd4-slider",
+  "version": "1.0.4",
+  "description": "",
+  "main": "slider.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/fmvasilenko/fsd4-slider"
+  },
+  "author": "fmvasilenko",
+  "license": "MIT",
+  "files": [
+    "/slider.js",
+    "/slider.css"
+  ]
+}
