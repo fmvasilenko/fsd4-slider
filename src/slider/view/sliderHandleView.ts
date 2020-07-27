@@ -181,6 +181,8 @@ class SliderHandle {
   }
 
   private calculateExtraShift(): number {
+    // calculates extra shift when handles are close to each other to avoid overlaying
+
     if (this.config.isRange.get() === false) return 0;
 
     const leftHandleValue = this.config.leftHandleValue.get() as number;
