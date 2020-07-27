@@ -16,6 +16,7 @@ npm test
 To add plugin to the project use:
 ```js
 import 'fsd4-slider';
+import 'fsd4-slider/slider.css';
 ```
 
 ## Table of contents
