@@ -19,18 +19,6 @@ module.exports = {
     library: 'slider',
     libraryTarget: 'umd',
   },
-  optimization: {
-    splitChunks: {
-      cacheGroups: {
-        vendor: {
-          name: 'vendors',
-          test: /node_modules/,
-          chunks: 'all',
-          enforce: true,
-        },
-      },
-    },
-  },
   module: {
     rules: [{
       test: /\.tsx?$/,
