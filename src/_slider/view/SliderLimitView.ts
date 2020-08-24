@@ -1,5 +1,5 @@
-import { SliderConfig } from '../sliderConfig/sliderConfig';
-import { SliderState } from '../sliderState/sliderState';
+import { SliderConfig } from '../sliderConfig/SliderConfig';
+import { SliderState } from '../sliderState/SliderState';
 
 enum Type { MinVal, MaxVal }
 

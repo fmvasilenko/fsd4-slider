@@ -1,9 +1,9 @@
-import { SliderHandle } from './sliderHandleView';
-import { SliderLimitView } from './sliderLimitView';
-import { SliderDefaultValueLabel } from './sliderDefaultValueLabelView';
-import { SliderRangeLineView } from './sliderRangeLineView';
-import { SliderConfig } from '../sliderConfig/sliderConfig';
-import { SliderState } from '../sliderState/sliderState';
+import { SliderHandle } from './SliderHandleView';
+import { SliderLimitView } from './SliderLimitView';
+import { SliderDefaultValueLabel } from './SliderDefaultValueLabelView';
+import { SliderRangeLineView } from './SliderRangeLineView';
+import { SliderConfig } from '../sliderConfig/SliderConfig';
+import { SliderState } from '../sliderState/SliderState';
 
 enum Side { Left, Right }
 enum Type { MinVal, MaxVal }

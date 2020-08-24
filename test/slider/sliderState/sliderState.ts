@@ -1,5 +1,5 @@
 import { expect } from 'chai';
-import { SliderState } from '../../../src/slider/sliderState/sliderState';
+import { SliderState } from '../../../src/slider/sliderState/SliderState';
 
 describe('sliderState', () => {
   describe('leftHandlePosition.set()', () => {

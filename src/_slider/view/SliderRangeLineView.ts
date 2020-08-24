@@ -1,4 +1,4 @@
-import { SliderConfig } from '../sliderConfig/sliderConfig';
+import { SliderConfig } from '../sliderConfig/SliderConfig';
 
 class SliderRangeLineView {
   private CLASSES: SliderClasses;

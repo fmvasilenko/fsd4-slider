@@ -1,4 +1,4 @@
-import { SliderConfig } from '../sliderConfig/sliderConfig';
+import { SliderConfig } from '../sliderConfig/SliderConfig';
 
 enum Side { Left, Right }
 

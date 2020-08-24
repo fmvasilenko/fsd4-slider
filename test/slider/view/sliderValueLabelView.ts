@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { expect } from 'chai';
-import { SliderValueLabelView } from '../../../src/slider/view/sliderValueLabelView';
-import { SliderConfig } from '../../../src/slider/sliderConfig/sliderConfig';
+import { SliderValueLabelView } from '../../../src/slider/view/SliderValueLabelView';
+import { SliderConfig } from '../../../src/slider/sliderConfig/SliderConfig';
 
 const jsdom = require('jsdom');
 const CLASSES: SliderClasses = require('../../../src/slider/sliderClasses.json');

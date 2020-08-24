@@ -1,7 +1,7 @@
 import { expect } from 'chai';
-import { SliderDefaultValueLabel } from '../../../src/slider/view/sliderDefaultValueLabelView';
-import { SliderConfig } from '../../../src/slider/sliderConfig/sliderConfig';
-import { SliderState } from '../../../src/slider/sliderState/sliderState';
+import { SliderDefaultValueLabel } from '../../../src/slider/view/SliderDefaultValueLabelView';
+import { SliderConfig } from '../../../src/slider/sliderConfig/SliderConfig';
+import { SliderState } from '../../../src/slider/sliderState/SliderState';
 
 const jsdom = require('jsdom');
 const CLASSES: SliderClasses = require('../../../src/slider/sliderClasses.json');

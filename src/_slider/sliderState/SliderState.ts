@@ -1,4 +1,4 @@
-import { SliderStateItem } from './sliderStateItem';
+import { SliderStateItem } from './SliderStateItem';
 
 class SliderState {
   public leftHandlePosition: SliderStateItem;

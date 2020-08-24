@@ -1,4 +1,4 @@
-import { SliderConfigItem } from './sliderConfigItem';
+import { SliderConfigItem } from './SliderConfigItem';
 
 interface ImportedSliderConfig {
   isRange?: boolean;

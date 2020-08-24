@@ -1,5 +1,5 @@
 import { expect } from 'chai';
-import { SliderConfigItem } from '../../../src/slider/sliderConfig/sliderConfigItem';
+import { SliderConfigItem } from '../../../src/slider/sliderConfig/SliderConfigItem';
 
 class Subscriber {
   public value: number;

@@ -1,9 +1,9 @@
 /// <reference path='./slider.d.ts' />
 
-import { SliderView } from './view/sliderView';
-import { SliderModel } from './sliderModel';
-import { SliderConfig } from './sliderConfig/sliderConfig';
-import { SliderState } from './sliderState/sliderState';
+import { SliderView } from './view/SliderView';
+import { SliderModel } from './SliderModel';
+import { SliderConfig } from './sliderConfig/SliderConfig';
+import { SliderState } from './sliderState/SliderState';
 
 class SliderController {
   private ROOT: HTMLElement;

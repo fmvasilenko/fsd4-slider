@@ -1,5 +1,5 @@
-import { SliderController } from './sliderController';
-import { SliderConfig } from './sliderConfig/sliderConfig';
+import { SliderController } from './SliderController';
+import { SliderConfig } from './sliderConfig/SliderConfig';
 
 // eslint-disable-next-line func-names
 export default $.fn.slider = function (

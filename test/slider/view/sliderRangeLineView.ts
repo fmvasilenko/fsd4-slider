@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { expect } from 'chai';
-import { SliderRangeLineView } from '../../../src/slider/view/sliderRangeLineView';
-import { SliderConfig } from '../../../src/slider/sliderConfig/sliderConfig';
+import { SliderRangeLineView } from '../../../src/slider/view/SliderRangeLineView';
+import { SliderConfig } from '../../../src/slider/sliderConfig/SliderConfig';
 
 const jsdom = require('jsdom');
 const CLASSES: SliderClasses = require('../../../src/slider/sliderClasses.json');

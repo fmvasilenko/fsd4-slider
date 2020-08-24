@@ -1,5 +1,5 @@
 import { expect } from 'chai';
-import { SliderConfig } from '../../../src/slider/sliderConfig/sliderConfig';
+import { SliderConfig } from '../../../src/slider/sliderConfig/SliderConfig';
 
 const defaultConfig = {
   isRange: false,

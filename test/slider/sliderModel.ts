@@ -1,8 +1,8 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { expect } from 'chai';
-import { SliderConfig } from '../../src/slider/sliderConfig/sliderConfig';
-import { SliderModel } from '../../src/slider/sliderModel';
-import { SliderState } from '../../src/slider/sliderState/sliderState';
+import { SliderConfig } from '../../src/slider/sliderConfig/SliderConfig';
+import { SliderModel } from '../../src/slider/SliderModel';
+import { SliderState } from '../../src/slider/sliderState/SliderState';
 
 const defaultConfig = {
   isRange: false,

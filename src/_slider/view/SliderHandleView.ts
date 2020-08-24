@@ -1,6 +1,6 @@
-import { SliderConfig } from '../sliderConfig/sliderConfig';
-import { SliderState } from '../sliderState/sliderState';
-import { SliderValueLabelView } from './sliderValueLabelView';
+import { SliderConfig } from '../sliderConfig/SliderConfig';
+import { SliderState } from '../sliderState/SliderState';
+import { SliderValueLabelView } from './SliderValueLabelView';
 
 enum Side { Left, Right }
 
