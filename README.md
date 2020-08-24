@@ -3,20 +3,39 @@
 This is a jQuery slider plugin.  
 [Demo page](https://fmvasilenko.github.io/fsd4-slider/demo/)  
   
+### NPM
 To install as a plugin use:
 ```
 npm install fsd4-slider
 ```
-To test use:
-```
-npm test
-```
+  
 > Notice! Tests are not included in plugin package!
 
 To add plugin to the project use:
 ```js
 import 'fsd4-slider';
 import 'fsd4-slider/slider.css';
+```
+  
+### Git clone
+After downloading run
+```
+npm install
+```
+
+To run development mode use
+```
+npm run dev
+```
+
+To build the project use
+```
+npm run build
+```
+
+To test use:
+```
+npm test
 ```
 
 ## Table of contents
