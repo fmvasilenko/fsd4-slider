@@ -1,23 +1,23 @@
 {
   "name": "fsd4-slider",
-  "version": "1.0.2",
-  "description": "",
-  "main": "index.js",
+  "version": "1.0.6",
+  "description": "jQuery slider plugin",
+  "main": "dist/slider.js",
   "scripts": {
     "test": "nyc mocha --require ts-node/register --watch-extensions ts 'test/**/*.ts'",
     "dev": "webpack-dev-server --open --config ./build/webpack.dev.config.js",
     "build": "webpack --config ./build/webpack.build.config.js"
   },
   "_moduleAliases": {},
-  "author": "fmvasilenko",
+  "author": "fmvasilenko fm.vasilenko@yandex.ru",
   "license": "MIT",
   "repository": {
     "type": "git",
     "url": "git://github.com/fmvasilenko/fsd4-slider.git"
   },
   "files": [
-    "/assets/js/index.js",
-    "/assets/css/index.css"
+    "dist/slider.js",
+    "dist/slider.css"
   ],
   "devDependencies": {
     "@types/chai": "^4.2.11",
