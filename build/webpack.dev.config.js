@@ -7,16 +7,18 @@ const devWebpackConfig = merge(baseWebpackConfig, {
   devtool: 'cheap-module-eval-source-map',
   devServer: {
     contentBase: baseWebpackConfig.externals.paths.dist,
+    contentBasePublicPath: '/fsd4-slider',
+    publicPath: '/',
     port: 8081,
-    overlay: true
+    overlay: true,
   },
   plugins: [
     new webpack.SourceMapDevToolPlugin({
-      filename: '[file].map'
-    })
-  ]
+      filename: '[file].map',
+    }),
+  ],
 });
 
-module.exports = new Promise((resolve, reject) => {
+module.exports = new Promise((resolve) => {
   resolve(devWebpackConfig);
 });
