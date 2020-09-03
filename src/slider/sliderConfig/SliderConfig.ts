@@ -15,27 +15,27 @@ interface ImportedSliderConfig {
 }
 
 class SliderConfig {
-  public isRange: SliderConfigItem;
+  public isRange: SliderConfigItem<boolean>;
 
-  public hasDefaultValues: SliderConfigItem;
+  public hasDefaultValues: SliderConfigItem<boolean>;
 
-  public isVertical: SliderConfigItem;
+  public isVertical: SliderConfigItem<boolean>;
 
-  public valueLabelDisplayed: SliderConfigItem;
+  public valueLabelDisplayed: SliderConfigItem<boolean>;
 
-  public limitsDisplayed: SliderConfigItem;
+  public limitsDisplayed: SliderConfigItem<boolean>;
 
-  public minValue: SliderConfigItem;
+  public minValue: SliderConfigItem<number>;
 
-  public maxValue: SliderConfigItem;
+  public maxValue: SliderConfigItem<number>;
 
-  public step: SliderConfigItem;
+  public step: SliderConfigItem<number>;
 
-  public leftHandleValue: SliderConfigItem;
+  public leftHandleValue: SliderConfigItem<number>;
 
-  public rightHandleValue: SliderConfigItem;
+  public rightHandleValue: SliderConfigItem<number>;
 
-  public defaultValues: SliderConfigItem;
+  public defaultValues: SliderConfigItem<number[] | string[]>;
 
   constructor(importedConfig?: ImportedSliderConfig) {
     const config = Object.assign(this.getDefaultConfig(), importedConfig);
@@ -70,17 +70,17 @@ class SliderConfig {
   }
 
   // eslint-disable-next-line class-methods-use-this
-  private setBoolean(value: boolean): SliderConfigItem {
+  private setBoolean(value: boolean): SliderConfigItem<boolean> {
     return new SliderConfigItem(value);
   }
 
-  private setIsRange(value: boolean): SliderConfigItem {
+  private setIsRange(value: boolean): SliderConfigItem<boolean> {
     const isRange = new SliderConfigItem(value);
     isRange.addSubscriber(this.updateHandlesValues.bind(this));
     return isRange;
   }
 
-  private setHasDefaultValues(value: boolean): SliderConfigItem {
+  private setHasDefaultValues(value: boolean): SliderConfigItem<boolean> {
     const hasDefaultValues = new SliderConfigItem(
       value,
       this.checkHasDefaultValues.bind(this),
@@ -89,7 +89,7 @@ class SliderConfig {
     return hasDefaultValues;
   }
 
-  private setLimitsDisplayed(givenValue: boolean): SliderConfigItem {
+  private setLimitsDisplayed(givenValue: boolean): SliderConfigItem<boolean> {
     const value = this.hasDefaultValues.get() === true
       ? false
       : givenValue;
@@ -100,13 +100,13 @@ class SliderConfig {
     );
   }
 
-  private setMinValue(value: number): SliderConfigItem {
+  private setMinValue(value: number): SliderConfigItem<number> {
     const minValue = new SliderConfigItem(value, this.checkMinValue.bind(this));
     minValue.addSubscriber(this.updateHandlesValues.bind(this));
     return minValue;
   }
 
-  private setMaxValue(givenValue: number): SliderConfigItem {
+  private setMaxValue(givenValue: number): SliderConfigItem<number> {
     const value = givenValue < this.minValue.get()
       ? this.minValue.get() as number
       : givenValue;
@@ -116,23 +116,23 @@ class SliderConfig {
     return maxValue;
   }
 
-  private setStep(givenStep: number): SliderConfigItem {
+  private setStep(givenStep: number): SliderConfigItem<number> {
     const step = this.checkStep(givenStep);
     return new SliderConfigItem(step, this.checkStep.bind(this));
   }
 
-  private setDefaultValues(values: number[] | string[]): SliderConfigItem {
+  private setDefaultValues(values: number[] | string[]): SliderConfigItem<number[] | string[]> {
     const defaultValues = new SliderConfigItem(values);
     defaultValues.addSubscriber(this.updateHandlesValues.bind(this));
     return defaultValues;
   }
 
-  private setLeftHandleValue(givenValue: number): SliderConfigItem {
+  private setLeftHandleValue(givenValue: number): SliderConfigItem<number> {
     const value = this.checkHandleValue(givenValue);
     return new SliderConfigItem(value, this.checkLeftHandleValue.bind(this));
   }
 
-  private setRightHandleValue(givenValue: number): SliderConfigItem {
+  private setRightHandleValue(givenValue: number): SliderConfigItem<number> {
     const value = this.checkRightHandleValue(givenValue);
     return new SliderConfigItem(value, this.checkRightHandleValue.bind(this));
   }

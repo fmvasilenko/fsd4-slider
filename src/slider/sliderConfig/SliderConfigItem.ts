@@ -1,30 +1,30 @@
-interface ISliderConfigItem {
-  set(value: number | string | boolean | number[] | string[]): void;
-  get(): number | string | boolean | number[] | string[];
+interface ISliderConfigItem<T> {
+  set(value: T): void;
+  get(): T;
 }
 
-class SliderConfigItem implements ISliderConfigItem {
-  private value: number | string | boolean | number[] | string[];
+class SliderConfigItem<T> implements ISliderConfigItem<T> {
+  private value: T;
 
   private subscribers: Function[] = [];
 
   private checkValue: Function;
 
   constructor(
-    value: number | string | boolean | number[] | string[],
+    value: T,
     checkValue?: Function,
   ) {
     this.value = value;
     this.checkValue = checkValue
-      || ((givenValue: number | string | boolean | number[] | string[]) => givenValue);
+      || ((givenValue: T) => givenValue);
   }
 
-  public set(value: number | string | boolean | number[] | string[]) {
+  public set(value: T) {
     this.value = this.checkValue(value);
     this.publish(this.value);
   }
 
-  public get(): number | string | boolean | number[] | string[] {
+  public get(): T {
     return this.value;
   }
 
@@ -36,7 +36,7 @@ class SliderConfigItem implements ISliderConfigItem {
     this.subscribers = this.subscribers.filter((el) => el !== subscriber);
   }
 
-  private publish(data: number | string | boolean | number[] | string[]) {
+  private publish(data: T) {
     this.subscribers.forEach((subscriber) => {
       subscriber(data);
     });
