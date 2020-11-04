@@ -1,3 +1,5 @@
 /node_modules/*
 /FSD4_Slider.code-workspace
 /.nyc_output/*
+/dist/*
+/demo/*

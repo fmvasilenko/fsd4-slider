@@ -1,7 +1,7 @@
 # FSD4 Slider
 
 This is a jQuery slider plugin.  
-[Demo page](https://fmvasilenko.github.io/fsd4-slider/demo/)  
+[Demo page](https://fmvasilenko.github.io/fsd4-slider/)  
   
 ### NPM
 To install as a plugin use:
