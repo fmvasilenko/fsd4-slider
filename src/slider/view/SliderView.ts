@@ -1,12 +1,13 @@
 import { SliderHandle } from './SliderHandleView';
-import { SliderLimitView } from './SliderLimitView';
+// import { SliderLimitView } from './SliderLimitView';
 import { SliderDefaultValueLabel } from './SliderDefaultValueLabelView';
 import { SliderRangeLineView } from './SliderRangeLineView';
 import { SliderConfig } from '../sliderConfig/SliderConfig';
 import { SliderState } from '../sliderState/SliderState';
+import { SliderScaleValue } from './SliderScaleValue';
 
 enum Side { Left, Right }
-enum Type { MinVal, MaxVal }
+// enum Type { MinVal, MaxVal }
 
 class SliderView {
   private CLASSES: SliderClasses;
@@ -23,11 +24,13 @@ class SliderView {
 
   private RANGE_LINE: SliderRangeLineView;
 
-  private MIN_VALUE_LABEL: SliderLimitView;
+  // private MIN_VALUE_LABEL: SliderLimitView;
 
-  private MAX_VALUE_LABEL: SliderLimitView;
+  // private MAX_VALUE_LABEL: SliderLimitView;
 
   private DEFAULT_VALUES: SliderDefaultValueLabel[] = [];
+
+  private SCALE_VALUES: SliderScaleValue[] = [];
 
   constructor(root: HTMLElement, config: SliderConfig, state: SliderState) {
     this.CLASSES = require('../sliderClasses.json');
@@ -43,16 +46,22 @@ class SliderView {
 
     this.RANGE_LINE = new SliderRangeLineView(this.ROOT, this.config);
 
-    this.MIN_VALUE_LABEL = new SliderLimitView(this.ROOT, this.config, this.state, Type.MinVal);
-    this.MAX_VALUE_LABEL = new SliderLimitView(this.ROOT, this.config, this.state, Type.MaxVal);
+    // this.MIN_VALUE_LABEL = new SliderLimitView(this.ROOT, this.config, this.state, Type.MinVal);
+    // this.MAX_VALUE_LABEL = new SliderLimitView(this.ROOT, this.config, this.state, Type.MaxVal);
 
     const defaultValues = this.config.defaultValues.get() as number[] | string[];
     defaultValues.forEach((value: string | number, index: number) => {
       this.DEFAULT_VALUES[index] = new SliderDefaultValueLabel(this.ROOT, this.config, this.state, index);
     });
 
+    this.checkScaleValues();
+
     this.config.defaultValues.addSubscriber(this.checkDefaultValues.bind(this));
     this.config.isVertical.addSubscriber(this.switchVertical.bind(this));
+    this.config.minValue.addSubscriber(this.checkScaleValues.bind(this));
+    this.config.maxValue.addSubscriber(this.checkScaleValues.bind(this));
+    this.config.step.addSubscriber(this.checkScaleValues.bind(this));
+    this.config.pointsNumber.addSubscriber(this.checkScaleValues.bind(this));
 
     this.bindEventListeners();
   }
@@ -67,6 +76,25 @@ class SliderView {
     defaultValues.forEach((value: string | number, index: number) => {
       this.DEFAULT_VALUES[index] = new SliderDefaultValueLabel(this.ROOT, this.config, this.state, index);
     });
+  }
+
+  private checkScaleValues() {
+    this.SCALE_VALUES.forEach((value: SliderScaleValue) => {
+      value.remove();
+    });
+    this.SCALE_VALUES.length = 0;
+
+    const userPointsNumber = this.config.pointsNumber.get();
+    const range = this.config.maxValue.get() - this.config.minValue.get();
+    const step = this.config.step.get();
+    const stepsNumber = Math.floor(range / step);
+    let pointsNumber = userPointsNumber;
+
+    if (userPointsNumber > stepsNumber + 1) pointsNumber = stepsNumber + 1;
+
+    for (let i = 0; i < pointsNumber; i += 1) {
+      this.SCALE_VALUES[i] = new SliderScaleValue(this.ROOT, this.config, this.state, i, pointsNumber);
+    }
   }
 
   private switchVertical() {

@@ -1,3 +1,4 @@
+/* eslint-disable class-methods-use-this */
 import { SliderConfigItem } from './SliderConfigItem';
 
 interface ImportedSliderConfig {
@@ -37,6 +38,8 @@ class SliderConfig {
 
   public defaultValues: SliderConfigItem<number[] | string[]>;
 
+  public pointsNumber: SliderConfigItem<number>;
+
   constructor(importedConfig?: ImportedSliderConfig) {
     const config = Object.assign(this.getDefaultConfig(), importedConfig);
     this.isRange = this.setIsRange(config.isRange);
@@ -50,9 +53,9 @@ class SliderConfig {
     this.defaultValues = this.setDefaultValues(config.defaultValues);
     this.leftHandleValue = this.setLeftHandleValue(config.leftHandleValue);
     this.rightHandleValue = this.setRightHandleValue(config.rightHandleValue);
+    this.pointsNumber = this.setPointsNumber(config.pointsNumber);
   }
 
-  // eslint-disable-next-line class-methods-use-this
   private getDefaultConfig() {
     return {
       isRange: false,
@@ -66,10 +69,10 @@ class SliderConfig {
       defaultValues: ['first', 'second', 'third'],
       leftHandleValue: 20,
       rightHandleValue: 80,
+      pointsNumber: 5,
     };
   }
 
-  // eslint-disable-next-line class-methods-use-this
   private setBoolean(value: boolean): SliderConfigItem<boolean> {
     return new SliderConfigItem(value);
   }
@@ -137,6 +140,11 @@ class SliderConfig {
     return new SliderConfigItem(value, this.checkRightHandleValue.bind(this));
   }
 
+  private setPointsNumber(givenValue: number): SliderConfigItem<number> {
+    const value = this.checkPointsNumberValue(givenValue);
+    return new SliderConfigItem(value, this.checkPointsNumberValue.bind(this));
+  }
+
   private updateHandlesValues() {
     this.leftHandleValue.set(this.leftHandleValue.get());
     this.rightHandleValue.set(this.rightHandleValue.get());
@@ -165,7 +173,6 @@ class SliderConfig {
       : givenValue;
   }
 
-  // eslint-disable-next-line class-methods-use-this
   private checkStep(givenStep: number): number {
     return givenStep >= 1 ? givenStep : 1;
   }
@@ -210,6 +217,10 @@ class SliderConfig {
     }
 
     return value;
+  }
+
+  private checkPointsNumberValue(givenValue: number): number {
+    return givenValue > 0 ? givenValue : 1;
   }
 }
 

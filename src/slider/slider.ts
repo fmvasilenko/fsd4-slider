@@ -66,6 +66,11 @@ export default $.fn.slider = function (
       if (value !== undefined) sliderConfig.defaultValues.set(value);
       return sliderConfig.defaultValues.get() as number[] | string[];
     },
+
+    pointsNumber(value?: number): number {
+      if (value !== undefined) sliderConfig.pointsNumber.set(value);
+      return sliderConfig.pointsNumber.get() as number;
+    },
   };
 
   return this;

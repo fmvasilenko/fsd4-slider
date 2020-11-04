@@ -15,6 +15,7 @@ interface JQuerySliderConfig {
   leftHandleValue: Function
   rightHandleValue: Function
   defaultValues: Function
+  pointsNumber: Function
 }
 
 interface JQuery {
@@ -36,6 +37,7 @@ interface ImportedSliderConfig {
   leftHandleValue?: number
   rightHandleValue?: number
   defaultValues?: number[] | string[]
+  pointsNumber?: number
 }
 
 interface SliderCallBackFunction {
@@ -64,4 +66,8 @@ interface SliderClasses {
   DEFAULT_VALUE_VERTICAL: string
   DEFAULT_VALUE_LABEL: string
   DEFAULT_VALUE_LABEL_VERTICAL: string
+  SCALE_VALUE: string
+  SCALE_VALUE_VERTICAL: string
+  SCALE_VALUE_LABEL: string
+  SCALE_VALUE_LABEL_VERTICAL: string
 }

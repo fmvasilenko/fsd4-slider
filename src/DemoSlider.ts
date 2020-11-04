@@ -14,6 +14,8 @@ class DemoSlider {
 
   private $STEP: JQuery;
 
+  private $POINTS_NUMBER: JQuery;
+
   private $DEFAULT_VALUES: JQuery;
 
   private $LEFT_HANDLE_INPUT: JQuery;
@@ -42,6 +44,7 @@ class DemoSlider {
     this.$MIN_VALUE = $(this.createValueElement('Min value'));
     this.$MAX_VALUE = $(this.createValueElement('Max value'));
     this.$STEP = $(this.createValueElement('Step'));
+    this.$POINTS_NUMBER = $(this.createValueElement('Points number'));
     this.$DEFAULT_VALUES = $(this.createValueElement('Default values', 'demo-slider__default-values'));
     this.$LEFT_HANDLE_INPUT = $(this.createValueElement('Left handle value'));
     this.$RIGHT_HANDLE_INPUT = $(this.createValueElement('Right handle value'));
@@ -115,6 +118,7 @@ class DemoSlider {
     this.$MIN_VALUE.attr('value', this.$SLIDER.config.minValue());
     this.$MAX_VALUE.attr('value', this.$SLIDER.config.maxValue());
     this.$STEP.attr('value', this.$SLIDER.config.step());
+    this.$POINTS_NUMBER.attr('value', this.$SLIDER.config.pointsNumber());
     this.$DEFAULT_VALUES.attr('value', this.$SLIDER.config.defaultValues());
     this.$LEFT_HANDLE_INPUT.val(this.$SLIDER.config.leftHandleValue());
     this.$RIGHT_HANDLE_INPUT.val(this.$SLIDER.config.rightHandleValue());
@@ -135,6 +139,7 @@ class DemoSlider {
     this.$MIN_VALUE[0].addEventListener('change', this.minValueChangeHandler.bind(this));
     this.$MAX_VALUE[0].addEventListener('change', this.maxValueChangeHandler.bind(this));
     this.$STEP[0].addEventListener('change', this.stepChangeHandler.bind(this));
+    this.$POINTS_NUMBER[0].addEventListener('change', this.pointsNumberChangeHandler.bind(this));
     this.$DEFAULT_VALUES[0].addEventListener('change', this.defaultValuesChangeHandler.bind(this));
     this.$LEFT_HANDLE_INPUT[0].addEventListener('change', this.leftHandleValueChangeHandler.bind(this));
     this.$RIGHT_HANDLE_INPUT[0].addEventListener('change', this.rightHandleChangeHandler.bind(this));
@@ -161,6 +166,12 @@ class DemoSlider {
     let value = parseInt((this.$STEP.val() as string).replace(/-\D/g, ''), 10);
     if (isNaN(value)) value = this.$SLIDER.config.step();
     this.$STEP.val(this.$SLIDER.config.step(value));
+  }
+
+  private pointsNumberChangeHandler() {
+    let value = parseInt((this.$POINTS_NUMBER.val() as string).replace(/-\D/g, ''), 10);
+    if (isNaN(value)) value = this.$SLIDER.config.pointsNumber();
+    this.$POINTS_NUMBER.val(this.$SLIDER.config.pointsNumber(value));
   }
 
   private defaultValuesChangeHandler() {
