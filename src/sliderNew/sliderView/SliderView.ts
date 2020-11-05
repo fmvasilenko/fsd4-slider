@@ -1,0 +1,5 @@
+class SliderView {
+
+}
+
+export { SliderView };

@@ -1,6 +1,8 @@
 interface IObservable<T> {
   set(value: T): void;
   get(): T;
+  addSubscriber(subscriber: Function): void;
+  removeSubscriber(subscriber: Function): void;
 }
 
 class Observable<T> implements IObservable<T> {
@@ -10,13 +12,9 @@ class Observable<T> implements IObservable<T> {
 
   private checkValue: Function;
 
-  constructor(
-    value: T,
-    checkValue?: Function,
-  ) {
+  constructor(value: T, checkValue?: Function) {
     this.value = value;
-    this.checkValue = checkValue
-      || ((givenValue: T) => givenValue);
+    this.checkValue = checkValue || ((givenValue: T) => givenValue);
   }
 
   public set(value: T) {
