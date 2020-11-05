@@ -31,6 +31,10 @@ class SliderPresenter {
 
     this.view.updateIsRange(state);
     this.view.updateIsVertical(state);
+    this.view.updateStep(state);
+    this.view.updatePointsNumber(state);
+    this.view.updateMinValue(state);
+    this.view.updateMaxValue(state);
     this.view.updateLeftHandleValue(state);
     this.view.updateRightHandleValue(state);
   }

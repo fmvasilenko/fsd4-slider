@@ -6,5 +6,9 @@
   "leftHandle": "slider__left-handle",
   "rightHandle": "slider__right-handle",
   "rangeLine": "slider__range-line",
-  "rangeLineVertical": "slider__range-line_vertical"
+  "rangeLineVertical": "slider__range-line_vertical",
+  "scaleValue": "slider__scale-value",
+  "scaleValueVertical": "slider__scale-value_vertical",
+  "scaleValueLabel": "slider__scale-value-label",
+  "scaleValueLabelVertical": "slider__scale-value-label_vertical"
 }

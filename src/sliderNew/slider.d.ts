@@ -20,4 +20,8 @@ interface Classes {
   rightHandle: string
   rangeLine: string
   rangeLineVertical: string
+  scaleValue: string
+  scaleValueVertical: string
+  scaleValueLabel: string
+  scaleValueLabelVertical: string
 }

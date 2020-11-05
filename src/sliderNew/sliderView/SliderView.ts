@@ -1,5 +1,6 @@
 import { SliderHandleView } from './SliderHandleView';
 import { SliderRangeLineView } from './SliderRangeLineView';
+import { SliderScaleValueView } from './SliderScaleValueView';
 
 enum HandleSide {Left, Right}
 
@@ -13,6 +14,8 @@ class SliderView {
   private rightHandle: SliderHandleView;
 
   private rangeLine: SliderRangeLineView;
+
+  private scaleValues: SliderScaleValueView[] = [];
 
   constructor(container: HTMLElement) {
     this.classes = require('../slider.classes.json');
@@ -32,6 +35,25 @@ class SliderView {
     this.leftHandle.switchVertical(state);
     this.rightHandle.switchVertical(state);
     this.rangeLine.switchVertical(state);
+    this.scaleValues.forEach((scaleValue: SliderScaleValueView) => {
+      scaleValue.switchVertical(state);
+    });
+  }
+
+  public updateStep(state: State) {
+    this.updateScaleValues(state);
+  }
+
+  public updatePointsNumber(state: State) {
+    this.updateScaleValues(state);
+  }
+
+  public updateMinValue(state: State) {
+    this.updateScaleValues(state);
+  }
+
+  public updateMaxValue(state: State) {
+    this.updateScaleValues(state);
   }
 
   public updateLeftHandleValue(state: State) {
@@ -66,6 +88,27 @@ class SliderView {
 
     if (isVertical) this.root.classList.add(this.classes.rootVertical);
     else this.root.classList.remove(this.classes.rootVertical);
+  }
+
+  private updateScaleValues(state: State) {
+    this.scaleValues.forEach((value: SliderScaleValueView) => {
+      value.remove();
+    });
+    this.scaleValues.length = 0;
+
+    const {
+      step, pointsNumber, minValue, maxValue,
+    } = state;
+
+    const range = maxValue - minValue;
+    const stepsNumber = Math.floor(range / step);
+    let calculatedPointsNumber = pointsNumber;
+
+    if (pointsNumber > stepsNumber + 1) calculatedPointsNumber = stepsNumber + 1;
+
+    for (let i = 0; i < calculatedPointsNumber; i += 1) {
+      this.scaleValues[i] = new SliderScaleValueView(this.root, state, i, calculatedPointsNumber);
+    }
   }
 }
 
