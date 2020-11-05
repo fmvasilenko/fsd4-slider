@@ -2,10 +2,10 @@
 /* eslint-disable no-plusplus */
 
 import './main.scss';
-import { DemoSlider } from './DemoSlider';
+import { DemoSlider } from './DemoSliderNew';
 
 const pageWrapper = $('.page-wrapper');
 
 for (let i = 0; i < 4; i++) {
-  const demoSlider = new DemoSlider(pageWrapper[0], {});
+  const demoSlider = new DemoSlider(pageWrapper[0]);
 }

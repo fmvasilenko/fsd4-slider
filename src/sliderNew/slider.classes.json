@@ -1,0 +1,10 @@
+{
+  "root": "slider",
+  "rootVertical": "slider_vertical",
+  "handle": "slider__handle",
+  "handleVertical": "slider__handle_vertical",
+  "leftHandle": "slider__left-handle",
+  "rightHandle": "slider__right-handle",
+  "rangeLine": "slider__range-line",
+  "rangeLineVertical": "slider__range-line_vertical"
+}

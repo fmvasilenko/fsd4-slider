@@ -23,7 +23,7 @@ class SliderModel {
   public rightHandleValue: Observable<number>;
 
   constructor() {
-    const config: Config = require('./sliderDefaultConfig.json');
+    const config: State = require('./sliderDefaultConfig.json');
 
     this.isRange = new Observable(config.isRange);
     this.isVertical = new Observable(config.isVertical);
@@ -79,8 +79,8 @@ class SliderModel {
   private checkLeftHandleValue(givenValue: number): number {
     let value = this.checkHandleValue(givenValue);
 
-    if (this.isRange.get() === true && value > this.rightHandleValue.get()) {
-      value = this.rightHandleValue.get() as number;
+    if (this.isRange.get() === true && this.rightHandleValue && value > this.rightHandleValue.get()) {
+      value = this.rightHandleValue.get();
     }
 
     return value;
@@ -91,8 +91,8 @@ class SliderModel {
 
     if (this.isRange.get()) {
       value = this.checkHandleValue(givenValue);
-      if (value < this.leftHandleValue.get()) value = this.leftHandleValue.get() as number;
-    } else value = this.maxValue.get() as number;
+      if (value < this.leftHandleValue.get()) value = this.leftHandleValue.get();
+    } else value = this.maxValue.get();
 
     return value;
   }

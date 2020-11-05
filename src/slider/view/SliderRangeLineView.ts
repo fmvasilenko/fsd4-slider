@@ -25,16 +25,16 @@ class SliderRangeLineView {
     this.config.isRange.addSubscriber(this.render.bind(this));
   }
 
+  public switchVertical() {
+    if (this.config.isVertical.get() === true) this.ROOT.classList.add(this.CLASSES.RANGE_LINE_VERTICAL);
+    else this.ROOT.classList.remove(this.CLASSES.RANGE_LINE_VERTICAL);
+  }
+
   private createRootElement() {
     const root = document.createElement('div');
     root.classList.add(this.CLASSES.RANGE_LINE);
     this.CONTAINER.appendChild(root);
     return root;
-  }
-
-  private switchVertical() {
-    if (this.config.isVertical.get() === true) this.ROOT.classList.add(this.CLASSES.RANGE_LINE_VERTICAL);
-    else this.ROOT.classList.remove(this.CLASSES.RANGE_LINE_VERTICAL);
   }
 
   private render() {
