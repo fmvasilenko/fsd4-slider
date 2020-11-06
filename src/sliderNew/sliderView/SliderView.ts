@@ -40,6 +40,11 @@ class SliderView {
     });
   }
 
+  public updateValueLabelDisplayed(state: State) {
+    this.leftHandle.switchLabel(state);
+    this.rightHandle.switchLabel(state);
+  }
+
   public updateStep(state: State) {
     this.updateScaleValues(state);
   }

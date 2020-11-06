@@ -18,6 +18,11 @@ interface Classes {
   handleVertical: string
   leftHandle: string
   rightHandle: string
+  valueLabel: string
+  leftHandleLabel: string
+  leftHandleLabelVertical: string
+  rightHandleLabel: string
+  rightHandleLabelVertical: string
   rangeLine: string
   rangeLineVertical: string
   scaleValue: string

@@ -9,6 +9,8 @@ class SliderHandleView {
 
   private root: HTMLElement;
 
+  private label: HTMLElement;
+
   private isDragged: boolean;
 
   private isVertical: boolean;
@@ -20,6 +22,7 @@ class SliderHandleView {
     this.handleSide = handleSide;
     this.classes = require('../slider.classes.json');
     this.root = this.createRoot();
+    this.label = this.createLabel();
     this.isDragged = false;
     this.isVertical = false;
     this.positionSubscriber = () => {};
@@ -40,13 +43,27 @@ class SliderHandleView {
     }
   }
 
+  public switchLabel(state: State) {
+    const { valueLabelDisplayed } = state;
+
+    if (valueLabelDisplayed) this.root.appendChild(this.label);
+    else this.label.remove();
+  }
+
   public switchVertical(state: State) {
     const { isVertical } = state;
 
     this.isVertical = isVertical;
 
-    if (isVertical) this.root.classList.add(this.classes.handleVertical);
-    else this.root.classList.remove(this.classes.handleVertical);
+    if (isVertical) {
+      this.root.classList.add(this.classes.handleVertical);
+      if (this.handleSide === HandleSide.Left) this.label.classList.add(this.classes.leftHandleLabelVertical);
+      else this.label.classList.add(this.classes.rightHandleLabelVertical);
+    } else {
+      this.root.classList.remove(this.classes.handleVertical);
+      if (this.handleSide === HandleSide.Left) this.label.classList.remove(this.classes.leftHandleLabelVertical);
+      else this.label.classList.remove(this.classes.rightHandleLabelVertical);
+    }
 
     this.render(state);
   }
@@ -69,8 +86,18 @@ class SliderHandleView {
     return root;
   }
 
+  private createLabel() {
+    const label = document.createElement('div');
+    label.classList.add(this.classes.valueLabel);
+
+    if (this.handleSide === HandleSide.Left) label.classList.add(this.classes.leftHandleLabel);
+    else label.classList.add(this.classes.rightHandleLabel);
+
+    return label;
+  }
+
   private render(state: State) {
-    const { isVertical } = state;
+    const { isVertical, leftHandleValue, rightHandleValue } = state;
     let shift = this.calculateShift(state);
 
     if (this.handleSide === HandleSide.Left) shift -= this.calculateExtraShift(state);
@@ -83,6 +110,9 @@ class SliderHandleView {
       this.root.style.bottom = '';
       this.root.style.left = `${shift}%`;
     }
+
+    if (this.handleSide === HandleSide.Left) this.label.innerHTML = `${leftHandleValue}`;
+    else this.label.innerHTML = `${rightHandleValue}`;
   }
 
   private calculateShift(state: State): number {
