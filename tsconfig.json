@@ -12,6 +12,7 @@
     "allowJs": true
   },
   "exclude": [
-    "slider2"
+    "slider2",
+    "test"
   ]
 }
