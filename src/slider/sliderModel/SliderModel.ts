@@ -1,35 +1,36 @@
 /* eslint-disable class-methods-use-this */
-import { Observable } from '../observable/Observable';
+// import { ModelMemoryCell } from '../ModelMemoryCell/ModelMemoryCell';
+import { ModelMemoryCell } from './ModelMemoryCell';
 
 class SliderModel {
-  public isRange: Observable<boolean>;
+  public isRange: ModelMemoryCell<boolean>;
 
-  public isVertical: Observable<boolean>;
+  public isVertical: ModelMemoryCell<boolean>;
 
-  public valueLabelDisplayed: Observable<boolean>;
+  public valueLabelDisplayed: ModelMemoryCell<boolean>;
 
-  public scaleDisplayed: Observable<boolean>;
+  public scaleDisplayed: ModelMemoryCell<boolean>;
 
-  public minValue: Observable<number>;
+  public minValue: ModelMemoryCell<number>;
 
-  public maxValue: Observable<number>;
+  public maxValue: ModelMemoryCell<number>;
 
-  public step: Observable<number>;
+  public step: ModelMemoryCell<number>;
 
-  public pointsNumber: Observable<number>;
+  public pointsNumber: ModelMemoryCell<number>;
 
-  public leftHandleValue: Observable<number>;
+  public leftHandleValue: ModelMemoryCell<number>;
 
-  public rightHandleValue: Observable<number>;
+  public rightHandleValue: ModelMemoryCell<number>;
 
   constructor() {
     const config: State = require('./sliderDefaultConfig.json');
 
-    this.isRange = new Observable(config.isRange);
-    this.isVertical = new Observable(config.isVertical);
-    this.valueLabelDisplayed = new Observable(config.valueLabelDisplayed);
-    this.scaleDisplayed = new Observable(config.scaleDisplayed);
-    this.minValue = new Observable(config.minValue, this.checkMinValue.bind(this));
+    this.isRange = new ModelMemoryCell(config.isRange);
+    this.isVertical = new ModelMemoryCell(config.isVertical);
+    this.valueLabelDisplayed = new ModelMemoryCell(config.valueLabelDisplayed);
+    this.scaleDisplayed = new ModelMemoryCell(config.scaleDisplayed);
+    this.minValue = new ModelMemoryCell(config.minValue, this.checkMinValue.bind(this));
     this.maxValue = this.setNumber(config.maxValue, this.checkMaxValue.bind(this));
     this.step = this.setNumber(config.step, this.checkStep.bind(this));
     this.pointsNumber = this.setNumber(config.pointsNumber, this.checkPointsNumber.bind(this));
@@ -39,9 +40,9 @@ class SliderModel {
     this.setSubscriptions();
   }
 
-  private setNumber(givenValue: number, checkFunction?: Function): Observable<number> {
+  private setNumber(givenValue: number, checkFunction?: Function): ModelMemoryCell<number> {
     const value = checkFunction ? checkFunction(givenValue) : givenValue;
-    return new Observable(value, checkFunction?.bind(this));
+    return new ModelMemoryCell(value, checkFunction?.bind(this));
   }
 
   private setSubscriptions() {
