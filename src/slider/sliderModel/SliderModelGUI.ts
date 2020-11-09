@@ -88,18 +88,7 @@ class SliderModelGUI {
   }
 
   public getCurrentState(): State {
-    return {
-      isRange: this.model.isRange.get(),
-      isVertical: this.model.isVertical.get(),
-      valueLabelDisplayed: this.model.valueLabelDisplayed.get(),
-      scaleDisplayed: this.model.scaleDisplayed.get(),
-      minValue: this.model.minValue.get(),
-      maxValue: this.model.maxValue.get(),
-      step: this.model.step.get(),
-      pointsNumber: this.model.pointsNumber.get(),
-      leftHandleValue: this.model.leftHandleValue.get(),
-      rightHandleValue: this.model.rightHandleValue.get(),
-    };
+    return this.model.getCurrentState();
   }
 
   private setSubscriptions() {
@@ -117,7 +106,7 @@ class SliderModelGUI {
 
   private calculateValue(position: number): number {
     const range = this.model.maxValue.get() - this.model.minValue.get();
-    return Math.floor(position * range);
+    return Math.floor(position * range) + this.model.minValue.get();
   }
 
   private isRangeSubscriber() {

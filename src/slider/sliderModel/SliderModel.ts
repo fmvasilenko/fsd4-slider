@@ -3,6 +3,8 @@
 import { ModelMemoryCell } from './ModelMemoryCell';
 
 class SliderModel {
+  private config: State;
+
   public isRange: ModelMemoryCell<boolean>;
 
   public isVertical: ModelMemoryCell<boolean>;
@@ -24,20 +26,35 @@ class SliderModel {
   public rightHandleValue: ModelMemoryCell<number>;
 
   constructor() {
-    const config: State = require('./sliderDefaultConfig.json');
+    this.config = require('./sliderDefaultConfig.json');
 
-    this.isRange = new ModelMemoryCell(config.isRange);
-    this.isVertical = new ModelMemoryCell(config.isVertical);
-    this.valueLabelDisplayed = new ModelMemoryCell(config.valueLabelDisplayed);
-    this.scaleDisplayed = new ModelMemoryCell(config.scaleDisplayed);
-    this.minValue = new ModelMemoryCell(config.minValue, this.checkMinValue.bind(this));
-    this.maxValue = this.setNumber(config.maxValue, this.checkMaxValue.bind(this));
-    this.step = this.setNumber(config.step, this.checkStep.bind(this));
-    this.pointsNumber = this.setNumber(config.pointsNumber, this.checkPointsNumber.bind(this));
-    this.leftHandleValue = this.setNumber(config.leftHandleValue, this.checkLeftHandleValue.bind(this));
-    this.rightHandleValue = this.setNumber(config.rightHandleValue, this.checkRightHandleValue.bind(this));
+    this.isRange = new ModelMemoryCell(this.config.isRange);
+    this.isVertical = new ModelMemoryCell(this.config.isVertical);
+    this.valueLabelDisplayed = new ModelMemoryCell(this.config.valueLabelDisplayed);
+    this.scaleDisplayed = new ModelMemoryCell(this.config.scaleDisplayed);
+    this.minValue = new ModelMemoryCell(this.config.minValue, this.checkMinValue.bind(this));
+    this.maxValue = this.setNumber(this.config.maxValue, this.checkMaxValue.bind(this));
+    this.step = this.setNumber(this.config.step, this.checkStep.bind(this));
+    this.pointsNumber = this.setNumber(this.config.pointsNumber, this.checkPointsNumber.bind(this));
+    this.leftHandleValue = this.setNumber(this.config.leftHandleValue, this.checkLeftHandleValue.bind(this));
+    this.rightHandleValue = this.setNumber(this.config.rightHandleValue, this.checkRightHandleValue.bind(this));
 
     this.setSubscriptions();
+  }
+
+  public getCurrentState(): State {
+    return {
+      isRange: this.isRange?.get(),
+      isVertical: this.isVertical?.get(),
+      valueLabelDisplayed: this.valueLabelDisplayed?.get(),
+      scaleDisplayed: this.scaleDisplayed?.get(),
+      minValue: this.minValue?.get(),
+      maxValue: this.maxValue?.get(),
+      step: this.step?.get(),
+      pointsNumber: this.pointsNumber?.get(),
+      leftHandleValue: this.leftHandleValue?.get(),
+      rightHandleValue: this.rightHandleValue?.get(),
+    };
   }
 
   private setNumber(givenValue: number, checkFunction?: Function): ModelMemoryCell<number> {
@@ -47,6 +64,7 @@ class SliderModel {
 
   private setSubscriptions() {
     this.isRange.addSubscriber(this.updateHandlesValues.bind(this));
+    this.step.addSubscriber(this.updateHandlesValues.bind(this));
     this.minValue.addSubscriber(this.updateHandlesValues.bind(this));
     this.maxValue.addSubscriber(this.updateHandlesValues.bind(this));
   }
@@ -78,37 +96,43 @@ class SliderModel {
   }
 
   private checkLeftHandleValue(givenValue: number): number {
-    let value = this.checkHandleValue(givenValue);
+    const { isRange, rightHandleValue } = this.getCurrentState();
+    const value = this.checkHandleValue(givenValue);
 
-    if (this.isRange.get() === true && this.rightHandleValue && value > this.rightHandleValue.get()) {
-      value = this.rightHandleValue.get();
-    }
+    if (!this.rightHandleValue) return value; // necessary for inital value check, when rigthHandleValue was not defined yet
+    if (isRange && value > rightHandleValue) return rightHandleValue;
 
     return value;
   }
 
   private checkRightHandleValue(givenValue: number): number {
-    let value = givenValue;
+    const { isRange, maxValue, leftHandleValue } = this.getCurrentState();
+    const value = this.checkHandleValue(givenValue);
 
-    if (this.isRange.get()) {
-      value = this.checkHandleValue(givenValue);
-      if (value < this.leftHandleValue.get()) value = this.leftHandleValue.get();
-    } else value = this.maxValue.get();
+    if (!isRange) return maxValue;
+    if (value < leftHandleValue) return leftHandleValue;
 
     return value;
   }
 
   private checkHandleValue(givenValue: number): number {
-    let value = givenValue;
+    const { minValue, maxValue } = this.getCurrentState();
+    const value = this.checkIfFitsTheSteps(givenValue);
 
-    const step = this.step.get();
-    if (value % step > step / 2) value += step;
-    value = value - (value % step) + this.minValue.get();
-
-    if (value < this.minValue.get()) value = this.minValue.get();
-    if (value > this.maxValue.get()) value = this.maxValue.get();
+    if (value < minValue) return minValue;
+    if (value > maxValue) return maxValue;
 
     return value;
+  }
+
+  private checkIfFitsTheSteps(value: number) {
+    const { step, minValue } = this.getCurrentState();
+    let normValue = value + minValue;
+
+    if (normValue % step > step / 2) normValue += step;
+    normValue -= (normValue % step);
+
+    return normValue - minValue;
   }
 }
 
