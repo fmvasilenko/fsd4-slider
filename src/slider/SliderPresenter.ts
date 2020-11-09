@@ -11,9 +11,9 @@ class SliderPresenter {
 
   private view: SliderView;
 
-  private isRangeExternalSubscriber: Function = () => {};
+  private leftHandleExternalSubscriber: Function = () => {};
 
-  private isVerticalExternalSubscriber: Function = () => {};
+  private rightHandleExternalSubscriber: Function = () => {};
 
   constructor(container: HTMLElement) {
     this.model = new SliderModel();
@@ -48,16 +48,93 @@ class SliderPresenter {
     this.model.valueLabelDisplayed.set(value);
   }
 
+  public get scaleDisplayed() {
+    return this.model.scaleDisplayed.get();
+  }
+
+  public set scaleDisplayed(value: boolean) {
+    this.model.scaleDisplayed.set(value);
+  }
+
+  public get minValue() {
+    return this.model.minValue.get();
+  }
+
+  public set minValue(value: number) {
+    this.model.minValue.set(value);
+  }
+
+  public get maxValue() {
+    return this.model.maxValue.get();
+  }
+
+  public set maxValue(value: number) {
+    this.model.maxValue.set(value);
+  }
+
+  public get step() {
+    return this.model.step.get();
+  }
+
+  public set step(value: number) {
+    this.model.step.set(value);
+  }
+
+  public get pointsNumber() {
+    return this.model.pointsNumber.get();
+  }
+
+  public set pointsNumber(value: number) {
+    this.model.pointsNumber.set(value);
+  }
+
+  public get leftHandleValue() {
+    return this.model.leftHandleValue.get();
+  }
+
+  public set leftHandleValue(value: number) {
+    this.model.leftHandleValue.set(value);
+  }
+
+  public get rightHandleValue() {
+    return this.model.rightHandleValue.get();
+  }
+
+  public set rightHandleValue(value: number) {
+    this.model.rightHandleValue.set(value);
+  }
+
+  public setLeftHandleSubscriber(subscriber: Function) {
+    this.leftHandleExternalSubscriber = subscriber;
+  }
+
+  public setRightHandleSubscriber(subscriber: Function) {
+    this.rightHandleExternalSubscriber = subscriber;
+  }
+
   private setSubscriptions() {
     this.view.setLeftHandlePositionSubscriber(this.modelGUI.calculateLeftHandleValue.bind(this.modelGUI));
     this.view.setRightHandlePositionSubscriber(this.modelGUI.calculateRightHandleValue.bind(this.modelGUI));
-    this.modelGUI.setLeftHandleSubscriber(this.view.updateLeftHandleValue.bind(this.view));
-    this.modelGUI.setRightHandleSubscriber(this.view.updateRightHandleValue.bind(this.view));
     this.modelGUI.setIsRangeSubscriber(this.view.updateIsRange.bind(this.view));
     this.modelGUI.setIsVerticalSubscriber(this.view.updateIsVertical.bind(this.view));
     this.modelGUI.setValueLabelDisplayedSubscriber(this.view.updateValueLabelDisplayed.bind(this.view));
+    this.modelGUI.setScaleDisplayedSubscriber(this.view.updateScaleDisplayed.bind(this.view));
+    this.modelGUI.setMinValueSubscriber(this.view.updateMinValue.bind(this.view));
+    this.modelGUI.setMaxValueSubscriber(this.view.updateMaxValue.bind(this.view));
+    this.modelGUI.setStepSubscriber(this.view.updateStep.bind(this.view));
+    this.modelGUI.setPointsNumberSubscriber(this.view.updatePointsNumber.bind(this.view));
+    this.modelGUI.setLeftHandleSubscriber(this.leftHandleSubscriber.bind(this));
+    this.modelGUI.setRightHandleSubscriber(this.rightHandleSubscriber.bind(this));
+  }
 
-    this.model.isRange.addSubscriber(this.isRangeSubscriber.bind(this));
+  private leftHandleSubscriber(state: State) {
+    this.view.updateLeftHandleValue(state);
+    this.leftHandleExternalSubscriber(state.leftHandleValue);
+  }
+
+  private rightHandleSubscriber(state: State) {
+    this.view.updateRightHandleValue(state);
+    this.rightHandleExternalSubscriber(state.rightHandleValue);
   }
 
   private setInitialState() {
@@ -66,16 +143,13 @@ class SliderPresenter {
     this.view.updateIsRange(state);
     this.view.updateIsVertical(state);
     this.view.updateValueLabelDisplayed(state);
+    this.view.updateScaleDisplayed(state);
     this.view.updateStep(state);
     this.view.updatePointsNumber(state);
     this.view.updateMinValue(state);
     this.view.updateMaxValue(state);
     this.view.updateLeftHandleValue(state);
     this.view.updateRightHandleValue(state);
-  }
-
-  private isRangeSubscriber(value: boolean) {
-    this.isRangeExternalSubscriber(value);
   }
 }
 

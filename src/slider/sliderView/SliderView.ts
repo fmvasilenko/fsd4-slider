@@ -17,6 +17,8 @@ class SliderView {
 
   private scaleValues: SliderScaleValueView[] = [];
 
+  private leftHandleExternalSubscriber: Function = () => {};
+
   constructor(container: HTMLElement) {
     this.classes = require('../slider.classes.json');
     this.root = this.createRoot(container);
@@ -43,6 +45,12 @@ class SliderView {
   public updateValueLabelDisplayed(state: State) {
     this.leftHandle.switchLabel(state);
     this.rightHandle.switchLabel(state);
+  }
+
+  public updateScaleDisplayed(state: State) {
+    this.scaleValues.forEach((scaleValue: SliderScaleValueView) => {
+      scaleValue.switch(state);
+    });
   }
 
   public updateStep(state: State) {
@@ -75,6 +83,7 @@ class SliderView {
 
   public setLeftHandlePositionSubscriber(subscriber: Function) {
     this.leftHandle.setPositionSubscriber(subscriber);
+    this.leftHandleExternalSubscriber = subscriber;
   }
 
   public setRightHandlePositionSubscriber(subscriber: Function) {
@@ -113,6 +122,7 @@ class SliderView {
 
     for (let i = 0; i < calculatedPointsNumber; i += 1) {
       this.scaleValues[i] = new SliderScaleValueView(this.root, state, i, calculatedPointsNumber);
+      this.scaleValues[i].setClickSubscriber(this.leftHandleExternalSubscriber);
     }
   }
 }

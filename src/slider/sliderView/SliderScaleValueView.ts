@@ -14,6 +14,8 @@ class SliderScaleValueView {
 
   private shift: number;
 
+  private externalClickSubscriber: Function = () => {};
+
   constructor(container: HTMLElement, state: State, index: number, pointsNumber: number) {
     this.classes = require('../slider.classes.json');
     this.container = container;
@@ -23,9 +25,21 @@ class SliderScaleValueView {
     this.label = this.createLabel();
     this.shift = 0;
 
-    this.container.appendChild(this.root);
     this.update(state);
+    this.switch(state);
     this.switchVertical(state);
+    this.bindEventListeners();
+  }
+
+  public setClickSubscriber(subscriber: Function) {
+    this.externalClickSubscriber = subscriber;
+  }
+
+  public switch(state: State) {
+    const { scaleDisplayed } = state;
+
+    if (scaleDisplayed) this.container.appendChild(this.root);
+    else this.root.remove();
   }
 
   public switchVertical(state: State) {
@@ -79,6 +93,14 @@ class SliderScaleValueView {
 
     if (isVertical) this.root.style.bottom = `${this.shift * 100}%`;
     else this.root.style.left = `${this.shift * 100}%`;
+  }
+
+  private bindEventListeners() {
+    this.root.addEventListener('click', this.clickHandler.bind(this));
+  }
+
+  private clickHandler() {
+    this.externalClickSubscriber(this.shift);
   }
 }
 

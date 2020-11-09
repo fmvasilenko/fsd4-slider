@@ -74,7 +74,7 @@ class SliderModel {
   }
 
   private checkPointsNumber(givenValue: number): number {
-    return givenValue >= 1 ? givenValue : 1;
+    return givenValue >= 2 ? givenValue : 2;
   }
 
   private checkLeftHandleValue(givenValue: number): number {

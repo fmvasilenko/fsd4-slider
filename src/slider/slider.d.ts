@@ -6,6 +6,15 @@ interface JQuerySliderConfig {
   isRange: Function
   isVertical: Function
   valueLabelDisplayed: Function
+  scaleDisplayed: Function
+  minValue: Function
+  maxValue: Function
+  step: Function
+  pointsNumber: Function
+  leftHandleValue: Function
+  rightHandleValue: Function
+  setLeftHandleSubscriber: Function
+  setRightHandleSubscriber: Function
 }
 
 interface ISlider extends SliderFunction {}
