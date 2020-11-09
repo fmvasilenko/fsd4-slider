@@ -1,8 +1,9 @@
 /* eslint-disable no-new */
 import { SliderPresenter } from './SliderPresenter';
 
-export default $.fn.slider = function (this: JQuery) {
-  const slider = new SliderPresenter(this[0]);
+// eslint-disable-next-line func-names
+export default $.fn.slider = function (this: JQuery, config?: Config) {
+  const slider = new SliderPresenter(this[0], config);
 
   this.config = {
     isRange(value?: boolean): boolean {

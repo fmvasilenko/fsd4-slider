@@ -15,8 +15,8 @@ class SliderPresenter {
 
   private rightHandleExternalSubscriber: Function = () => {};
 
-  constructor(container: HTMLElement) {
-    this.model = new SliderModel();
+  constructor(container: HTMLElement, config?: Config) {
+    this.model = new SliderModel(config);
     this.modelGUI = new SliderModelGUI(this.model);
     this.view = new SliderView(container);
 

@@ -25,8 +25,8 @@ class SliderModel {
 
   public rightHandleValue: ModelMemoryCell<number>;
 
-  constructor() {
-    this.config = require('./sliderDefaultConfig.json');
+  constructor(config?: Config) {
+    this.config = { ...require('./sliderDefaultConfig.json'), ...config };
 
     this.isRange = new ModelMemoryCell(this.config.isRange);
     this.isVertical = new ModelMemoryCell(this.config.isVertical);
