@@ -125,14 +125,15 @@ class Model {
     return value;
   }
 
-  private checkIfFitsTheSteps(value: number) {
-    const { step, minValue } = this.getCurrentState();
-    let normValue = value + minValue;
+  private checkIfFitsTheSteps(givenValue: number) {
+    const { step, minValue, maxValue } = this.getCurrentState();
+    const normValue = givenValue - minValue; // normValue is always between 0 and (maxValue - minValue)
+    const accuracy = normValue % step;
+    const value = normValue - accuracy + minValue;
 
-    if (normValue % step > step / 2) normValue += step;
-    normValue -= (normValue % step);
+    if (accuracy > step / 2 && value + step <= maxValue) return value + step;
 
-    return normValue - minValue;
+    return value;
   }
 }
 
