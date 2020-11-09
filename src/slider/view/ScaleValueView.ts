@@ -1,5 +1,5 @@
 /* eslint-disable class-methods-use-this */
-class SliderScaleValueView {
+class ScaleValueView {
   private classes: Classes;
 
   private container: HTMLElement;
@@ -104,4 +104,4 @@ class SliderScaleValueView {
   }
 }
 
-export { SliderScaleValueView };
+export { ScaleValueView };

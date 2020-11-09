@@ -1,30 +1,31 @@
-import { SliderHandleView } from './SliderHandleView';
-import { SliderRangeLineView } from './SliderRangeLineView';
-import { SliderScaleValueView } from './SliderScaleValueView';
+/* eslint-disable class-methods-use-this */
+import { HandleView } from './HandleView';
+import { RangeLineView } from './RangeLineView';
+import { ScaleValueView } from './ScaleValueView';
 
 enum HandleSide {Left, Right}
 
-class SliderView {
+class View {
   private classes: Classes;
 
   private root: HTMLElement;
 
-  private leftHandle: SliderHandleView;
+  private leftHandle: HandleView;
 
-  private rightHandle: SliderHandleView;
+  private rightHandle: HandleView;
 
-  private rangeLine: SliderRangeLineView;
+  private rangeLine: RangeLineView;
 
-  private scaleValues: SliderScaleValueView[] = [];
+  private scaleValues: ScaleValueView[] = [];
 
   private leftHandleExternalSubscriber: Function = () => {};
 
   constructor(container: HTMLElement) {
     this.classes = require('../slider.classes.json');
     this.root = this.createRoot(container);
-    this.leftHandle = new SliderHandleView(this.root, HandleSide.Left);
-    this.rightHandle = new SliderHandleView(this.root, HandleSide.Right);
-    this.rangeLine = new SliderRangeLineView(this.root);
+    this.leftHandle = new HandleView(this.root, HandleSide.Left);
+    this.rightHandle = new HandleView(this.root, HandleSide.Right);
+    this.rangeLine = new RangeLineView(this.root);
   }
 
   public updateIsRange(state: State) {
@@ -37,7 +38,7 @@ class SliderView {
     this.leftHandle.switchVertical(state);
     this.rightHandle.switchVertical(state);
     this.rangeLine.switchVertical(state);
-    this.scaleValues.forEach((scaleValue: SliderScaleValueView) => {
+    this.scaleValues.forEach((scaleValue: ScaleValueView) => {
       scaleValue.switchVertical(state);
     });
   }
@@ -48,7 +49,7 @@ class SliderView {
   }
 
   public updateScaleDisplayed(state: State) {
-    this.scaleValues.forEach((scaleValue: SliderScaleValueView) => {
+    this.scaleValues.forEach((scaleValue: ScaleValueView) => {
       scaleValue.switch(state);
     });
   }
@@ -105,7 +106,7 @@ class SliderView {
   }
 
   private updateScaleValues(state: State) {
-    this.scaleValues.forEach((value: SliderScaleValueView) => {
+    this.scaleValues.forEach((value: ScaleValueView) => {
       value.remove();
     });
     this.scaleValues.length = 0;
@@ -121,10 +122,10 @@ class SliderView {
     if (pointsNumber > stepsNumber + 1) calculatedPointsNumber = stepsNumber + 1;
 
     for (let i = 0; i < calculatedPointsNumber; i += 1) {
-      this.scaleValues[i] = new SliderScaleValueView(this.root, state, i, calculatedPointsNumber);
+      this.scaleValues[i] = new ScaleValueView(this.root, state, i, calculatedPointsNumber);
       this.scaleValues[i].setClickSubscriber(this.leftHandleExternalSubscriber);
     }
   }
 }
 
-export { SliderView };
+export { View };

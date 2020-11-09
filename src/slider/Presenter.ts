@@ -1,24 +1,24 @@
 /// <reference path='./slider.d.ts' />
 
-import { SliderModel } from './sliderModel/SliderModel';
-import { SliderModelGUI } from './sliderModel/SliderModelGUI';
-import { SliderView } from './sliderView/SliderView';
+import { Model } from './model/Model';
+import { ModelGUI } from './model/ModelGUI';
+import { View } from './view/View';
 
-class SliderPresenter {
-  private model: SliderModel;
+class Presenter {
+  private model: Model;
 
-  private modelGUI: SliderModelGUI;
+  private modelGUI: ModelGUI;
 
-  private view: SliderView;
+  private view: View;
 
   private leftHandleExternalSubscriber: Function = () => {};
 
   private rightHandleExternalSubscriber: Function = () => {};
 
   constructor(container: HTMLElement, config?: Config) {
-    this.model = new SliderModel(config);
-    this.modelGUI = new SliderModelGUI(this.model);
-    this.view = new SliderView(container);
+    this.model = new Model(config);
+    this.modelGUI = new ModelGUI(this.model);
+    this.view = new View(container);
 
     this.setSubscriptions();
     this.setInitialState();
@@ -153,4 +153,4 @@ class SliderPresenter {
   }
 }
 
-export { SliderPresenter };
+export { Presenter };

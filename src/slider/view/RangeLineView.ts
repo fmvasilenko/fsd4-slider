@@ -1,5 +1,5 @@
 /* eslint-disable class-methods-use-this */
-class SliderRangeLineView {
+class RangeLineView {
   private classes: Classes;
 
   private root: HTMLElement;
@@ -65,4 +65,4 @@ class SliderRangeLineView {
   }
 }
 
-export { SliderRangeLineView };
+export { RangeLineView };

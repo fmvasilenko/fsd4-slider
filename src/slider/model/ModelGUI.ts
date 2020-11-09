@@ -1,7 +1,7 @@
-import { SliderModel } from './SliderModel';
+import { Model } from './Model';
 
-class SliderModelGUI {
-  private model: SliderModel;
+class ModelGUI {
+  private model: Model;
 
   private isRangeExternalSubscriber: Function;
 
@@ -23,7 +23,7 @@ class SliderModelGUI {
 
   private rightHandleExternalSubscriber: Function;
 
-  constructor(model: SliderModel) {
+  constructor(model: Model) {
     this.model = model;
     this.isRangeExternalSubscriber = () => {};
     this.isVerticalExternalSubscriber = () => {};
@@ -150,4 +150,4 @@ class SliderModelGUI {
   }
 }
 
-export { SliderModelGUI };
+export { ModelGUI };

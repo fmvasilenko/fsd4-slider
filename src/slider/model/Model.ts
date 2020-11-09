@@ -2,7 +2,7 @@
 // import { ModelMemoryCell } from '../ModelMemoryCell/ModelMemoryCell';
 import { ModelMemoryCell } from './ModelMemoryCell';
 
-class SliderModel {
+class Model {
   private config: State;
 
   public isRange: ModelMemoryCell<boolean>;
@@ -26,7 +26,7 @@ class SliderModel {
   public rightHandleValue: ModelMemoryCell<number>;
 
   constructor(config?: Config) {
-    this.config = { ...require('./sliderDefaultConfig.json'), ...config };
+    this.config = { ...require('./DefaultConfig.json'), ...config };
 
     this.isRange = new ModelMemoryCell(this.config.isRange);
     this.isVertical = new ModelMemoryCell(this.config.isVertical);
@@ -136,4 +136,4 @@ class SliderModel {
   }
 }
 
-export { SliderModel };
+export { Model };

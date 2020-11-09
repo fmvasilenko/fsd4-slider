@@ -1,6 +1,6 @@
 enum HandleSide {Left, Right}
 
-class SliderHandleView {
+class HandleView {
   private container: HTMLElement;
 
   private handleSide: HandleSide;
@@ -192,4 +192,4 @@ class SliderHandleView {
   }
 }
 
-export { SliderHandleView };
+export { HandleView };
