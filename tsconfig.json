@@ -13,6 +13,6 @@
   },
   "exclude": [
     "slider2",
-    "test"
+    "testOld"
   ]
 }

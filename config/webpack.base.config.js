@@ -44,7 +44,7 @@ module.exports = {
       use: 'ts-loader',
       exclude: [
         /node_modules/,
-        /test/,
+        /testOld/,
       ],
     }, {
       test: /\.pug$/,
