@@ -5,8 +5,8 @@
   "main": "dist/slider.js",
   "scripts": {
     "test": "nyc mocha --require ts-node/register --watch-extensions ts 'test/**/*.ts'",
-    "dev": "webpack-dev-server --open --config ./build/webpack.dev.config.js",
-    "build": "webpack --config ./build/webpack.build.config.js",
+    "dev": "webpack-dev-server --open --config ./config/webpack.dev.config.js",
+    "build": "webpack --config ./config/webpack.build.config.js",
     "ghpages": "gh-pages -d demo"
   },
   "_moduleAliases": {},
