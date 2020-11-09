@@ -1,3 +1,4 @@
+/* eslint-disable object-curly-newline */
 /* eslint-disable class-methods-use-this */
 import { HandleView } from './HandleView';
 import { RangeLineView } from './RangeLineView';
@@ -106,25 +107,30 @@ class View {
   }
 
   private updateScaleValues(state: State) {
-    this.scaleValues.forEach((value: ScaleValueView) => {
-      value.remove();
-    });
-    this.scaleValues.length = 0;
+    this.removeScaleValues();
+    this.createScaleValues(this.calculatePointsNumber(state), state);
+  }
 
-    const {
-      step, pointsNumber, minValue, maxValue,
-    } = state;
-
-    const range = maxValue - minValue;
-    const stepsNumber = Math.floor(range / step);
-    let calculatedPointsNumber = pointsNumber;
-
-    if (pointsNumber > stepsNumber + 1) calculatedPointsNumber = stepsNumber + 1;
-
-    for (let i = 0; i < calculatedPointsNumber; i += 1) {
-      this.scaleValues[i] = new ScaleValueView(this.root, state, i, calculatedPointsNumber);
+  private createScaleValues(pointsNumber: number, state: State) {
+    for (let i = 0; i < pointsNumber; i += 1) {
+      this.scaleValues[i] = new ScaleValueView(this.root, state, i, pointsNumber);
       this.scaleValues[i].setClickSubscriber(this.leftHandleExternalSubscriber);
     }
+  }
+
+  private removeScaleValues() {
+    this.scaleValues.forEach((scaleValue: ScaleValueView) => scaleValue.remove());
+    this.scaleValues.length = 0;
+  }
+
+  private calculatePointsNumber(state: State): number {
+    const { step, pointsNumber, minValue, maxValue } = state;
+    const range = maxValue - minValue;
+    const stepsNumber = Math.floor(range / step) + 1;
+
+    if (pointsNumber > stepsNumber) return stepsNumber;
+
+    return pointsNumber;
   }
 }
 

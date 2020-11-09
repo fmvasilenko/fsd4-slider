@@ -106,7 +106,7 @@ class ModelGUI {
 
   private calculateValue(position: number): number {
     const range = this.model.maxValue.get() - this.model.minValue.get();
-    return Math.floor(position * range) + this.model.minValue.get();
+    return Math.round(position * range) + this.model.minValue.get();
   }
 
   private isRangeSubscriber() {
