@@ -26,7 +26,7 @@ class Model {
   public rightHandleValue: ModelMemoryCell<number>;
 
   constructor(config?: Config) {
-    this.config = { ...require('./DefaultConfig.json'), ...config };
+    this.config = { ...require('./defaultConfig.json'), ...config };
 
     this.isRange = new ModelMemoryCell(this.config.isRange);
     this.isVertical = new ModelMemoryCell(this.config.isVertical);
