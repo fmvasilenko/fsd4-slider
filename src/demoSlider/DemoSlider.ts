@@ -34,6 +34,8 @@ class DemoSlider {
 
   private rightHandleValue: HTMLElement;
 
+  private rightHandleValueContainer: HTMLElement | null;
+
   constructor(container: HTMLElement) {
     this.classes = require('./demoSlider.classes.json');
     this.root = this.createRoot(container);
@@ -49,8 +51,9 @@ class DemoSlider {
     this.maxValue = this.createValueElement('Max value', '');
     this.step = this.createValueElement('Step', '');
     this.pointsNumber = this.createValueElement('Points number', '');
-    this.leftHandleValue = this.createValueElement('Left handle value', '');
-    this.rightHandleValue = this.createValueElement('Right handle value', '');
+    this.leftHandleValue = this.createValueElement('Handle value', '');
+    this.rightHandleValue = this.createValueElement('Second handle value', '');
+    this.rightHandleValueContainer = this.rightHandleValue.closest(`.${this.classes.value}`);
 
     this.setInitialState();
     this.setSubscriptions();
@@ -127,6 +130,7 @@ class DemoSlider {
     (this.pointsNumber as HTMLFormElement).value = this.$slider.config.pointsNumber();
     (this.leftHandleValue as HTMLFormElement).value = this.$slider.config.leftHandleValue();
     (this.rightHandleValue as HTMLFormElement).value = this.$slider.config.rightHandleValue();
+    this.rigthHandleValueContainerSwitch(this.$slider.config.isRange());
   }
 
   private setSubscriptions() {
@@ -156,7 +160,9 @@ class DemoSlider {
   }
 
   private rangeSwitcherHandler() {
-    this.$slider.config.isRange((this.rangeSwitcher as HTMLFormElement).checked);
+    const isRange = (this.rangeSwitcher as HTMLFormElement).checked;
+    this.$slider.config.isRange(isRange);
+    this.rigthHandleValueContainerSwitch(isRange);
   }
 
   private isVerticalSwitcherHandler() {
@@ -211,6 +217,11 @@ class DemoSlider {
     let value = parseInt(input.value.replace(/-\D/g, ''), 10);
     if (isNaN(value)) value = this.$slider.config.rightHandleValue();
     input.value = this.$slider.config.rightHandleValue(value);
+  }
+
+  private rigthHandleValueContainerSwitch(isRange: boolean) {
+    if (isRange && this.rightHandleValueContainer) this.panelWrapper.appendChild(this.rightHandleValueContainer);
+    else this.rightHandleValueContainer?.remove();
   }
 }
 
