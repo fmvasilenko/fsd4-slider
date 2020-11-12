@@ -32,6 +32,9 @@ class View {
   public updateIsRange(state: State) {
     this.rightHandle.switch(state);
     this.rangeLine.render(state);
+    this.scaleValues.forEach((scaleValue: ScaleValueView) => {
+      scaleValue.switchIsRange(state);
+    });
   }
 
   public updateIsVertical(state: State) {

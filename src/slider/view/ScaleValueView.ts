@@ -14,6 +14,8 @@ class ScaleValueView {
 
   private shift: number;
 
+  private isRange: boolean;
+
   private externalClickSubscriber: Function = () => {};
 
   constructor(container: HTMLElement, state: State, index: number, pointsNumber: number) {
@@ -24,6 +26,7 @@ class ScaleValueView {
     this.root = this.createRoot();
     this.label = this.createLabel();
     this.shift = 0;
+    this.isRange = false;
 
     this.update(state);
     this.switch(state);
@@ -33,6 +36,11 @@ class ScaleValueView {
 
   public setClickSubscriber(subscriber: Function) {
     this.externalClickSubscriber = subscriber;
+  }
+
+  public switchIsRange(state: State) {
+    const { isRange } = state;
+    this.isRange = isRange;
   }
 
   public switch(state: State) {
@@ -101,7 +109,7 @@ class ScaleValueView {
   }
 
   private clickHandler() {
-    this.externalClickSubscriber(this.shift);
+    if (!this.isRange) this.externalClickSubscriber(this.shift);
   }
 }
 
