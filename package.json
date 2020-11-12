@@ -7,6 +7,7 @@
     "test": "nyc mocha --require ts-node/register --watch-extensions ts 'test/**/*.ts'",
     "dev": "webpack-dev-server --open --config ./config/webpack.dev.config.js",
     "build": "webpack --config ./config/webpack.build.config.js",
+    "lint": "eslint **/*.ts",
     "ghpages": "gh-pages -d demo"
   },
   "_moduleAliases": {},
