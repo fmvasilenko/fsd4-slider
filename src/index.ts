@@ -7,5 +7,5 @@ import { DemoSlider } from './DemoSlider';
 const pageWrapper = $('.page-wrapper');
 
 for (let i = 0; i < 4; i++) {
-  const demoSlider = new DemoSlider(pageWrapper[0], {});
+  const demoSlider = new DemoSlider(pageWrapper[0]);
 }

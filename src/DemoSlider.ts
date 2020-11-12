@@ -1,89 +1,78 @@
+/* eslint-disable no-restricted-globals */
+/* eslint-disable class-methods-use-this */
+/// <reference path='./demoSlider.d.ts' />
+
 import './slider/slider.scss';
 import './slider/slider';
 
 class DemoSlider {
-  private ROOT: HTMLElement;
+  private classes: DemoSliderClasses;
 
-  private PANEL_WRAPPER: HTMLElement;
+  private root: HTMLElement;
 
-  private $SLIDER: JQuery;
+  private $slider: JQuery;
 
-  private $MIN_VALUE: JQuery;
+  private panelWrapper: HTMLElement;
 
-  private $MAX_VALUE: JQuery;
+  private rangeSwitcher: HTMLElement;
 
-  private $STEP: JQuery;
+  private isVerticalSwitcher: HTMLElement;
 
-  private $POINTS_NUMBER: JQuery;
+  private valueLabelDisplayedSwitcher: HTMLElement;
 
-  private $DEFAULT_VALUES: JQuery;
+  private scaleDisplayedSwitcher: HTMLElement;
 
-  private $LEFT_HANDLE_INPUT: JQuery;
+  private minValue: HTMLElement;
 
-  private $RIGHT_HANDLE_INPUT: JQuery;
+  private maxValue: HTMLElement;
 
-  private $VALUE_LABEL_SWITCHER: JQuery;
+  private step: HTMLElement;
 
-  private $LIMITS_SWITCHER: JQuery;
+  private pointsNumber: HTMLElement;
 
-  private $VERTICAL_SWITCHER: JQuery;
+  private leftHandleValue: HTMLElement;
 
-  private $RANGE_SWITCHER: JQuery;
+  private rightHandleValue: HTMLElement;
 
-  private $DEFAULT_VALUES_SWITCHER: JQuery;
+  constructor(container: HTMLElement) {
+    this.classes = require('./demoSlider.classes.json');
+    this.root = this.createRoot(container);
+    this.$slider = $(this.createScaleContainer()).slider();
+    this.panelWrapper = this.createElement('div', this.classes.panelWrapper);
+    this.root.appendChild(this.panelWrapper);
 
-  constructor(container: HTMLElement, config: ImportedSliderConfig) {
-    this.ROOT = this.createElement('div', 'demo-slider');
-    container.appendChild(this.ROOT);
-
-    this.$SLIDER = $(this.createScale()).slider(config, this.sliderHandler.bind(this));
-
-    this.PANEL_WRAPPER = this.createElement('div', 'demo-slider__panel-wrapper');
-    this.ROOT.appendChild(this.PANEL_WRAPPER);
-
-    this.$MIN_VALUE = $(this.createValueElement('Min value'));
-    this.$MAX_VALUE = $(this.createValueElement('Max value'));
-    this.$STEP = $(this.createValueElement('Step'));
-    this.$POINTS_NUMBER = $(this.createValueElement('Points number'));
-    this.$DEFAULT_VALUES = $(this.createValueElement('Default values', 'demo-slider__default-values'));
-    this.$LEFT_HANDLE_INPUT = $(this.createValueElement('Left handle value'));
-    this.$RIGHT_HANDLE_INPUT = $(this.createValueElement('Right handle value'));
-    this.$VALUE_LABEL_SWITCHER = $(this.createSwitcher('Show value label', 'js-demo-slider__value-label-switcher'));
-    this.$LIMITS_SWITCHER = $(this.createSwitcher('Show limits', 'js-demo-slider__limits-switcher'));
-    this.$VERTICAL_SWITCHER = $(this.createSwitcher('Is vertical', 'js-demo-slider__vertical-switcher'));
-    this.$RANGE_SWITCHER = $(this.createSwitcher('Is range', 'js-demo-slider__range-switcher'));
-    this.$DEFAULT_VALUES_SWITCHER = $(this.createSwitcher('Has default values', 'js-demo-slider__default-values-switcher'));
+    this.rangeSwitcher = this.createSwitcher('Is range', '');
+    this.isVerticalSwitcher = this.createSwitcher('Is vertical', '');
+    this.valueLabelDisplayedSwitcher = this.createSwitcher('Display value label', '');
+    this.scaleDisplayedSwitcher = this.createSwitcher('Display scale', '');
+    this.minValue = this.createValueElement('Min value', '');
+    this.maxValue = this.createValueElement('Max value', '');
+    this.step = this.createValueElement('Step', '');
+    this.pointsNumber = this.createValueElement('Points number', '');
+    this.leftHandleValue = this.createValueElement('Left handle value', '');
+    this.rightHandleValue = this.createValueElement('Right handle value', '');
 
     this.setInitialState();
-    this.bindEventListeners();
+    this.setSubscriptions();
+    this.bindEventsListeners();
   }
 
-  private createScale(): HTMLElement {
-    const scaleWrapper = this.createElement('div', 'demo-slider__scale-wrapper');
-    const scale = this.createElement('div', 'demo-slider__scale');
-
-    scaleWrapper.appendChild(scale);
-    this.ROOT.appendChild(scaleWrapper);
-
-    return scale;
+  private createRoot(container: HTMLElement): HTMLElement {
+    const root = document.createElement('div');
+    root.classList.add(this.classes.root);
+    container.appendChild(root);
+    return root;
   }
 
-  private createValueElement(text: string, className?: string) {
-    const valueElement = this.createElement('div', 'demo-slider__value');
-    const label = this.createElement('p', '', text);
-    const input = this.createElement('input', 'demo-slider__value-input');
-
-    if (className) input.classList.add(className);
-
-    valueElement.appendChild(label);
-    valueElement.appendChild(input);
-    this.PANEL_WRAPPER.appendChild(valueElement);
-
-    return input;
+  private createScaleContainer(): HTMLElement {
+    const scaleContainer = document.createElement('div');
+    scaleContainer.classList.add(this.classes.scaleContainer);
+    this.root.appendChild(scaleContainer);
+    return scaleContainer;
   }
 
   private createSwitcher(label: string, className: string): HTMLElement {
-    const switcher = this.createElement('label', 'demo-slider__switcher');
+    const switcher = this.createElement('label', this.classes.switcher);
     const input = this.createElement('input', className);
     const text = this.createElement('p', '', label);
 
@@ -91,12 +80,25 @@ class DemoSlider {
 
     switcher.appendChild(input);
     switcher.appendChild(text);
-    this.PANEL_WRAPPER.appendChild(switcher);
+    this.panelWrapper.appendChild(switcher);
 
     return input;
   }
 
-  // eslint-disable-next-line class-methods-use-this
+  private createValueElement(text: string, className?: string) {
+    const valueElement = this.createElement('div', this.classes.value);
+    const label = this.createElement('p', '', text);
+    const input = this.createElement('input', this.classes.valueInput);
+
+    if (className) input.classList.add(className);
+
+    valueElement.appendChild(label);
+    valueElement.appendChild(input);
+    this.panelWrapper.appendChild(valueElement);
+
+    return input;
+  }
+
   private createElement(
     tag: string,
     className: string | string[],
@@ -115,107 +117,100 @@ class DemoSlider {
   }
 
   private setInitialState() {
-    this.$MIN_VALUE.attr('value', this.$SLIDER.config.minValue());
-    this.$MAX_VALUE.attr('value', this.$SLIDER.config.maxValue());
-    this.$STEP.attr('value', this.$SLIDER.config.step());
-    this.$POINTS_NUMBER.attr('value', this.$SLIDER.config.pointsNumber());
-    this.$DEFAULT_VALUES.attr('value', this.$SLIDER.config.defaultValues());
-    this.$LEFT_HANDLE_INPUT.val(this.$SLIDER.config.leftHandleValue());
-    this.$RIGHT_HANDLE_INPUT.val(this.$SLIDER.config.rightHandleValue());
-
-    this.$VALUE_LABEL_SWITCHER.attr('checked', this.$SLIDER.config.valueLabelDisplayed());
-    this.$LIMITS_SWITCHER.attr('checked', this.$SLIDER.config.limitsDisplayed());
-    this.$VERTICAL_SWITCHER.attr('checked', this.$SLIDER.config.isVertical());
-    this.$RANGE_SWITCHER.attr('checked', this.$SLIDER.config.isRange());
-    this.$DEFAULT_VALUES_SWITCHER.attr('checked', this.$SLIDER.config.hasDefaultValues());
+    (this.rangeSwitcher as HTMLFormElement).checked = this.$slider.config.isRange();
+    (this.isVerticalSwitcher as HTMLFormElement).checked = this.$slider.config.isVertical();
+    (this.valueLabelDisplayedSwitcher as HTMLFormElement).checked = this.$slider.config.valueLabelDisplayed();
+    (this.scaleDisplayedSwitcher as HTMLFormElement).checked = this.$slider.config.scaleDisplayed();
+    (this.minValue as HTMLFormElement).value = this.$slider.config.minValue();
+    (this.maxValue as HTMLFormElement).value = this.$slider.config.maxValue();
+    (this.step as HTMLFormElement).value = this.$slider.config.step();
+    (this.pointsNumber as HTMLFormElement).value = this.$slider.config.pointsNumber();
+    (this.leftHandleValue as HTMLFormElement).value = this.$slider.config.leftHandleValue();
+    (this.rightHandleValue as HTMLFormElement).value = this.$slider.config.rightHandleValue();
   }
 
-  private sliderHandler(firstValue: number, secondValue: number) {
-    this.$LEFT_HANDLE_INPUT.val(firstValue);
-    this.$RIGHT_HANDLE_INPUT.val(secondValue);
+  private setSubscriptions() {
+    this.$slider.config.setLeftHandleSubscriber(this.leftHandleSubscriber.bind(this));
+    this.$slider.config.setRightHandleSubscriber(this.rightHandleSubscriber.bind(this));
   }
 
-  private bindEventListeners() {
-    this.$MIN_VALUE[0].addEventListener('change', this.minValueChangeHandler.bind(this));
-    this.$MAX_VALUE[0].addEventListener('change', this.maxValueChangeHandler.bind(this));
-    this.$STEP[0].addEventListener('change', this.stepChangeHandler.bind(this));
-    this.$POINTS_NUMBER[0].addEventListener('change', this.pointsNumberChangeHandler.bind(this));
-    this.$DEFAULT_VALUES[0].addEventListener('change', this.defaultValuesChangeHandler.bind(this));
-    this.$LEFT_HANDLE_INPUT[0].addEventListener('change', this.leftHandleValueChangeHandler.bind(this));
-    this.$RIGHT_HANDLE_INPUT[0].addEventListener('change', this.rightHandleChangeHandler.bind(this));
-    this.$VALUE_LABEL_SWITCHER[0].addEventListener('change', this.valueLabelSwitchHandler.bind(this));
-    this.$LIMITS_SWITCHER[0].addEventListener('change', this.limitsSwitchHandler.bind(this));
-    this.$VERTICAL_SWITCHER[0].addEventListener('change', this.verticalSwitchHandler.bind(this));
-    this.$RANGE_SWITCHER[0].addEventListener('change', this.rangeSwitchHandler.bind(this));
-    this.$DEFAULT_VALUES_SWITCHER[0].addEventListener('change', this.defaultValuesSwitchHandler.bind(this));
+  private leftHandleSubscriber(value: number) {
+    (this.leftHandleValue as HTMLFormElement).value = value;
+  }
+
+  private rightHandleSubscriber(value: number) {
+    (this.rightHandleValue as HTMLFormElement).value = value;
+  }
+
+  private bindEventsListeners() {
+    this.rangeSwitcher.addEventListener('change', this.rangeSwitcherHandler.bind(this));
+    this.isVerticalSwitcher.addEventListener('change', this.isVerticalSwitcherHandler.bind(this));
+    this.valueLabelDisplayedSwitcher.addEventListener('change', this.valueLabelDisplayedSwitcherHandler.bind(this));
+    this.scaleDisplayedSwitcher.addEventListener('change', this.scaleDisplayedSwitcherHandler.bind(this));
+    this.minValue.addEventListener('change', this.minValueChangeHandler.bind(this));
+    this.maxValue.addEventListener('change', this.maxValueChangeHandler.bind(this));
+    this.step.addEventListener('change', this.stepChangeHandler.bind(this));
+    this.pointsNumber.addEventListener('change', this.pointsNumberChangeHandler.bind(this));
+    this.leftHandleValue.addEventListener('change', this.leftHandleValueChangeHandler.bind(this));
+    this.rightHandleValue.addEventListener('change', this.rightHandleValueChangeHandler.bind(this));
+  }
+
+  private rangeSwitcherHandler() {
+    this.$slider.config.isRange((this.rangeSwitcher as HTMLFormElement).checked);
+  }
+
+  private isVerticalSwitcherHandler() {
+    this.$slider.config.isVertical((this.isVerticalSwitcher as HTMLFormElement).checked);
+  }
+
+  private valueLabelDisplayedSwitcherHandler() {
+    this.$slider.config.valueLabelDisplayed((this.valueLabelDisplayedSwitcher as HTMLFormElement).checked);
+  }
+
+  private scaleDisplayedSwitcherHandler() {
+    this.$slider.config.scaleDisplayed((this.scaleDisplayedSwitcher as HTMLFormElement).checked);
   }
 
   private minValueChangeHandler() {
-    let value = parseInt((this.$MIN_VALUE.val() as string).replace(/-\D/g, ''), 10);
-    if (isNaN(value)) value = this.$SLIDER.config.minValue();
-    this.$MIN_VALUE.val(this.$SLIDER.config.minValue(value));
+    const input = this.minValue as HTMLFormElement;
+    let value = parseInt(input.value.replace(/-\D/g, ''), 10);
+    if (isNaN(value)) value = this.$slider.config.minValue();
+    input.value = this.$slider.config.minValue(value);
   }
 
   private maxValueChangeHandler() {
-    let value = parseInt((this.$MAX_VALUE.val() as string).replace(/-\D/g, ''), 10);
-    if (isNaN(value)) value = this.$SLIDER.config.maxValue();
-    this.$MAX_VALUE.val(this.$SLIDER.config.maxValue(value));
+    const input = this.maxValue as HTMLFormElement;
+    let value = parseInt(input.value.replace(/-\D/g, ''), 10);
+    if (isNaN(value)) value = this.$slider.config.maxValue();
+    input.value = this.$slider.config.maxValue(value);
   }
 
   private stepChangeHandler() {
-    let value = parseInt((this.$STEP.val() as string).replace(/-\D/g, ''), 10);
-    if (isNaN(value)) value = this.$SLIDER.config.step();
-    this.$STEP.val(this.$SLIDER.config.step(value));
+    const input = this.step as HTMLFormElement;
+    let value = parseInt(input.value.replace(/-\D/g, ''), 10);
+    if (isNaN(value)) value = this.$slider.config.step();
+    input.value = this.$slider.config.step(value);
   }
 
   private pointsNumberChangeHandler() {
-    let value = parseInt((this.$POINTS_NUMBER.val() as string).replace(/-\D/g, ''), 10);
-    if (isNaN(value)) value = this.$SLIDER.config.pointsNumber();
-    this.$POINTS_NUMBER.val(this.$SLIDER.config.pointsNumber(value));
-  }
-
-  private defaultValuesChangeHandler() {
-    let defaultValues: number[] | string[];
-    const str = this.$DEFAULT_VALUES.val() as string;
-
-    if (str === '') defaultValues = this.$SLIDER.config.defaultValues();
-    else defaultValues = str.split(',');
-
-    this.$DEFAULT_VALUES.val(this.$SLIDER.config.defaultValues(defaultValues));
+    const input = this.pointsNumber as HTMLFormElement;
+    let value = parseInt(input.value.replace(/-\D/g, ''), 10);
+    if (isNaN(value)) value = this.$slider.config.pointsNumber();
+    input.value = this.$slider.config.pointsNumber(value);
   }
 
   private leftHandleValueChangeHandler() {
-    let value = parseInt((this.$LEFT_HANDLE_INPUT.val() as string).replace(/-\D/g, ''), 10);
-    if (isNaN(value)) value = this.$SLIDER.config.leftHandleValue();
-    this.$LEFT_HANDLE_INPUT.val(this.$SLIDER.config.leftHandleValue(value));
+    const input = this.leftHandleValue as HTMLFormElement;
+    let value = parseInt(input.value.replace(/-\D/g, ''), 10);
+    if (isNaN(value)) value = this.$slider.config.leftHandleValue();
+    input.value = this.$slider.config.leftHandleValue(value);
   }
 
-  private rightHandleChangeHandler() {
-    let value = parseInt((this.$RIGHT_HANDLE_INPUT.val() as string).replace(/-\D/g, ''), 10);
-    if (isNaN(value)) value = this.$SLIDER.config.rightHandleValue();
-    this.$RIGHT_HANDLE_INPUT.val(this.$SLIDER.config.rightHandleValue(value));
-  }
-
-  private valueLabelSwitchHandler() {
-    this.$SLIDER.config.valueLabelDisplayed(this.$VALUE_LABEL_SWITCHER.prop('checked'));
-  }
-
-  private limitsSwitchHandler() {
-    this.$SLIDER.config.limitsDisplayed(this.$LIMITS_SWITCHER.prop('checked'));
-    this.$DEFAULT_VALUES_SWITCHER.prop('checked', this.$SLIDER.config.hasDefaultValues());
-  }
-
-  private verticalSwitchHandler() {
-    this.$SLIDER.config.isVertical(this.$VERTICAL_SWITCHER.prop('checked'));
-  }
-
-  private rangeSwitchHandler() {
-    this.$SLIDER.config.isRange(this.$RANGE_SWITCHER.prop('checked'));
-  }
-
-  private defaultValuesSwitchHandler() {
-    this.$SLIDER.config.hasDefaultValues(this.$DEFAULT_VALUES_SWITCHER.prop('checked'));
-    this.$LIMITS_SWITCHER.prop('checked', this.$SLIDER.config.limitsDisplayed());
+  private rightHandleValueChangeHandler() {
+    const input = this.rightHandleValue as HTMLFormElement;
+    let value = parseInt(input.value.replace(/-\D/g, ''), 10);
+    if (isNaN(value)) value = this.$slider.config.rightHandleValue();
+    input.value = this.$slider.config.rightHandleValue(value);
   }
 }
 

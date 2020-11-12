@@ -45,16 +45,14 @@ npm test
     1. [MinValue](#minValue)
     2. [MaxValue](#maxValue)
     3. [Step](#step)
-    4. [Default values](#defaultValues)
-    5. [Left handle value](#leftHandleValue)
-    6. [Right handle value](#rightHandleValue)
+    4. [Left handle value](#leftHandleValue)
+    5. [Right handle value](#rightHandleValue)
 3. [Range mode](#rangeMode)
-4. [Default values mode](#defaultValuesMode)
-5. [Vertical mode](#verticalMode)
-6. [Hide limits](#hideLimits)
+4. [Vertical mode](#verticalMode)
+5. [Hide scale](#hideScale)
+6. [Points number](#pointsNumber)
 7. [Hide value label](#hideValueLabel)
-8. [Callback function](#callbackFunction)
-9. [Architecture](https://github.com/fmvasilenko/FSD4_Slider/blob/master/docs/architecture.md)
+8. [Callback functions](#callbackFunctions)
 
 
 <a name="basicUsage"></a>
@@ -83,13 +81,11 @@ By default slider will be created with following parameters:
   minValue: 0,
   maxValue: 100,
   step: 1,
-  defaultValues: ["first", "second", "third"],
   leftHandleValue: 20,
   rightHandleValue: 80,
   isRange: false,
-  hasDefaultValues: false,
   isVertical: false,
-  limitsDisplayed: true,
+  scaleDisplayed: true,
   valueLabelDisplayed: true
 }
 ```
@@ -100,7 +96,7 @@ To controll slider "in action" jQuery object will have a config property
 ```js
 let slider = $(element).slider()
 
-//changing leftHandlevalue, using config property
+// changing leftHandlevalue, using config property
 slider.config.leftHandleValue(40)
 ```
 The function will check the value, change it if needed and return the right one.
@@ -112,7 +108,7 @@ let slider = $(element).slider({
   leftHandleValue: 20
 })
 
-//lefthandleValue will be changed to minValue because given value is lower then minValue
+// lefthandleValue will be changed to minValue because given value is lower then minValue
 let leftHandleValue = slider.config.leftHandleValue(-10)
 
 alert(leftHandleValue) // 0
@@ -124,7 +120,7 @@ To get value use the same function with no arguments:
 ```js
 let slider = $(element).slider()
 
-//returns current leftHandleValue
+// returns current leftHandleValue
 slider.config.leftHandleValue()
 ```
 
@@ -188,35 +184,13 @@ slider.config.step(newValue)
 ```
 
 
-<a name="defaultValues"></a>
-
-
-### 2.4 Default values
-
-defaultValues contains number or string array.
-If hasDefaultValues === true, handle values will contain indexes for defaultValues array
-
-##### Initialization:
-```js
-{
-  defaultValues: ["first", "second", "third"]
-}
-```
-
-##### "In action":
-```js
-slider.config.defaultValues(["first", "second", "third"])
-```
-
-
 <a name="leftHandleValue"></a>
 
 
-### 2.5 Left handle value
+### 2.4 Left handle value
 
 ##### Initialization:
-If hasDefaultValues === false, leftHandleValue cannot be lower then minValue and higher then maxValue
-If hasDefaultValues === true, leftHandleValue cannot be lower then 0 and higher then defaultValues.length - 1
+leftHandleValue cannot be lower then minValue and higher then maxValue
 ```js
 {
   leftHandleValue: 20
@@ -235,11 +209,10 @@ slider.config.leftHandleValue(20)
 
 ### 2.5 Right handle value
 
-If isRange === false, rightHandleValue will also contain maxValue or defaultValues.length -1 if hasDefaultValues === true
+If isRange === false, rightHandleValue will contain maxValue
 
 ##### Initialization:
-If hasDefaultValues === false, rightHandleValue cannot be lower then minValue and higher then maxValue
-If hasDefaultValues === true, rightHandleValue cannot be lower then 0 and higher then defaultValues.length - 1
+rightHandleValue cannot be lower then leftHandleValue and higher then maxValue
 ```js
 {
   rightHandleValue: 80
@@ -247,7 +220,7 @@ If hasDefaultValues === true, rightHandleValue cannot be lower then 0 and higher
 ```
 
 ##### "In action":
-The same as for initialization but if isRange === true, rightHandleValue cannot be lower then leftHandleValue
+The same as for initialization.
 ```js
 slider.config.rightHandleValue(80)
 ```
@@ -272,39 +245,13 @@ slider.config.isRange(newValue)
 ```
 
 If isRange === false, rightHandle will be removed from the scale, 
-but rightHandle object will still exist and contain maxValue or defaultValues.length - 1
-
-
-<a name="defaultValuesMode"></a>
-
-
-## 4. Default values mode
-
-In default values mode slider uses defaultValues instead of calculating value accroding with step, minValue and maxValue
-
-Can be switched on and off by
-```js
-{
-  hasDefaultValues: true
-}
-```
-
-For "in action" change use
-```js
-slider.config.hasDefaultValues(newValue)
-```
-
-When it`s on, minValue and maxValue will be ignored.
-Can be used with range and vertical modes
-
-> Notice!
-> When hasDefaultValues === true, limitsDisplayed will be automatically turned off
+but rightHandle object will still exist and contain maxValue
 
 
 <a name="verticalMode"></a>
 
 
-## 5. Vertical mode
+## 4. Vertical mode
 
 Switching between vertical and horizontal modes
 
@@ -321,27 +268,45 @@ slider.config.isVertical(newValue)
 ```
 
 
-<a name="hideLimits"></a>
+<a name="hideScale"></a>
 
 
-## 6. Hide limits
+## 5. Hide scale
 
-In this mode slider hides or shows minValue and maxValue labels
+In this mode slider hides or shows scale labels
 
 Can be switched on and off by
 ```js
 {
-  limitsDisplayed: true
+  scaleDisplayed: true
 }
 ```
 
 For "in action" change use
 ```js
-slider.config.limitsDisplayed(newValue)
+slider.config.scaleDisplayed(newValue)
 ```
 
-> Notice!
-> When turned on, hasDefaultValues will be turned off automatically
+
+<a name="pointsNumber"></a>
+
+## 6. Points number
+
+Scale points number. If it`s lower then possible values number with current step - steps number will be used instead.
+
+##### Initialization:
+Cannot be lower then 2 (minValue and maxValue)
+```js
+{
+  pointsNumber: 5
+}
+```
+
+##### "In action":
+The same as for initialization
+```js
+slider.config.pointsNumber(10)
+```
 
 
 <a name="hideValueLabel"></a>
@@ -364,18 +329,22 @@ slider.config.valueLabelDisplayed(newValue)
 ```
 
 
-<a name="callbackFunction"></a>
+<a name="callbackFunctions"></a>
 
 
-## 7. Callback function
+## 8. Callback functions
 
-This function will be called if leftHandleValue or rightHandleValue are changed.
-```js
-//function will receive leftHandleValue and rightHandleValue as parameters
-function callbackFunction(leftHandleValue, rightHandleValue) {
-  //some code
+`setLeftHandleSubscriber` and `setRigthHandleSubscriber` methods can be used to subscribe to `leftHandleValue` and `rightHandleValue`.
+
+```ts
+leftHandleSubscriber(value: number) {
+  // code
 }
 
-//it should be given to slider while initializing as a second parameter
-$(element).slider(config, callbackFunction)
+rightHandleSubscriber(value: number) {
+  // code
+}
+
+slider.config.setLeftHandleSubscriber(leftHandleSubscriber);
+slider.config.setRightHandleSubscriber(rightHandleSubscriber);
 ```

@@ -5,8 +5,8 @@
   "main": "dist/slider.js",
   "scripts": {
     "test": "nyc mocha --require ts-node/register --watch-extensions ts 'test/**/*.ts'",
-    "dev": "webpack-dev-server --open --config ./build/webpack.dev.config.js",
-    "build": "webpack --config ./build/webpack.build.config.js",
+    "dev": "webpack-dev-server --open --config ./config/webpack.dev.config.js",
+    "build": "webpack --config ./config/webpack.build.config.js",
     "ghpages": "gh-pages -d demo"
   },
   "_moduleAliases": {},
@@ -53,6 +53,7 @@
     "pug": "^2.0.4",
     "pug-loader": "^2.4.0",
     "sass-loader": "^8.0.2",
+    "sinon": "^9.2.1",
     "style-loader": "^1.2.1",
     "ts-loader": "^7.0.4",
     "ts-node": "^8.10.1",
@@ -65,6 +66,7 @@
   "dependencies": {
     "@types/jquery": "^3.3.38",
     "@types/jsdom": "^16.2.3",
+    "@types/sinon": "^9.0.8",
     "jquery": "^3.5.1",
     "jsdom": "^16.2.2",
     "window": "^4.2.7"

@@ -1,0 +1,8 @@
+{
+  "root": "demo-slider",
+  "scaleContainer": "demo-slider__scale-wrapper",
+  "panelWrapper": "demo-slider__panel-wrapper",
+  "switcher": "demo-slider__switcher",
+  "value": "demo-slider__value",
+  "valueInput": "demo-slider__value-input"
+}
