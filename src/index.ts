@@ -2,7 +2,7 @@
 /* eslint-disable no-plusplus */
 
 import './main.scss';
-import { DemoSlider } from './DemoSlider';
+import { DemoSlider } from './demoSlider/DemoSlider';
 
 const pageWrapper = $('.page-wrapper');
 

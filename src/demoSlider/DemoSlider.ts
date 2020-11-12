@@ -2,8 +2,8 @@
 /* eslint-disable class-methods-use-this */
 /// <reference path='./demoSlider.d.ts' />
 
-import './slider/slider.scss';
-import './slider/slider';
+import '../slider/slider.scss';
+import '../slider/slider';
 
 class DemoSlider {
   private classes: DemoSliderClasses;
