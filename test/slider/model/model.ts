@@ -43,7 +43,6 @@ describe('model', () => {
       expect(model.minValue.get()).to.equal(0);
       expect(model.maxValue.get()).to.equal(100);
       expect(model.step.get()).to.equal(1);
-      expect(model.pointsNumber.get()).to.equal(5);
       expect(model.leftHandleValue.get()).to.equal(20);
       expect(model.rightHandleValue.get()).to.equal(80);
     });
@@ -61,7 +60,6 @@ describe('model', () => {
       expect(currentState.minValue).to.equal(0);
       expect(currentState.maxValue).to.equal(100);
       expect(currentState.step).to.equal(1);
-      expect(currentState.pointsNumber).to.equal(5);
       expect(currentState.leftHandleValue).to.equal(20);
       expect(currentState.rightHandleValue).to.equal(80);
     });
@@ -194,28 +192,6 @@ describe('model', () => {
       const model = new Model({ step: 5 });
       model.step.set(-1);
       expect(model.step.get()).to.equal(1);
-    });
-  });
-
-  describe('pointsNumber', () => {
-    it('should set and return value', () => {
-      const model = new Model({ pointsNumber: 2 });
-      model.pointsNumber.set(3);
-      expect(model.pointsNumber.get()).to.equal(3);
-    });
-
-    it('should call subscribers', () => {
-      const model = new Model({ pointsNumber: 2 });
-      const subscriber = new Subscriber(2);
-      model.pointsNumber.addSubscriber(subscriber.set.bind(subscriber));
-      model.pointsNumber.set(3);
-      expect(subscriber.get()).to.equal(3);
-    });
-
-    it('should check value', () => {
-      const model = new Model({ pointsNumber: 5 });
-      model.pointsNumber.set(-1);
-      expect(model.pointsNumber.get()).to.equal(2);
     });
   });
 

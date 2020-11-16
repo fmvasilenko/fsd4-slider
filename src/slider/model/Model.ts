@@ -19,8 +19,6 @@ class Model {
 
   public step: ModelMemoryCell<number>;
 
-  public pointsNumber: ModelMemoryCell<number>;
-
   public leftHandleValue: ModelMemoryCell<number>;
 
   public rightHandleValue: ModelMemoryCell<number>;
@@ -35,7 +33,6 @@ class Model {
     this.minValue = new ModelMemoryCell(this.config.minValue, this.checkMinValue.bind(this));
     this.maxValue = this.setNumber(this.config.maxValue, this.checkMaxValue.bind(this));
     this.step = this.setNumber(this.config.step, this.checkStep.bind(this));
-    this.pointsNumber = this.setNumber(this.config.pointsNumber, this.checkPointsNumber.bind(this));
     this.leftHandleValue = this.setNumber(this.config.leftHandleValue, this.checkLeftHandleValue.bind(this));
     this.rightHandleValue = this.setNumber(this.config.rightHandleValue, this.checkRightHandleValue.bind(this));
 
@@ -51,7 +48,6 @@ class Model {
       minValue: this.minValue?.get(),
       maxValue: this.maxValue?.get(),
       step: this.step?.get(),
-      pointsNumber: this.pointsNumber?.get(),
       leftHandleValue: this.leftHandleValue?.get(),
       rightHandleValue: this.rightHandleValue?.get(),
     };
@@ -89,10 +85,6 @@ class Model {
 
   private checkStep(givenStep: number): number {
     return givenStep >= 1 ? givenStep : 1;
-  }
-
-  private checkPointsNumber(givenValue: number): number {
-    return givenValue >= 2 ? givenValue : 2;
   }
 
   private checkLeftHandleValue(givenValue: number): number {

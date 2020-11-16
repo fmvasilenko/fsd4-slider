@@ -20,7 +20,6 @@ const defaultConfig = {
   minValue: 0,
   maxValue: 100,
   step: 1,
-  pointsNumber: 5,
   leftHandleValue: 20,
   rightHandleValue: 80,
 };

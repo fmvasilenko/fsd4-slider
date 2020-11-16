@@ -10,7 +10,6 @@ interface JQuerySliderConfig {
   minValue: Function
   maxValue: Function
   step: Function
-  pointsNumber: Function
   leftHandleValue: Function
   rightHandleValue: Function
   setLeftHandleSubscriber: Function
@@ -32,7 +31,6 @@ interface State {
   minValue: number
   maxValue: number
   step: number
-  pointsNumber: number
   leftHandleValue: number
   rightHandleValue: number
 }
@@ -45,7 +43,6 @@ interface Config {
   minValue?: number
   maxValue?: number
   step?: number
-  pointsNumber?: number
   leftHandleValue?: number
   rightHandleValue?: number
 }

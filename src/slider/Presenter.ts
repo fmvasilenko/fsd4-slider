@@ -80,14 +80,6 @@ class Presenter {
     this.model.step.set(value);
   }
 
-  public get pointsNumber() {
-    return this.model.pointsNumber.get();
-  }
-
-  public set pointsNumber(value: number) {
-    this.model.pointsNumber.set(value);
-  }
-
   public get leftHandleValue() {
     return this.model.leftHandleValue.get();
   }

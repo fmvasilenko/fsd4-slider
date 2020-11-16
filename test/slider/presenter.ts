@@ -11,7 +11,6 @@ const defaultConfig = {
   minValue: 0,
   maxValue: 100,
   step: 1,
-  pointsNumber: 5,
   leftHandleValue: 20,
   rightHandleValue: 80,
 };
@@ -84,16 +83,6 @@ describe('presenter', () => {
 
       presenter.step = 5;
       expect(presenter.step).to.equal(5);
-    });
-  });
-
-  describe('pointsNumber', () => {
-    it('should set and return value', () => {
-      const container = document.createElement('div');
-      const presenter = new Presenter(container, defaultConfig);
-
-      presenter.pointsNumber = 10;
-      expect(presenter.pointsNumber).to.equal(10);
     });
   });
 

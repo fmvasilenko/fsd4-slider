@@ -99,7 +99,6 @@ class ModelGUI {
     this.model.minValue.addSubscriber(this.minValueSubscriber.bind(this));
     this.model.maxValue.addSubscriber(this.maxValueSubscriber.bind(this));
     this.model.step.addSubscriber(this.stepSubscriber.bind(this));
-    this.model.pointsNumber.addSubscriber(this.pointsNumberSubscriber.bind(this));
     this.model.leftHandleValue.addSubscriber(this.leftHandleSubscriber.bind(this));
     this.model.rightHandleValue.addSubscriber(this.rightHandleSubscriber.bind(this));
   }
@@ -135,10 +134,6 @@ class ModelGUI {
 
   private stepSubscriber() {
     this.stepExternalSubscriber(this.getCurrentState());
-  }
-
-  private pointsNumberSubscriber() {
-    this.pointsNumberExternalSubscriber(this.getCurrentState());
   }
 
   private leftHandleSubscriber() {

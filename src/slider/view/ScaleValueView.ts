@@ -84,24 +84,14 @@ class ScaleValueView {
   }
 
   private update(state: State) {
-    const { minValue, maxValue } = state;
+    const { minValue, maxValue, step } = state;
     const range = maxValue - minValue;
-    const pointValue = this.calculatePointValue(state);
+    const stepsNumber = Math.floor(range / step);
 
-    this.shift = (pointValue - minValue) / range;
-    this.label.innerHTML = `${pointValue}`;
-  }
+    const pointValue = Math.floor(stepsNumber / (this.pointsNumber - 1)) * step * this.index;
+    this.shift = pointValue / range;
 
-  private calculatePointValue(state: State) {
-    const { minValue, maxValue } = state;
-    const range = maxValue - minValue;
-    return this.roundPointValue((range / (this.pointsNumber - 1)) * this.index, state);
-  }
-
-  private roundPointValue(normPointValue: number, state: State) {
-    const { step, minValue } = state;
-    const accuracy = normPointValue % step;
-    return normPointValue - accuracy + minValue;
+    this.label.innerHTML = `${pointValue + minValue}`;
   }
 
   private bindEventListeners() {

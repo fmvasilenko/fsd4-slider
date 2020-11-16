@@ -41,11 +41,6 @@ export default $.fn.slider = function (this: JQuery, config?: Config) {
       return slider.step;
     },
 
-    pointsNumber(value?: number): number {
-      if (value !== undefined) slider.pointsNumber = value;
-      return slider.pointsNumber;
-    },
-
     leftHandleValue(value?: number): number {
       if (value !== undefined) slider.leftHandleValue = value;
       return slider.leftHandleValue;

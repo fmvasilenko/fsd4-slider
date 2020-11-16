@@ -17,7 +17,6 @@ const defaultConfig = {
   minValue: 0,
   maxValue: 100,
   step: 1,
-  pointsNumber: 5,
   leftHandleValue: 20,
   rightHandleValue: 80,
 };
@@ -129,7 +128,7 @@ describe('view', () => {
       const view = new View(container);
 
       view.updateStep(defaultConfig);
-      expect(container.querySelectorAll(`.${classes.scaleValue}`).length).to.equal(5);
+      expect(container.querySelectorAll(`.${classes.scaleValue}`).length).to.equal(6);
     });
   });
 
@@ -139,7 +138,7 @@ describe('view', () => {
       const view = new View(container);
 
       view.updatePointsNumber(defaultConfig);
-      expect(container.querySelectorAll(`.${classes.scaleValue}`).length).to.equal(5);
+      expect(container.querySelectorAll(`.${classes.scaleValue}`).length).to.equal(6);
     });
   });
 
@@ -149,7 +148,7 @@ describe('view', () => {
       const view = new View(container);
 
       view.updateMinValue(defaultConfig);
-      expect(container.querySelectorAll(`.${classes.scaleValue}`).length).to.equal(5);
+      expect(container.querySelectorAll(`.${classes.scaleValue}`).length).to.equal(6);
     });
   });
 
@@ -159,7 +158,7 @@ describe('view', () => {
       const view = new View(container);
 
       view.updateMaxValue(defaultConfig);
-      expect(container.querySelectorAll(`.${classes.scaleValue}`).length).to.equal(5);
+      expect(container.querySelectorAll(`.${classes.scaleValue}`).length).to.equal(6);
     });
   });
 

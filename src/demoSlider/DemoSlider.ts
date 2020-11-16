@@ -28,8 +28,6 @@ class DemoSlider {
 
   private step: HTMLElement;
 
-  private pointsNumber: HTMLElement;
-
   private leftHandleValue: HTMLElement;
 
   private rightHandleValue: HTMLElement;
@@ -50,7 +48,6 @@ class DemoSlider {
     this.minValue = this.createValueElement('Min value', '');
     this.maxValue = this.createValueElement('Max value', '');
     this.step = this.createValueElement('Step', '');
-    this.pointsNumber = this.createValueElement('Points number', '');
     this.leftHandleValue = this.createValueElement('Handle value', '');
     this.rightHandleValue = this.createValueElement('Second handle value', '');
     this.rightHandleValueContainer = this.rightHandleValue.closest(`.${this.classes.value}`);
@@ -127,7 +124,6 @@ class DemoSlider {
     (this.minValue as HTMLFormElement).value = this.$slider.config.minValue();
     (this.maxValue as HTMLFormElement).value = this.$slider.config.maxValue();
     (this.step as HTMLFormElement).value = this.$slider.config.step();
-    (this.pointsNumber as HTMLFormElement).value = this.$slider.config.pointsNumber();
     (this.leftHandleValue as HTMLFormElement).value = this.$slider.config.leftHandleValue();
     (this.rightHandleValue as HTMLFormElement).value = this.$slider.config.rightHandleValue();
     this.rigthHandleValueContainerSwitch(this.$slider.config.isRange());
@@ -154,7 +150,6 @@ class DemoSlider {
     this.minValue.addEventListener('change', this.minValueChangeHandler.bind(this));
     this.maxValue.addEventListener('change', this.maxValueChangeHandler.bind(this));
     this.step.addEventListener('change', this.stepChangeHandler.bind(this));
-    this.pointsNumber.addEventListener('change', this.pointsNumberChangeHandler.bind(this));
     this.leftHandleValue.addEventListener('change', this.leftHandleValueChangeHandler.bind(this));
     this.rightHandleValue.addEventListener('change', this.rightHandleValueChangeHandler.bind(this));
   }
@@ -196,13 +191,6 @@ class DemoSlider {
     let value = parseInt(input.value.replace(/-\D/g, ''), 10);
     if (isNaN(value)) value = this.$slider.config.step();
     input.value = this.$slider.config.step(value);
-  }
-
-  private pointsNumberChangeHandler() {
-    const input = this.pointsNumber as HTMLFormElement;
-    let value = parseInt(input.value.replace(/-\D/g, ''), 10);
-    if (isNaN(value)) value = this.$slider.config.pointsNumber();
-    input.value = this.$slider.config.pointsNumber(value);
   }
 
   private leftHandleValueChangeHandler() {

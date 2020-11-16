@@ -6,6 +6,8 @@ import { ScaleValueView } from './ScaleValueView';
 
 enum HandleSide {Left, Right}
 
+const POINTS_NUMBER_LIMIT = 10;
+
 class View {
   private classes: Classes;
 
@@ -126,14 +128,17 @@ class View {
     this.scaleValues.length = 0;
   }
 
-  private calculatePointsNumber(state: State): number {
-    const { step, pointsNumber, minValue, maxValue } = state;
+  private calculatePointsNumber(state: State) {
+    const { minValue, maxValue, step } = state;
     const range = maxValue - minValue;
     const stepsNumber = Math.floor(range / step) + 1;
 
-    if (pointsNumber > stepsNumber) return stepsNumber;
+    let calcPointsNumber = stepsNumber;
+    while (calcPointsNumber > POINTS_NUMBER_LIMIT) {
+      calcPointsNumber = Math.floor(calcPointsNumber / 2);
+    }
 
-    return pointsNumber;
+    return calcPointsNumber;
   }
 }
 
