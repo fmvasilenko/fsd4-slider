@@ -107,6 +107,7 @@ class Presenter {
   private setSubscriptions() {
     this.view.setLeftHandlePositionSubscriber(this.modelGUI.calculateLeftHandleValue.bind(this.modelGUI));
     this.view.setRightHandlePositionSubscriber(this.modelGUI.calculateRightHandleValue.bind(this.modelGUI));
+    this.view.setScaleClickSubscriber(this.modelGUI.calculateAndChooseHandle.bind(this.modelGUI));
     this.modelGUI.setIsRangeSubscriber(this.view.updateIsRange.bind(this.view));
     this.modelGUI.setIsVerticalSubscriber(this.view.updateIsVertical.bind(this.view));
     this.modelGUI.setValueLabelDisplayedSubscriber(this.view.updateValueLabelDisplayed.bind(this.view));
@@ -114,7 +115,6 @@ class Presenter {
     this.modelGUI.setMinValueSubscriber(this.view.updateMinValue.bind(this.view));
     this.modelGUI.setMaxValueSubscriber(this.view.updateMaxValue.bind(this.view));
     this.modelGUI.setStepSubscriber(this.view.updateStep.bind(this.view));
-    this.modelGUI.setPointsNumberSubscriber(this.view.updatePointsNumber.bind(this.view));
     this.modelGUI.setLeftHandleSubscriber(this.leftHandleSubscriber.bind(this));
     this.modelGUI.setRightHandleSubscriber(this.rightHandleSubscriber.bind(this));
   }
@@ -137,7 +137,6 @@ class Presenter {
     this.view.updateValueLabelDisplayed(state);
     this.view.updateScaleDisplayed(state);
     this.view.updateStep(state);
-    this.view.updatePointsNumber(state);
     this.view.updateMinValue(state);
     this.view.updateMaxValue(state);
     this.view.updateLeftHandleValue(state);

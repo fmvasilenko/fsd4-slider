@@ -21,7 +21,7 @@ class View {
 
   private scaleValues: ScaleValueView[] = [];
 
-  private leftHandleExternalSubscriber: Function = () => {};
+  private scaleClickExternalSubscriber: Function = () => {};
 
   constructor(container: HTMLElement) {
     this.classes = require('../slider.classes.json');
@@ -34,9 +34,6 @@ class View {
   public updateIsRange(state: State) {
     this.rightHandle.switch(state);
     this.rangeLine.render(state);
-    this.scaleValues.forEach((scaleValue: ScaleValueView) => {
-      scaleValue.switchIsRange(state);
-    });
   }
 
   public updateIsVertical(state: State) {
@@ -64,10 +61,6 @@ class View {
     this.updateScaleValues(state);
   }
 
-  public updatePointsNumber(state: State) {
-    this.updateScaleValues(state);
-  }
-
   public updateMinValue(state: State) {
     this.updateScaleValues(state);
   }
@@ -90,11 +83,14 @@ class View {
 
   public setLeftHandlePositionSubscriber(subscriber: Function) {
     this.leftHandle.setPositionSubscriber(subscriber);
-    this.leftHandleExternalSubscriber = subscriber;
   }
 
   public setRightHandlePositionSubscriber(subscriber: Function) {
     this.rightHandle.setPositionSubscriber(subscriber);
+  }
+
+  public setScaleClickSubscriber(subscriber: Function) {
+    this.scaleClickExternalSubscriber = subscriber;
   }
 
   private createRoot(container: HTMLElement): HTMLElement {
@@ -119,7 +115,7 @@ class View {
   private createScaleValues(pointsNumber: number, state: State) {
     for (let i = 0; i < pointsNumber; i += 1) {
       this.scaleValues[i] = new ScaleValueView(this.root, state, i, pointsNumber);
-      this.scaleValues[i].setClickSubscriber(this.leftHandleExternalSubscriber);
+      this.scaleValues[i].setClickSubscriber(this.scaleClickExternalSubscriber);
     }
   }
 

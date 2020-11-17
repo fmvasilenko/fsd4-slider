@@ -132,16 +132,6 @@ describe('view', () => {
     });
   });
 
-  describe('updatePointsNumber', () => {
-    it('should recalculate scale values number', () => {
-      const container = document.createElement('div');
-      const view = new View(container);
-
-      view.updatePointsNumber(defaultConfig);
-      expect(container.querySelectorAll(`.${classes.scaleValue}`).length).to.equal(6);
-    });
-  });
-
   describe('updateMinValue', () => {
     it('should recalculate scale values number', () => {
       const container = document.createElement('div');
