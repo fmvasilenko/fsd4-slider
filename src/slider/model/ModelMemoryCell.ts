@@ -29,6 +29,10 @@ class ModelMemoryCell<T> {
   public addSubscriber(subscriber: Function) {
     this.observer.add(subscriber);
   }
+
+  public update() {
+    this.set(this.value);
+  }
 }
 
 export { ModelMemoryCell };

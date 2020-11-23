@@ -61,9 +61,9 @@ class Model {
   }
 
   private updateHandlesValues() {
-    this.leftHandleValue.set(this.leftHandleValue.get());
-    this.rightHandleValue.set(this.rightHandleValue.get());
-    this.leftHandleValue.set(this.leftHandleValue.get());
+    this.leftHandleValue.update();
+    this.rightHandleValue.update();
+    this.leftHandleValue.update();
   }
 
   private checkMinValue(givenValue: number): number {
