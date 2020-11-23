@@ -1,5 +1,5 @@
 /* eslint-disable no-new */
-import { Presenter } from './Presenter';
+import { Presenter } from './presenter/Presenter';
 
 // eslint-disable-next-line func-names
 export default $.fn.slider = function (this: JQuery, config?: Config) {

@@ -1,8 +1,8 @@
-/// <reference path='./slider.d.ts' />
+/// <reference path='../slider.d.ts' />
 
-import { Model } from './model/Model';
-import { ModelGUI } from './model/ModelGUI';
-import { View } from './view/View';
+import { Model } from '../model/Model';
+import { ModelGUI } from '../model/ModelGUI';
+import { View } from '../view/View';
 
 class Presenter {
   private model: Model;
