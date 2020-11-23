@@ -1,5 +1,5 @@
 import { expect } from 'chai';
-import { RangeLineView } from '../../../src/slider/view/RangelineView';
+import { RangeLineView } from '../../../src/slider/view/RangeLineView';
 
 const jsdom = require('jsdom');
 const classes = require('../../../src/slider/slider.classes.json');
