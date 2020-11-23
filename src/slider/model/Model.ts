@@ -31,10 +31,10 @@ class Model {
     this.valueLabelDisplayed = new ModelMemoryCell(this.config.valueLabelDisplayed);
     this.scaleDisplayed = new ModelMemoryCell(this.config.scaleDisplayed);
     this.minValue = new ModelMemoryCell(this.config.minValue, this.checkMinValue.bind(this));
-    this.maxValue = this.setNumber(this.config.maxValue, this.checkMaxValue.bind(this));
-    this.step = this.setNumber(this.config.step, this.checkStep.bind(this));
-    this.leftHandleValue = this.setNumber(this.config.leftHandleValue, this.checkLeftHandleValue.bind(this));
-    this.rightHandleValue = this.setNumber(this.config.rightHandleValue, this.checkRightHandleValue.bind(this));
+    this.maxValue = new ModelMemoryCell(this.config.maxValue, this.checkMaxValue.bind(this));
+    this.step = new ModelMemoryCell(this.config.step, this.checkStep.bind(this));
+    this.leftHandleValue = new ModelMemoryCell(this.config.leftHandleValue, this.checkLeftHandleValue.bind(this));
+    this.rightHandleValue = new ModelMemoryCell(this.config.rightHandleValue, this.checkRightHandleValue.bind(this));
 
     this.setSubscriptions();
   }
@@ -53,11 +53,6 @@ class Model {
     };
   }
 
-  private setNumber(givenValue: number, checkFunction?: Function): ModelMemoryCell<number> {
-    const value = checkFunction ? checkFunction(givenValue) : givenValue;
-    return new ModelMemoryCell(value, checkFunction?.bind(this));
-  }
-
   private setSubscriptions() {
     this.isRange.addSubscriber(this.updateHandlesValues.bind(this));
     this.step.addSubscriber(this.updateHandlesValues.bind(this));
@@ -72,7 +67,7 @@ class Model {
   }
 
   private checkMinValue(givenValue: number): number {
-    return givenValue > this.maxValue.get()
+    return this.maxValue && givenValue > this.maxValue.get()
       ? this.maxValue.get()
       : givenValue;
   }

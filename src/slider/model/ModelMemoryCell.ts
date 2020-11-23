@@ -11,10 +11,10 @@ class ModelMemoryCell<T> {
 
   private checkFunction: CheckFunction<T>;
 
-  constructor(value: T, checkFunction?: CheckFunction<T>) {
-    this.value = value;
+  constructor(value: T, checkFunction: CheckFunction<T> = (givenValue: T) => givenValue) {
     this.observer = new Observable();
-    this.checkFunction = checkFunction || ((givenValue: T) => givenValue);
+    this.checkFunction = checkFunction;
+    this.value = checkFunction(value);
   }
 
   public get() {
