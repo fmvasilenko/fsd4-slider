@@ -87,20 +87,25 @@ class ModelGUI {
   }
 
   private setSubscriptions() {
-    this.model.isRange.addSubscriber(this.isRangeSubscriber.bind(this));
-    this.model.isVertical.addSubscriber(this.isVerticalSubscriber.bind(this));
-    this.model.valueLabelDisplayed.addSubscriber(this.valueLabelDisplayedSubscriber.bind(this));
-    this.model.scaleDisplayed.addSubscriber(this.scaleDisplayedSubscriber.bind(this));
-    this.model.minValue.addSubscriber(this.minValueSubscriber.bind(this));
-    this.model.maxValue.addSubscriber(this.maxValueSubscriber.bind(this));
-    this.model.step.addSubscriber(this.stepSubscriber.bind(this));
-    this.model.leftHandleValue.addSubscriber(this.leftHandleSubscriber.bind(this));
-    this.model.rightHandleValue.addSubscriber(this.rightHandleSubscriber.bind(this));
+    const {
+      isRange, isVertical, valueLabelDisplayed, scaleDisplayed, minValue, maxValue, step, leftHandleValue, rightHandleValue,
+    } = this.model;
+
+    isRange.addSubscriber(this.isRangeSubscriber.bind(this));
+    isVertical.addSubscriber(this.isVerticalSubscriber.bind(this));
+    valueLabelDisplayed.addSubscriber(this.valueLabelDisplayedSubscriber.bind(this));
+    scaleDisplayed.addSubscriber(this.scaleDisplayedSubscriber.bind(this));
+    minValue.addSubscriber(this.minValueSubscriber.bind(this));
+    maxValue.addSubscriber(this.maxValueSubscriber.bind(this));
+    step.addSubscriber(this.stepSubscriber.bind(this));
+    leftHandleValue.addSubscriber(this.leftHandleSubscriber.bind(this));
+    rightHandleValue.addSubscriber(this.rightHandleSubscriber.bind(this));
   }
 
   private calculateValue(position: number): number {
-    const range = this.model.maxValue.get() - this.model.minValue.get();
-    return Math.round(position * range) + this.model.minValue.get();
+    const { minValue, maxValue } = this.model;
+    const range = maxValue.get() - minValue.get();
+    return Math.round(position * range) + minValue.get();
   }
 
   private isRangeSubscriber() {
