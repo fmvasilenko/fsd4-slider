@@ -4,36 +4,26 @@ import { Model } from './Model';
 class ModelGUI {
   private model: Model;
 
-  private isRangeExternalSubscriber: Function;
+  private isRangeExternalSubscriber: Function = () => {};
 
-  private isVerticalExternalSubscriber: Function;
+  private isVerticalExternalSubscriber: Function = () => {};
 
-  private valueLabelDisplayedExternalSubscriber: Function;
+  private valueLabelDisplayedExternalSubscriber: Function = () => {};
 
-  private scaleDisplayedExternalSubscriber: Function;
+  private scaleDisplayedExternalSubscriber: Function = () => {};
 
-  private minValueExternalSubscriber: Function;
+  private minValueExternalSubscriber: Function = () => {};
 
-  private maxValueExternalSubscriber: Function;
+  private maxValueExternalSubscriber: Function = () => {};
 
-  private stepExternalSubscriber: Function;
+  private stepExternalSubscriber: Function = () => {};
 
-  private leftHandleExternalSubscriber: Function;
+  private leftHandleExternalSubscriber: Function = () => {};
 
-  private rightHandleExternalSubscriber: Function;
+  private rightHandleExternalSubscriber: Function = () => {};
 
   constructor(model: Model) {
     this.model = model;
-    this.isRangeExternalSubscriber = () => {};
-    this.isVerticalExternalSubscriber = () => {};
-    this.valueLabelDisplayedExternalSubscriber = () => {};
-    this.scaleDisplayedExternalSubscriber = () => {};
-    this.minValueExternalSubscriber = () => {};
-    this.maxValueExternalSubscriber = () => {};
-    this.stepExternalSubscriber = () => {};
-    this.leftHandleExternalSubscriber = () => {};
-    this.rightHandleExternalSubscriber = () => {};
-
     this.setSubscriptions();
   }
 
