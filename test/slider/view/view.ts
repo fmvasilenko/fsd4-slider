@@ -58,7 +58,7 @@ describe('view', () => {
       const container = document.createElement('div');
       const view = new View(container);
       const fakeView = new FakeView(container);
-      const rightHandleSpy = sinon.spy(fakeView.rightHandle, 'switch');
+      const rightHandleSpy = sinon.spy(fakeView.rightHandle, 'switchHandle');
       const rangeLineSpy = sinon.spy(fakeView.rangeLine, 'render');
 
       (view.updateIsRange.bind(fakeView))(defaultConfig);
@@ -115,7 +115,7 @@ describe('view', () => {
       const container = document.createElement('div');
       const view = new View(container);
       const fakeView = new FakeView(container);
-      const scaleValueSpy = sinon.spy(fakeView.scaleValues[0], 'switch');
+      const scaleValueSpy = sinon.spy(fakeView.scaleValues[0], 'switchLabel');
 
       (view.updateScaleDisplayed.bind(fakeView))(defaultConfig);
       expect(scaleValueSpy.calledOnce).to.equal(true);
