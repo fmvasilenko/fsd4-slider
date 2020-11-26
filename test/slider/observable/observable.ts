@@ -1,0 +1,60 @@
+import { expect } from 'chai';
+import { Observable } from '../../../src/slider/observable/Observable';
+
+class Subscriber<T> {
+  private value: T;
+
+  constructor(value: T) {
+    this.value = value;
+  }
+
+  public set = (value: T) => {
+    this.value = value;
+  };
+
+  public get(): T {
+    return this.value;
+  }
+}
+
+describe('Observable', () => {
+  describe('add', () => {
+    it('should add subscriber', () => {
+      const observer = new Observable();
+      const subscriber = new Subscriber(0);
+
+      observer.add(subscriber.set);
+      observer.publish(10);
+
+      expect(subscriber.get()).to.equal(10);
+    });
+  });
+
+  describe('remove', () => {
+    it('should remove subscribers', () => {
+      const observer = new Observable();
+      const subscriber = new Subscriber(0);
+
+      observer.add(subscriber.set);
+      observer.remove(subscriber.set);
+      observer.publish(10);
+
+      expect(subscriber.get()).to.equal(0);
+    });
+  });
+
+  describe('publish', () => {
+    it('should call all the subscribers', () => {
+      const observer = new Observable();
+      const subscriber1 = new Subscriber(0);
+      const subscriber2 = new Subscriber(0);
+
+      observer.add(subscriber1.set);
+      observer.add(subscriber2.set);
+      observer.publish(10);
+
+      expect(subscriber1.get()).to.equal(10);
+      expect(subscriber2.get()).to.equal(10);
+    });
+  });
+});
