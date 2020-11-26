@@ -39,10 +39,10 @@ describe('handle', () => {
       const container = document.createElement('div');
       const handleView = new HandleView(container, HandleSide.Right);
 
-      handleView.switch({ ...defaultConfig, ...{ isRange: true } });
+      handleView.switchHandle({ ...defaultConfig, ...{ isRange: true } });
       expect(container.querySelectorAll(`.${classes.rightHandle}`).length).to.equal(1);
 
-      handleView.switch({ ...defaultConfig, ...{ isRange: false } });
+      handleView.switchHandle({ ...defaultConfig, ...{ isRange: false } });
       expect(container.querySelectorAll(`.${classes.rightHandle}`).length).to.equal(0);
     });
   });

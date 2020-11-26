@@ -48,10 +48,10 @@ describe('scaleValue', () => {
       const container = document.createElement('div');
       const scaleValueView = new ScaleValueView(container, defaultConfig, 3, 5);
 
-      scaleValueView.switch({ ...defaultConfig, ...{ scaleDisplayed: false } });
+      scaleValueView.switchLabel({ ...defaultConfig, ...{ scaleDisplayed: false } });
       expect(container.querySelectorAll(`.${classes.scaleValue}`).length).to.equal(0);
 
-      scaleValueView.switch({ ...defaultConfig, ...{ scaleDisplayed: true } });
+      scaleValueView.switchLabel({ ...defaultConfig, ...{ scaleDisplayed: true } });
       expect(container.querySelectorAll(`.${classes.scaleValue}`).length).to.equal(1);
     });
   });

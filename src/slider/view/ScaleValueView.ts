@@ -26,7 +26,7 @@ class ScaleValueView {
     this.shift = 0;
 
     this.update(state);
-    this.switch(state);
+    this.switchLabel(state);
     this.switchVertical(state);
     this.bindEventListeners();
   }
@@ -35,7 +35,7 @@ class ScaleValueView {
     this.externalClickSubscriber = subscriber;
   }
 
-  public switch(state: State) {
+  public switchLabel(state: State) {
     const { scaleDisplayed } = state;
 
     if (scaleDisplayed) this.container.appendChild(this.root);

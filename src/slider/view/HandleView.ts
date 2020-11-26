@@ -32,7 +32,7 @@ class HandleView {
     this.bindEventListeners();
   }
 
-  public switch(state: State) {
+  public switchHandle(state: State) {
     if (this.handleSide === HandleSide.Right) {
       const { isRange } = state;
 

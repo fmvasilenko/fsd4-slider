@@ -32,7 +32,7 @@ class View {
   }
 
   public updateIsRange(state: State) {
-    this.rightHandle.switch(state);
+    this.rightHandle.switchHandle(state);
     this.rangeLine.render(state);
   }
 
@@ -53,7 +53,7 @@ class View {
 
   public updateScaleDisplayed(state: State) {
     this.scaleValues.forEach((scaleValue: ScaleValueView) => {
-      scaleValue.switch(state);
+      scaleValue.switchLabel(state);
     });
   }
 
