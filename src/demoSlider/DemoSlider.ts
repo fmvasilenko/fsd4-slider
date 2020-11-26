@@ -126,7 +126,7 @@ class DemoSlider {
     (this.step as HTMLFormElement).value = this.$slider.config.step();
     (this.leftHandleValue as HTMLFormElement).value = this.$slider.config.leftHandleValue();
     (this.rightHandleValue as HTMLFormElement).value = this.$slider.config.rightHandleValue();
-    this.rigthHandleValueContainerSwitch(this.$slider.config.isRange());
+    this.rightHandleValueContainerSwitch(this.$slider.config.isRange());
   }
 
   private setSubscriptions() {
@@ -157,7 +157,7 @@ class DemoSlider {
   private rangeSwitcherHandler() {
     const isRange = (this.rangeSwitcher as HTMLFormElement).checked;
     this.$slider.config.isRange(isRange);
-    this.rigthHandleValueContainerSwitch(isRange);
+    this.rightHandleValueContainerSwitch(isRange);
   }
 
   private isVerticalSwitcherHandler() {
@@ -207,7 +207,7 @@ class DemoSlider {
     input.value = this.$slider.config.rightHandleValue(value);
   }
 
-  private rigthHandleValueContainerSwitch(isRange: boolean) {
+  private rightHandleValueContainerSwitch(isRange: boolean) {
     if (isRange && this.rightHandleValueContainer) this.panelWrapper.appendChild(this.rightHandleValueContainer);
     else this.rightHandleValueContainer?.remove();
   }
