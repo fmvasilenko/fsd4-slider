@@ -5,21 +5,10 @@ import { HandleView } from '../../../src/slider/view/HandleView';
 import { RangeLineView } from '../../../src/slider/view/RangeLineView';
 import { ScaleValueView } from '../../../src/slider/view/ScaleValueView';
 import { View } from '../../../src/slider/view/View';
+import { defaultConfig } from '../../utils/sliderDefaultConfig';
 
 const sinon = require('sinon');
 const classes = require('../../../src/slider/slider.classes.json');
-
-const defaultConfig = {
-  isRange: true,
-  isVertical: false,
-  scaleDisplayed: true,
-  valueLabelDisplayed: true,
-  minValue: 0,
-  maxValue: 100,
-  step: 1,
-  leftHandleValue: 20,
-  rightHandleValue: 80,
-};
 
 enum HandleSide {Left, Right}
 

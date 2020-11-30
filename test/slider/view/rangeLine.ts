@@ -1,5 +1,6 @@
 import { expect } from 'chai';
 import { RangeLineView } from '../../../src/slider/view/RangeLineView';
+import { defaultConfig } from '../../utils/sliderDefaultConfig';
 
 const jsdom = require('jsdom');
 const classes = require('../../../src/slider/slider.classes.json');
@@ -8,18 +9,6 @@ const { JSDOM } = jsdom;
 const dom = new JSDOM('<!doctype html><html><body></body></html>');
 (global as any).window = dom.window;
 (global as any).document = window.document;
-
-const defaultConfig = {
-  isRange: true,
-  isVertical: false,
-  scaleDisplayed: true,
-  valueLabelDisplayed: true,
-  minValue: 0,
-  maxValue: 100,
-  step: 1,
-  leftHandleValue: 20,
-  rightHandleValue: 80,
-};
 
 describe('rangeLineView', () => {
   describe('constructor', () => {

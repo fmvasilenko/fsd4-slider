@@ -1,35 +1,8 @@
 /// <reference path='../../../src/slider/slider.d.ts' />
 import { expect } from 'chai';
 import { Model } from '../../../src/slider/model/Model';
-
-const defaultConfig = {
-  isRange: true,
-  isVertical: false,
-  scaleDisplayed: true,
-  valueLabelDisplayed: true,
-  minValue: 0,
-  maxValue: 100,
-  step: 1,
-  pointsNumber: 5,
-  leftHandleValue: 20,
-  rightHandleValue: 80,
-};
-
-class Subscriber<T> {
-  private value: T;
-
-  constructor(value: T) {
-    this.value = value;
-  }
-
-  public set(value: T) {
-    this.value = value;
-  }
-
-  public get(): T {
-    return this.value;
-  }
-}
+import { defaultConfig } from '../../utils/sliderDefaultConfig';
+import { Subscriber } from '../../utils/Subscriber';
 
 describe('model', () => {
   describe('constructor', () => {
@@ -75,7 +48,7 @@ describe('model', () => {
     it('should call subscribers', () => {
       const model = new Model({ isRange: false });
       const subscriber = new Subscriber(false);
-      model.isRange.addSubscriber(subscriber.set.bind(subscriber));
+      model.isRange.addSubscriber(subscriber.set);
       model.isRange.set(true);
       expect(subscriber.get()).to.equal(true);
     });
@@ -91,7 +64,7 @@ describe('model', () => {
     it('should call subscribers', () => {
       const model = new Model({ isVertical: false });
       const subscriber = new Subscriber(false);
-      model.isVertical.addSubscriber(subscriber.set.bind(subscriber));
+      model.isVertical.addSubscriber(subscriber.set);
       model.isVertical.set(true);
       expect(subscriber.get()).to.equal(true);
     });
@@ -107,7 +80,7 @@ describe('model', () => {
     it('should call subscribers', () => {
       const model = new Model({ scaleDisplayed: false });
       const subscriber = new Subscriber(false);
-      model.scaleDisplayed.addSubscriber(subscriber.set.bind(subscriber));
+      model.scaleDisplayed.addSubscriber(subscriber.set);
       model.scaleDisplayed.set(true);
       expect(subscriber.get()).to.equal(true);
     });
@@ -123,7 +96,7 @@ describe('model', () => {
     it('should call subscribers', () => {
       const model = new Model({ valueLabelDisplayed: false });
       const subscriber = new Subscriber(false);
-      model.valueLabelDisplayed.addSubscriber(subscriber.set.bind(subscriber));
+      model.valueLabelDisplayed.addSubscriber(subscriber.set);
       model.valueLabelDisplayed.set(true);
       expect(subscriber.get()).to.equal(true);
     });
@@ -139,7 +112,7 @@ describe('model', () => {
     it('should call subscribers', () => {
       const model = new Model({ minValue: 0 });
       const subscriber = new Subscriber(0);
-      model.minValue.addSubscriber(subscriber.set.bind(subscriber));
+      model.minValue.addSubscriber(subscriber.set);
       model.minValue.set(10);
       expect(subscriber.get()).to.equal(10);
     });
@@ -161,7 +134,7 @@ describe('model', () => {
     it('should call subscribers', () => {
       const model = new Model({ maxValue: 100 });
       const subscriber = new Subscriber(100);
-      model.maxValue.addSubscriber(subscriber.set.bind(subscriber));
+      model.maxValue.addSubscriber(subscriber.set);
       model.maxValue.set(90);
       expect(subscriber.get()).to.equal(90);
     });
@@ -183,7 +156,7 @@ describe('model', () => {
     it('should call subscribers', () => {
       const model = new Model({ step: 1 });
       const subscriber = new Subscriber(1);
-      model.step.addSubscriber(subscriber.set.bind(subscriber));
+      model.step.addSubscriber(subscriber.set);
       model.step.set(2);
       expect(subscriber.get()).to.equal(2);
     });
@@ -205,7 +178,7 @@ describe('model', () => {
     it('should call subscribers', () => {
       const model = new Model({ leftHandleValue: 10 });
       const subscriber = new Subscriber(10);
-      model.leftHandleValue.addSubscriber(subscriber.set.bind(subscriber));
+      model.leftHandleValue.addSubscriber(subscriber.set);
       model.leftHandleValue.set(20);
       expect(subscriber.get()).to.equal(20);
     });
@@ -229,7 +202,7 @@ describe('model', () => {
     it('should call subscribers', () => {
       const model = new Model({ isRange: true, rightHandleValue: 90 });
       const subscriber = new Subscriber(90);
-      model.rightHandleValue.addSubscriber(subscriber.set.bind(subscriber));
+      model.rightHandleValue.addSubscriber(subscriber.set);
       model.rightHandleValue.set(80);
       expect(subscriber.get()).to.equal(80);
     });

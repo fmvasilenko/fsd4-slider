@@ -2,18 +2,7 @@
 /* eslint-disable class-methods-use-this */
 import { expect } from 'chai';
 import { Presenter } from '../../../src/slider/presenter/Presenter';
-
-const defaultConfig = {
-  isRange: true,
-  isVertical: false,
-  scaleDisplayed: true,
-  valueLabelDisplayed: true,
-  minValue: 0,
-  maxValue: 100,
-  step: 1,
-  leftHandleValue: 20,
-  rightHandleValue: 80,
-};
+import { defaultConfig } from '../../utils/sliderDefaultConfig';
 
 describe('presenter', () => {
   describe('isRange', () => {

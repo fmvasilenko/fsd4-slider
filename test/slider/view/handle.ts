@@ -1,6 +1,7 @@
 /* eslint-disable no-new */
 import { expect } from 'chai';
 import { HandleView } from '../../../src/slider/view/HandleView';
+import { defaultConfig } from '../../utils/sliderDefaultConfig';
 
 const jsdom = require('jsdom');
 const classes = require('../../../src/slider/slider.classes.json');
@@ -11,18 +12,6 @@ const dom = new JSDOM('<!doctype html><html><body></body></html>');
 (global as any).document = window.document;
 
 enum HandleSide {Left, Right}
-
-const defaultConfig = {
-  isRange: true,
-  isVertical: false,
-  scaleDisplayed: true,
-  valueLabelDisplayed: true,
-  minValue: 0,
-  maxValue: 100,
-  step: 1,
-  leftHandleValue: 20,
-  rightHandleValue: 80,
-};
 
 describe('handle', () => {
   describe('constructor', () => {
