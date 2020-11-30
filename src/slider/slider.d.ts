@@ -3,17 +3,21 @@ interface SliderFunction {
 }
 
 interface JQuerySliderConfig {
-  isRange: Function
-  isVertical: Function
-  valueLabelDisplayed: Function
-  scaleDisplayed: Function
-  minValue: Function
-  maxValue: Function
-  step: Function
-  leftHandleValue: Function
-  rightHandleValue: Function
-  setLeftHandleSubscriber: Function
-  setRightHandleSubscriber: Function
+  isRange(value?: boolean): boolean
+  isVertical(value?: boolean): boolean
+  valueLabelDisplayed(value?: boolean): boolean
+  scaleDisplayed(value?: boolean): boolean
+  minValue(value?: number): number
+  maxValue(value?: number): number
+  step(value?: number): number
+  leftHandleValue(value?: number): number
+  rightHandleValue(value?: number): number
+  setLeftHandleSubscriber(subscriber: Subscriber): void
+  setRightHandleSubscriber(subscriber: Subscriber): void
+}
+
+interface Subscriber {
+  (value: number): void
 }
 
 interface ISlider extends SliderFunction {}
