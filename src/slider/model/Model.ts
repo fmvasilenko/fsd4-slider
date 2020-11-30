@@ -61,6 +61,13 @@ class Model {
   }
 
   private updateHandlesValues() {
+    /**
+     * If leftHandle and rightHandle values are lower then minValue, we need to update rigthHandle value first.
+     * If both of them are higher then maxValue, then we update leftHandle value first.
+     *
+     * Following approach helps to avoid unnecessary handle choice logic.
+     */
+
     this.leftHandleValue.update();
     this.rightHandleValue.update();
     this.leftHandleValue.update();
