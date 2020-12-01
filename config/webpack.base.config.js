@@ -2,6 +2,7 @@ const path = require('path');
 const fs = require('fs');
 const webpack = require('webpack');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const CopyWebpackPlugin = require('copy-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 const PATHS = {
@@ -86,6 +87,11 @@ module.exports = {
   plugins: [
     new MiniCssExtractPlugin({
       filename: `${PATHS.assets}css/[name].css`,
+    }),
+    new CopyWebpackPlugin({
+      patterns: [
+        { from: `${PATHS.src}/static`, to: '' },
+      ],
     }),
     new webpack.ProvidePlugin({
       $: 'jquery',
