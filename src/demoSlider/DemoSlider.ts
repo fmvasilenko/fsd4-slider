@@ -144,14 +144,14 @@ class DemoSlider {
 
   private bindEventsListeners() {
     this.rangeSwitcher.addEventListener('change', this.rangeSwitcherHandler.bind(this));
-    this.isVerticalSwitcher.addEventListener('change', this.isVerticalSwitcherHandler.bind(this));
-    this.valueLabelDisplayedSwitcher.addEventListener('change', this.valueLabelDisplayedSwitcherHandler.bind(this));
-    this.scaleDisplayedSwitcher.addEventListener('change', this.scaleDisplayedSwitcherHandler.bind(this));
-    this.minValue.addEventListener('change', this.minValueChangeHandler.bind(this));
-    this.maxValue.addEventListener('change', this.maxValueChangeHandler.bind(this));
-    this.step.addEventListener('change', this.stepChangeHandler.bind(this));
-    this.leftHandleValue.addEventListener('change', this.leftHandleValueChangeHandler.bind(this));
-    this.rightHandleValue.addEventListener('change', this.rightHandleValueChangeHandler.bind(this));
+    this.isVerticalSwitcher.addEventListener('change', this.booleanChangeHandler('isVertical'));
+    this.valueLabelDisplayedSwitcher.addEventListener('change', this.booleanChangeHandler('valueLabelDisplayed'));
+    this.scaleDisplayedSwitcher.addEventListener('change', this.booleanChangeHandler('scaleDisplayed'));
+    this.minValue.addEventListener('change', this.numberChangeHandler('minValue'));
+    this.maxValue.addEventListener('change', this.numberChangeHandler('maxValue'));
+    this.step.addEventListener('change', this.numberChangeHandler('step'));
+    this.leftHandleValue.addEventListener('change', this.numberChangeHandler('leftHandleValue'));
+    this.rightHandleValue.addEventListener('change', this.numberChangeHandler('rightHandleValue'));
   }
 
   private rangeSwitcherHandler() {
@@ -160,51 +160,24 @@ class DemoSlider {
     this.rightHandleValueContainerSwitch(isRange);
   }
 
-  private isVerticalSwitcherHandler() {
-    this.$slider.config.isVertical((this.isVerticalSwitcher as HTMLFormElement).checked);
+  private booleanChangeHandler(fieldName: keyof JQuerySliderConfigBooleans) {
+    return (event: Event) => this.updateBoolean(event, fieldName);
   }
 
-  private valueLabelDisplayedSwitcherHandler() {
-    this.$slider.config.valueLabelDisplayed((this.valueLabelDisplayedSwitcher as HTMLFormElement).checked);
+  private updateBoolean(event: Event, fieldName: keyof JQuerySliderConfigBooleans) {
+    const checkbox = event.target as HTMLFormElement;
+    this.$slider.config[fieldName](checkbox.checked);
   }
 
-  private scaleDisplayedSwitcherHandler() {
-    this.$slider.config.scaleDisplayed((this.scaleDisplayedSwitcher as HTMLFormElement).checked);
+  private numberChangeHandler(fieldName: keyof JQuerySliderConfigNumbers) {
+    return (event: Event) => this.updateNumber(event, fieldName);
   }
 
-  private minValueChangeHandler() {
-    const input = this.minValue as HTMLFormElement;
+  private updateNumber(event: Event, fieldName: keyof JQuerySliderConfigNumbers) {
+    const input = event.target as HTMLFormElement;
     let value = parseInt(input.value.replace(/-\D/g, ''), 10);
-    if (isNaN(value)) value = this.$slider.config.minValue();
-    input.value = this.$slider.config.minValue(value);
-  }
-
-  private maxValueChangeHandler() {
-    const input = this.maxValue as HTMLFormElement;
-    let value = parseInt(input.value.replace(/-\D/g, ''), 10);
-    if (isNaN(value)) value = this.$slider.config.maxValue();
-    input.value = this.$slider.config.maxValue(value);
-  }
-
-  private stepChangeHandler() {
-    const input = this.step as HTMLFormElement;
-    let value = parseInt(input.value.replace(/-\D/g, ''), 10);
-    if (isNaN(value)) value = this.$slider.config.step();
-    input.value = this.$slider.config.step(value);
-  }
-
-  private leftHandleValueChangeHandler() {
-    const input = this.leftHandleValue as HTMLFormElement;
-    let value = parseInt(input.value.replace(/-\D/g, ''), 10);
-    if (isNaN(value)) value = this.$slider.config.leftHandleValue();
-    input.value = this.$slider.config.leftHandleValue(value);
-  }
-
-  private rightHandleValueChangeHandler() {
-    const input = this.rightHandleValue as HTMLFormElement;
-    let value = parseInt(input.value.replace(/-\D/g, ''), 10);
-    if (isNaN(value)) value = this.$slider.config.rightHandleValue();
-    input.value = this.$slider.config.rightHandleValue(value);
+    if (isNaN(value)) value = this.$slider.config[fieldName]() as number;
+    input.value = this.$slider.config[fieldName](value);
   }
 
   private rightHandleValueContainerSwitch(isRange: boolean) {

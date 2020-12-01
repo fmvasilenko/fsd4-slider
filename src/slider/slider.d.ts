@@ -16,6 +16,20 @@ interface JQuerySliderConfig {
   setRightHandleSubscriber(subscriber: Subscriber): void
 }
 
+interface JQuerySliderConfigBooleans {
+  isVertical(value?: boolean): boolean
+  valueLabelDisplayed(value?: boolean): boolean
+  scaleDisplayed(value?: boolean): boolean
+}
+
+interface JQuerySliderConfigNumbers {
+  minValue(value?: number): number
+  maxValue(value?: number): number
+  step(value?: number): number
+  leftHandleValue(value?: number): number
+  rightHandleValue(value?: number): number
+}
+
 interface Subscriber {
   (value: number): void
 }
