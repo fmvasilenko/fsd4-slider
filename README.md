@@ -53,6 +53,7 @@ npm test
 6. [Points number](#pointsNumber)
 7. [Hide value label](#hideValueLabel)
 8. [Callback functions](#callbackFunctions)
+9. [UML Diagram](https://drive.google.com/file/d/1wYxhYIeVi5hJ0HeJ9hWspLYtM8TY3cw2/view?usp=sharing)
 
 
 <a name="basicUsage"></a>
