@@ -84,7 +84,12 @@ class Model {
   }
 
   private checkStep(givenStep: number): number {
-    return givenStep >= 1 ? givenStep : 1;
+    const range = this.maxValue.get() - this.minValue.get();
+
+    if (givenStep < 1) return 1;
+    if (givenStep > range) return range;
+
+    return givenStep;
   }
 
   private checkLeftHandleValue(givenValue: number): number {
