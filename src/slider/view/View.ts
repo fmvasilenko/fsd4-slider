@@ -138,7 +138,7 @@ class View {
       calcPointsNumber = Math.floor(calcPointsNumber / 2);
     }
 
-    return calcPointsNumber;
+    return calcPointsNumber > 1 ? calcPointsNumber : 0;
   }
 
   private bindEventlisteners() {
