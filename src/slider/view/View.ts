@@ -23,12 +23,15 @@ class View {
 
   private scaleClickExternalSubscriber: Function = () => {};
 
+  private isVertical = false;
+
   constructor(container: HTMLElement) {
     this.classes = require('../slider.classes.json');
     this.root = this.createRoot(container);
     this.leftHandle = new HandleView(this.root, HandleSide.Left);
     this.rightHandle = new HandleView(this.root, HandleSide.Right);
     this.rangeLine = new RangeLineView(this.root);
+    this.bindEventlisteners();
   }
 
   public updateIsRange(state: State) {
@@ -37,6 +40,7 @@ class View {
   }
 
   public updateIsVertical(state: State) {
+    this.isVertical = state.isVertical;
     this.switchVertical(state);
     this.leftHandle.switchVertical(state);
     this.rightHandle.switchVertical(state);
@@ -135,6 +139,37 @@ class View {
     }
 
     return calcPointsNumber;
+  }
+
+  private bindEventlisteners() {
+    this.root.addEventListener('click', this.clickHandler.bind(this));
+  }
+
+  private clickHandler(event: MouseEvent) {
+    this.scaleClickExternalSubscriber(this.calculatePosition(event));
+  }
+
+  private calculatePosition(event: MouseEvent): number {
+    let position = this.isVertical === true
+      ? this.calculateVerticalPosition(event.clientY)
+      : this.calculateHorizontalPosition(event.clientX);
+
+    if (position > 1) position = 1;
+    if (position < 0) position = 0;
+
+    return position;
+  }
+
+  private calculateHorizontalPosition(x: number): number {
+    const scaleBeginning = this.root.getBoundingClientRect().left;
+    const length = this.root.offsetWidth;
+    return (x - scaleBeginning) / length;
+  }
+
+  private calculateVerticalPosition(y: number): number {
+    const length = this.root.offsetHeight;
+    const scaleBeginning = this.root.getBoundingClientRect().top + length;
+    return (scaleBeginning - y) / length;
   }
 }
 
