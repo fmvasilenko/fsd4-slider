@@ -117,10 +117,15 @@ class View {
   }
 
   private createScaleValues(pointsNumber: number, state: State) {
+    const { minValue, maxValue } = state;
+    const range = maxValue - minValue;
+
     for (let i = 0; i < pointsNumber; i += 1) {
       this.scaleValues[i] = new ScaleValueView(this.root, state, i, pointsNumber);
       this.scaleValues[i].setClickSubscriber(this.scaleClickExternalSubscriber);
     }
+
+    if (!(range % pointsNumber)) this.scaleValues.push(new ScaleValueView(this.root, state, pointsNumber + 1, pointsNumber));
   }
 
   private removeScaleValues() {

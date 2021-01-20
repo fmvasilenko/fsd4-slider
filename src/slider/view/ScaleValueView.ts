@@ -84,6 +84,11 @@ class ScaleValueView {
     this.shift = pointValue / range;
 
     this.label.innerHTML = `${pointValue + minValue}`;
+
+    if (this.index > this.pointsNumber) {
+      this.shift = 1;
+      this.label.innerHTML = `${maxValue}`;
+    }
   }
 
   private bindEventListeners() {

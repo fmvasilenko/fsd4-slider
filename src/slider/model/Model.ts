@@ -114,7 +114,7 @@ class Model {
 
   private checkHandleValue(givenValue: number): number {
     const { minValue, maxValue } = this.getCurrentState();
-    const value = this.checkIfFitsTheSteps(givenValue);
+    const value = givenValue !== maxValue ? this.checkIfFitsTheSteps(givenValue) : maxValue;
 
     if (value < minValue) return minValue;
     if (value > maxValue) return maxValue;
