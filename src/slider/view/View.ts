@@ -125,7 +125,10 @@ class View {
       this.scaleValues[i].setClickSubscriber(this.scaleClickExternalSubscriber);
     }
 
-    if (!(range % pointsNumber)) this.scaleValues.push(new ScaleValueView(this.root, state, pointsNumber + 1, pointsNumber));
+    if (!(range % pointsNumber)) {
+      this.scaleValues.push(new ScaleValueView(this.root, state, pointsNumber + 1, pointsNumber));
+      this.scaleValues[this.scaleValues.length - 1].setClickSubscriber(this.scaleClickExternalSubscriber);
+    }
   }
 
   private removeScaleValues() {

@@ -95,7 +95,8 @@ class ScaleValueView {
     this.root.addEventListener('click', this.clickHandler.bind(this));
   }
 
-  private clickHandler() {
+  private clickHandler(event: Event) {
+    event.stopPropagation();
     this.externalClickSubscriber(this.shift);
   }
 }
