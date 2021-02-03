@@ -108,6 +108,7 @@ class Presenter {
     this.view.setLeftHandlePositionSubscriber(this.modelGUI.calculateLeftHandleValue.bind(this.modelGUI));
     this.view.setRightHandlePositionSubscriber(this.modelGUI.calculateRightHandleValue.bind(this.modelGUI));
     this.view.setScaleClickSubscriber(this.modelGUI.calculateAndChooseHandle.bind(this.modelGUI));
+    /*
     this.modelGUI.setIsRangeSubscriber(this.view.updateIsRange.bind(this.view));
     this.modelGUI.setIsVerticalSubscriber(this.view.updateIsVertical.bind(this.view));
     this.modelGUI.setValueLabelDisplayedSubscriber(this.view.updateValueLabelDisplayed.bind(this.view));
@@ -117,6 +118,19 @@ class Presenter {
     this.modelGUI.setStepSubscriber(this.view.updateStep.bind(this.view));
     this.modelGUI.setLeftHandleSubscriber(this.leftHandleSubscriber.bind(this));
     this.modelGUI.setRightHandleSubscriber(this.rightHandleSubscriber.bind(this));
+    */
+
+    this.modelGUI.subscribe('isRange', this.view.updateIsRange.bind(this.view));
+    this.modelGUI.subscribe('isVertical', this.view.updateIsVertical.bind(this.view));
+    this.modelGUI.subscribe('valueLabelDisplayed', this.view.updateValueLabelDisplayed.bind(this.view));
+    this.modelGUI.subscribe('scaleDisplayed', this.view.updateScaleDisplayed.bind(this.view));
+    this.modelGUI.subscribe('minValue', this.view.updateMinValue.bind(this.view));
+    this.modelGUI.subscribe('maxValue', this.view.updateMaxValue.bind(this.view));
+    this.modelGUI.subscribe('step', this.view.updateStep.bind(this.view));
+    this.modelGUI.subscribe('leftHandleValue', this.leftHandleSubscriber.bind(this));
+    this.modelGUI.subscribe('rightHandleValue', this.rightHandleSubscriber.bind(this));
+
+    this.modelGUI.subscribe('leftHandleValue', (data) => console.log(data));
   }
 
   private leftHandleSubscriber(state: State) {

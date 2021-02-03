@@ -84,3 +84,5 @@ interface Classes {
   scaleValueLabel: string
   scaleValueLabelVertical: string
 }
+
+type ModelOption = keyof Config;

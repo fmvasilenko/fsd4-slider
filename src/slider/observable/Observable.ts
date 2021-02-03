@@ -13,7 +13,7 @@ class Observable<T> {
     this.subscribers = this.subscribers.filter((el) => el !== subscriber);
   }
 
-  public publish(data: T) {
+  public publish(data: any) {
     this.subscribers.forEach((subscriber: Function) => {
       subscriber(data);
     });
