@@ -31,7 +31,7 @@ interface JQuerySliderConfigNumbers {
 }
 
 interface Subscriber {
-  (value: number): void
+  (state: State): void
 }
 
 interface ISlider extends SliderFunction {}

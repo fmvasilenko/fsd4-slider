@@ -134,12 +134,12 @@ class DemoSlider {
     this.$slider.config.setRightHandleSubscriber(this.rightHandleSubscriber.bind(this));
   }
 
-  private leftHandleSubscriber(value: number) {
-    (this.leftHandleValue as HTMLFormElement).value = value;
+  private leftHandleSubscriber(state: State) {
+    (this.leftHandleValue as HTMLFormElement).value = state.leftHandleValue;
   }
 
-  private rightHandleSubscriber(value: number) {
-    (this.rightHandleValue as HTMLFormElement).value = value;
+  private rightHandleSubscriber(state: State) {
+    (this.rightHandleValue as HTMLFormElement).value = state.rightHandleValue;
   }
 
   private bindEventsListeners() {
