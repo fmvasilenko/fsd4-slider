@@ -37,7 +37,10 @@ interface Subscriber {
 interface ISlider extends SliderFunction {}
 
 interface JQuery {
-  config: JQuerySliderConfig
+  subscribe: (option: ModelOption, subscriber: Function) => void
+  unsubscribe: (option: ModelOption, subscriber: Function) => void
+  setSliderOption: (option: ModelOption, value: State[ModelOption]) => State[ModelOption]
+  getSliderOption: (option: ModelOption) => State[ModelOption]
   slider: ISlider
 }
 

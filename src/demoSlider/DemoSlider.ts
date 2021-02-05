@@ -117,21 +117,21 @@ class DemoSlider {
   }
 
   private setInitialState() {
-    (this.rangeSwitcher as HTMLFormElement).checked = this.$slider.config.isRange();
-    (this.isVerticalSwitcher as HTMLFormElement).checked = this.$slider.config.isVertical();
-    (this.valueLabelDisplayedSwitcher as HTMLFormElement).checked = this.$slider.config.valueLabelDisplayed();
-    (this.scaleDisplayedSwitcher as HTMLFormElement).checked = this.$slider.config.scaleDisplayed();
-    (this.min as HTMLFormElement).value = this.$slider.config.min();
-    (this.max as HTMLFormElement).value = this.$slider.config.max();
-    (this.step as HTMLFormElement).value = this.$slider.config.step();
-    (this.firstValue as HTMLFormElement).value = this.$slider.config.firstValue();
-    (this.secondValue as HTMLFormElement).value = this.$slider.config.secondValue();
-    this.secondValueContainerSwitch(this.$slider.config.isRange());
+    (this.rangeSwitcher as HTMLFormElement).checked = this.$slider.getSliderOption('isRange');
+    (this.isVerticalSwitcher as HTMLFormElement).checked = this.$slider.getSliderOption('isVertical');
+    (this.valueLabelDisplayedSwitcher as HTMLFormElement).checked = this.$slider.getSliderOption('valueLabelDisplayed');
+    (this.scaleDisplayedSwitcher as HTMLFormElement).checked = this.$slider.getSliderOption('scaleDisplayed');
+    (this.min as HTMLFormElement).value = this.$slider.getSliderOption('min');
+    (this.max as HTMLFormElement).value = this.$slider.getSliderOption('max');
+    (this.step as HTMLFormElement).value = this.$slider.getSliderOption('step');
+    (this.firstValue as HTMLFormElement).value = this.$slider.getSliderOption('firstValue');
+    (this.secondValue as HTMLFormElement).value = this.$slider.getSliderOption('secondValue');
+    this.secondValueContainerSwitch(this.$slider.getSliderOption('isRange') as boolean);
   }
 
   private setSubscriptions() {
-    this.$slider.config.setFirstValueSubscriber(this.leftHandleSubscriber.bind(this));
-    this.$slider.config.setSecondValueSubscriber(this.rightHandleSubscriber.bind(this));
+    this.$slider.subscribe('firstValue', this.leftHandleSubscriber.bind(this));
+    this.$slider.subscribe('secondValue', this.rightHandleSubscriber.bind(this));
   }
 
   private leftHandleSubscriber(state: State) {
@@ -156,7 +156,7 @@ class DemoSlider {
 
   private rangeSwitcherHandler() {
     const isRange = (this.rangeSwitcher as HTMLFormElement).checked;
-    this.$slider.config.isRange(isRange);
+    this.$slider.setSliderOption('isRange', isRange);
     this.secondValueContainerSwitch(isRange);
   }
 
@@ -166,7 +166,7 @@ class DemoSlider {
 
   private updateBoolean(event: Event, fieldName: keyof JQuerySliderConfigBooleans) {
     const checkbox = event.target as HTMLFormElement;
-    this.$slider.config[fieldName](checkbox.checked);
+    this.$slider.setSliderOption(fieldName, checkbox.checked);
   }
 
   private numberChangeHandler(fieldName: keyof JQuerySliderConfigNumbers) {
@@ -176,8 +176,8 @@ class DemoSlider {
   private updateNumber(event: Event, fieldName: keyof JQuerySliderConfigNumbers) {
     const input = event.target as HTMLFormElement;
     let value = parseInt(input.value.replace(/-\D/g, ''), 10);
-    if (isNaN(value)) value = this.$slider.config[fieldName]() as number;
-    input.value = this.$slider.config[fieldName](value);
+    if (isNaN(value)) value = this.$slider.getSliderOption(fieldName) as number;
+    input.value = this.$slider.setSliderOption(fieldName, value);
   }
 
   private secondValueContainerSwitch(isRange: boolean) {
