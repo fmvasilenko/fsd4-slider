@@ -73,13 +73,13 @@ class Model {
   }
 
   private checkMinValue(givenValue: number): number {
-    const { maxValue } = this.getCurrentState();
-    return givenValue > maxValue ? maxValue : givenValue;
+    const { maxValue, step } = this.getCurrentState();
+    return givenValue > maxValue - step ? maxValue - step : givenValue;
   }
 
   private checkMaxValue(givenValue: number): number {
-    const { minValue } = this.getCurrentState();
-    return givenValue < minValue ? minValue : givenValue;
+    const { minValue, step } = this.getCurrentState();
+    return givenValue < minValue + step ? minValue + step : givenValue;
   }
 
   private checkStep(givenStep: number): number {
