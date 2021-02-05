@@ -65,21 +65,21 @@ class View {
     this.updateScaleValues(state);
   }
 
-  public updateMinValue(state: State) {
+  public updateMin(state: State) {
     this.updateScaleValues(state);
   }
 
-  public updateMaxValue(state: State) {
+  public updateMax(state: State) {
     this.updateScaleValues(state);
   }
 
-  public updateLeftHandleValue(state: State) {
+  public updateFirstValue(state: State) {
     this.leftHandle.updateValue(state);
     this.rightHandle.updateValue(state);
     this.rangeLine.render(state);
   }
 
-  public updateRightHandleValue(state: State) {
+  public updateSecondValue(state: State) {
     this.leftHandle.updateValue(state);
     this.rightHandle.updateValue(state);
     this.rangeLine.render(state);
@@ -117,8 +117,8 @@ class View {
   }
 
   private createScaleValues(pointsNumber: number, state: State) {
-    const { minValue, maxValue, step } = state;
-    const range = maxValue - minValue;
+    const { min, max, step } = state;
+    const range = max - min;
 
     for (let i = 0; i < pointsNumber; i += 1) {
       this.scaleValues[i] = new ScaleValueView(this.root, state, i, pointsNumber);
@@ -137,8 +137,8 @@ class View {
   }
 
   private calculatePointsNumber(state: State) {
-    const { minValue, maxValue, step } = state;
-    const range = maxValue - minValue;
+    const { min, max, step } = state;
+    const range = max - min;
     const stepsNumber = Math.floor(range / step) + 1;
 
     let calcPointsNumber = stepsNumber;

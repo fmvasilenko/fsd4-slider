@@ -8,23 +8,23 @@ class ModelGUI {
     this.model = model;
   }
 
-  public calculateLeftHandleValue(position: number) {
-    this.model.leftHandleValue.set(this.calculateValue(position));
+  public calculateFirstValue(position: number) {
+    this.model.firstValue.set(this.calculateValue(position));
   }
 
-  public calculateRightHandleValue(position: number) {
-    this.model.rightHandleValue.set(this.calculateValue(position));
+  public calculateSecondValue(position: number) {
+    this.model.secondValue.set(this.calculateValue(position));
   }
 
   public calculateAndChooseHandle(position: number) {
-    const { isRange, minValue, leftHandleValue, rightHandleValue } = this.model;
+    const { isRange, min, firstValue, secondValue } = this.model;
     const value = this.calculateValue(position);
-    const normValue = value - minValue.get();
-    const middelValue = (rightHandleValue.get() - leftHandleValue.get()) / 2 + leftHandleValue.get();
-    const normMiddelValue = middelValue - minValue.get();
+    const normValue = value - min.get();
+    const middelValue = (secondValue.get() - firstValue.get()) / 2 + firstValue.get();
+    const normMiddelValue = middelValue - min.get();
 
-    if (isRange.get() && normValue > normMiddelValue) rightHandleValue.set(value);
-    else leftHandleValue.set(value);
+    if (isRange.get() && normValue > normMiddelValue) secondValue.set(value);
+    else firstValue.set(value);
   }
 
   public subscribe<T>(option: ModelOption, subscriber: (value: T) => void): void {
@@ -40,9 +40,9 @@ class ModelGUI {
   }
 
   private calculateValue(position: number): number {
-    const { minValue, maxValue } = this.model;
-    const range = maxValue.get() - minValue.get();
-    return position * range + minValue.get();
+    const { min, max } = this.model;
+    const range = max.get() - min.get();
+    return position * range + min.get();
   }
 }
 

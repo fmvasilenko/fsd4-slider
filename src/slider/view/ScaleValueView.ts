@@ -76,18 +76,18 @@ class ScaleValueView {
   }
 
   private update(state: State) {
-    const { minValue, maxValue, step } = state;
-    const range = maxValue - minValue;
+    const { min, max, step } = state;
+    const range = max - min;
     const stepsNumber = Math.floor(range / step);
 
     const pointValue = Math.floor(stepsNumber / (this.pointsNumber - 1)) * step * this.index;
     this.shift = pointValue / range;
 
-    this.label.innerHTML = `${pointValue + minValue}`;
+    this.label.innerHTML = `${pointValue + min}`;
 
     if (this.index > this.pointsNumber) {
       this.shift = 1;
-      this.label.innerHTML = `${maxValue}`;
+      this.label.innerHTML = `${max}`;
     }
   }
 

@@ -7,13 +7,13 @@ interface JQuerySliderConfig {
   isVertical(value?: boolean): boolean
   valueLabelDisplayed(value?: boolean): boolean
   scaleDisplayed(value?: boolean): boolean
-  minValue(value?: number): number
-  maxValue(value?: number): number
+  min(value?: number): number
+  max(value?: number): number
   step(value?: number): number
-  leftHandleValue(value?: number): number
-  rightHandleValue(value?: number): number
-  setLeftHandleSubscriber(subscriber: Subscriber): void
-  setRightHandleSubscriber(subscriber: Subscriber): void
+  firstValue(value?: number): number
+  secondValue(value?: number): number
+  setFirstValueSubscriber(subscriber: Subscriber): void
+  setSecondValueSubscriber(subscriber: Subscriber): void
 }
 
 interface JQuerySliderConfigBooleans {
@@ -23,11 +23,11 @@ interface JQuerySliderConfigBooleans {
 }
 
 interface JQuerySliderConfigNumbers {
-  minValue(value?: number): number
-  maxValue(value?: number): number
+  min(value?: number): number
+  max(value?: number): number
   step(value?: number): number
-  leftHandleValue(value?: number): number
-  rightHandleValue(value?: number): number
+  firstValue(value?: number): number
+  secondValue(value?: number): number
 }
 
 interface Subscriber {
@@ -46,11 +46,11 @@ interface State {
   isVertical: boolean
   valueLabelDisplayed: boolean
   scaleDisplayed: boolean
-  minValue: number
-  maxValue: number
+  min: number
+  max: number
   step: number
-  leftHandleValue: number
-  rightHandleValue: number
+  firstValue: number
+  secondValue: number
 }
 
 interface Config {
@@ -58,11 +58,11 @@ interface Config {
   isVertical?: boolean
   valueLabelDisplayed?: boolean
   scaleDisplayed?: boolean
-  minValue?: number
-  maxValue?: number
+  min?: number
+  max?: number
   step?: number
-  leftHandleValue?: number
-  rightHandleValue?: number
+  firstValue?: number
+  secondValue?: number
 }
 
 interface Classes {

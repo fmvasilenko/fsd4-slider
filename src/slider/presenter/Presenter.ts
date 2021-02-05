@@ -17,26 +17,26 @@ class Presenter {
   }
 
   private setSubscriptions() {
-    this.view.setLeftHandlePositionSubscriber(this.modelGUI.calculateLeftHandleValue.bind(this.modelGUI));
-    this.view.setRightHandlePositionSubscriber(this.modelGUI.calculateRightHandleValue.bind(this.modelGUI));
+    this.view.setLeftHandlePositionSubscriber(this.modelGUI.calculateFirstValue.bind(this.modelGUI));
+    this.view.setRightHandlePositionSubscriber(this.modelGUI.calculateSecondValue.bind(this.modelGUI));
     this.view.setScaleClickSubscriber(this.modelGUI.calculateAndChooseHandle.bind(this.modelGUI));
     this.modelGUI.subscribe('isRange', this.view.updateIsRange.bind(this.view));
     this.modelGUI.subscribe('isVertical', this.view.updateIsVertical.bind(this.view));
     this.modelGUI.subscribe('valueLabelDisplayed', this.view.updateValueLabelDisplayed.bind(this.view));
     this.modelGUI.subscribe('scaleDisplayed', this.view.updateScaleDisplayed.bind(this.view));
-    this.modelGUI.subscribe('minValue', this.view.updateMinValue.bind(this.view));
-    this.modelGUI.subscribe('maxValue', this.view.updateMaxValue.bind(this.view));
+    this.modelGUI.subscribe('min', this.view.updateMin.bind(this.view));
+    this.modelGUI.subscribe('max', this.view.updateMax.bind(this.view));
     this.modelGUI.subscribe('step', this.view.updateStep.bind(this.view));
-    this.modelGUI.subscribe('leftHandleValue', this.leftHandleSubscriber.bind(this));
-    this.modelGUI.subscribe('rightHandleValue', this.rightHandleSubscriber.bind(this));
+    this.modelGUI.subscribe('firstValue', this.leftHandleSubscriber.bind(this));
+    this.modelGUI.subscribe('secondValue', this.rightHandleSubscriber.bind(this));
   }
 
   private leftHandleSubscriber(state: State) {
-    this.view.updateLeftHandleValue(state);
+    this.view.updateFirstValue(state);
   }
 
   private rightHandleSubscriber(state: State) {
-    this.view.updateRightHandleValue(state);
+    this.view.updateSecondValue(state);
   }
 
   private setInitialState() {
@@ -47,10 +47,10 @@ class Presenter {
     this.view.updateValueLabelDisplayed(state);
     this.view.updateScaleDisplayed(state);
     this.view.updateStep(state);
-    this.view.updateMinValue(state);
-    this.view.updateMaxValue(state);
-    this.view.updateLeftHandleValue(state);
-    this.view.updateRightHandleValue(state);
+    this.view.updateMin(state);
+    this.view.updateMax(state);
+    this.view.updateFirstValue(state);
+    this.view.updateSecondValue(state);
   }
 }
 

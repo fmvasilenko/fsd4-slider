@@ -3,10 +3,9 @@
   "isVertical": false,
   "valueLabelDisplayed": true,
   "scaleDisplayed": true,
-  "minValue": 0,
-  "maxValue": 100,
+  "min": 0,
+  "max": 100,
   "step": 1,
-  "pointsNumber": 5,
-  "leftHandleValue": 20,
-  "rightHandleValue": 80
+  "firstValue": 20,
+  "secondValue": 80
 }

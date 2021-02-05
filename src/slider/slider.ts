@@ -26,14 +26,14 @@ export default $.fn.slider = function (this: JQuery, config?: Config) {
       return slider.get('scaleDisplayed') as boolean;
     },
 
-    minValue(value?: number): number {
-      if (value !== undefined) slider.set('minValue', value);
-      return slider.get('minValue') as number;
+    min(value?: number): number {
+      if (value !== undefined) slider.set('min', value);
+      return slider.get('min') as number;
     },
 
-    maxValue(value?: number): number {
-      if (value !== undefined) slider.set('maxValue', value);
-      return slider.get('maxValue') as number;
+    max(value?: number): number {
+      if (value !== undefined) slider.set('max', value);
+      return slider.get('max') as number;
     },
 
     step(value?: number): number {
@@ -41,22 +41,22 @@ export default $.fn.slider = function (this: JQuery, config?: Config) {
       return slider.get('step') as number;
     },
 
-    leftHandleValue(value?: number): number {
-      if (value !== undefined) slider.set('leftHandleValue', value);
-      return slider.get('leftHandleValue') as number;
+    firstValue(value?: number): number {
+      if (value !== undefined) slider.set('firstValue', value);
+      return slider.get('firstValue') as number;
     },
 
-    rightHandleValue(value?: number): number {
-      if (value !== undefined) slider.set('scaleDisplayed', value);
-      return slider.get('scaleDisplayed') as number;
+    secondValue(value?: number): number {
+      if (value !== undefined) slider.set('secondValue', value);
+      return slider.get('secondValue') as number;
     },
 
-    setLeftHandleSubscriber(subscriber: Function) {
-      slider.subscribe('leftHandleValue', subscriber);
+    setFirstValueSubscriber(subscriber: Function) {
+      slider.subscribe('firstValue', subscriber);
     },
 
-    setRightHandleSubscriber(subscriber: Function) {
-      slider.subscribe('rightHandleValue', subscriber);
+    setSecondValueSubscriber(subscriber: Function) {
+      slider.subscribe('secondValue', subscriber);
     },
   };
 

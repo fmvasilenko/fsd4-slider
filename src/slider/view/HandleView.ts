@@ -97,7 +97,7 @@ class HandleView {
   }
 
   private render(state: State) {
-    const { isVertical, leftHandleValue, rightHandleValue } = state;
+    const { isVertical, firstValue, secondValue } = state;
     let shift = this.calculateShift(state);
 
     if (this.handleSide === HandleSide.Left) shift -= this.calculateExtraShift(state);
@@ -111,17 +111,17 @@ class HandleView {
       this.root.style.left = `${shift}%`;
     }
 
-    if (this.handleSide === HandleSide.Left) this.label.innerHTML = `${leftHandleValue}`;
-    else this.label.innerHTML = `${rightHandleValue}`;
+    if (this.handleSide === HandleSide.Left) this.label.innerHTML = `${firstValue}`;
+    else this.label.innerHTML = `${secondValue}`;
   }
 
   private calculateShift(state: State): number {
     const {
-      minValue, maxValue, leftHandleValue, rightHandleValue,
+      min, max, firstValue, secondValue,
     } = state;
-    const value = this.handleSide === HandleSide.Left ? leftHandleValue : rightHandleValue;
-    const range = maxValue - minValue;
-    const position = (value - minValue) / range;
+    const value = this.handleSide === HandleSide.Left ? firstValue : secondValue;
+    const range = max - min;
+    const position = (value - min) / range;
     return position * 100;
   }
 
@@ -142,12 +142,12 @@ class HandleView {
 
   private calculateDistanceBetweenHandles(state: State): number {
     const {
-      isVertical, minValue, maxValue, leftHandleValue, rightHandleValue,
+      isVertical, min, max, firstValue, secondValue,
     } = state;
     const scaleLength = isVertical ? this.container.offsetHeight : this.container.offsetWidth;
-    const stepLength = scaleLength / (maxValue - minValue);
+    const stepLength = scaleLength / (max - min);
 
-    return (rightHandleValue - leftHandleValue) * stepLength;
+    return (secondValue - firstValue) * stepLength;
   }
 
   private bindEventListeners() {

@@ -32,36 +32,36 @@ class RangeLineView {
   }
 
   private renderVertical(state: State) {
-    const { isRange, leftHandleValue, rightHandleValue } = state;
+    const { isRange, firstValue, secondValue } = state;
     this.root.style.left = '';
     this.root.style.right = '';
 
     if (isRange) {
-      this.root.style.top = `${100 - this.calculateShift(rightHandleValue, state)}%`;
-      this.root.style.bottom = `${this.calculateShift(leftHandleValue, state)}%`;
+      this.root.style.top = `${100 - this.calculateShift(secondValue, state)}%`;
+      this.root.style.bottom = `${this.calculateShift(firstValue, state)}%`;
     } else {
-      this.root.style.top = `${100 - this.calculateShift(leftHandleValue, state)}%`;
+      this.root.style.top = `${100 - this.calculateShift(firstValue, state)}%`;
       this.root.style.bottom = '0%';
     }
   }
 
   private renderHorizontal(state: State) {
-    const { isRange, leftHandleValue, rightHandleValue } = state;
+    const { isRange, firstValue, secondValue } = state;
     this.root.style.top = '';
     this.root.style.bottom = '';
 
     if (isRange) {
-      this.root.style.left = `${this.calculateShift(leftHandleValue, state)}%`;
-      this.root.style.right = `${100 - this.calculateShift(rightHandleValue, state)}%`;
+      this.root.style.left = `${this.calculateShift(firstValue, state)}%`;
+      this.root.style.right = `${100 - this.calculateShift(secondValue, state)}%`;
     } else {
       this.root.style.left = '0%';
-      this.root.style.right = `${100 - this.calculateShift(leftHandleValue, state)}%`;
+      this.root.style.right = `${100 - this.calculateShift(firstValue, state)}%`;
     }
   }
 
   private calculateShift(value: number, state: State) {
-    const { minValue, maxValue } = state;
-    return 100 * ((value - minValue) / (maxValue - minValue));
+    const { min, max } = state;
+    return 100 * ((value - min) / (max - min));
   }
 }
 

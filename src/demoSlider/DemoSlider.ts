@@ -22,17 +22,17 @@ class DemoSlider {
 
   private scaleDisplayedSwitcher: HTMLElement;
 
-  private minValue: HTMLElement;
+  private min: HTMLElement;
 
-  private maxValue: HTMLElement;
+  private max: HTMLElement;
 
   private step: HTMLElement;
 
-  private leftHandleValue: HTMLElement;
+  private firstValue: HTMLElement;
 
-  private rightHandleValue: HTMLElement;
+  private secondValue: HTMLElement;
 
-  private rightHandleValueContainer: HTMLElement | null;
+  private secondValueContainer: HTMLElement | null;
 
   constructor(container: HTMLElement) {
     this.classes = require('./demoSlider.classes.json');
@@ -45,12 +45,12 @@ class DemoSlider {
     this.isVerticalSwitcher = this.createSwitcher('Is vertical', '');
     this.valueLabelDisplayedSwitcher = this.createSwitcher('Display value label', '');
     this.scaleDisplayedSwitcher = this.createSwitcher('Display scale', '');
-    this.minValue = this.createValueElement('Min value', '');
-    this.maxValue = this.createValueElement('Max value', '');
+    this.min = this.createValueElement('Min value', '');
+    this.max = this.createValueElement('Max value', '');
     this.step = this.createValueElement('Step', '');
-    this.leftHandleValue = this.createValueElement('Handle value', '');
-    this.rightHandleValue = this.createValueElement('Second handle value', '');
-    this.rightHandleValueContainer = this.rightHandleValue.closest(`.${this.classes.value}`);
+    this.firstValue = this.createValueElement('Handle value', '');
+    this.secondValue = this.createValueElement('SecondValue handle value', '');
+    this.secondValueContainer = this.secondValue.closest(`.${this.classes.value}`);
 
     this.setInitialState();
     this.setSubscriptions();
@@ -121,25 +121,25 @@ class DemoSlider {
     (this.isVerticalSwitcher as HTMLFormElement).checked = this.$slider.config.isVertical();
     (this.valueLabelDisplayedSwitcher as HTMLFormElement).checked = this.$slider.config.valueLabelDisplayed();
     (this.scaleDisplayedSwitcher as HTMLFormElement).checked = this.$slider.config.scaleDisplayed();
-    (this.minValue as HTMLFormElement).value = this.$slider.config.minValue();
-    (this.maxValue as HTMLFormElement).value = this.$slider.config.maxValue();
+    (this.min as HTMLFormElement).value = this.$slider.config.min();
+    (this.max as HTMLFormElement).value = this.$slider.config.max();
     (this.step as HTMLFormElement).value = this.$slider.config.step();
-    (this.leftHandleValue as HTMLFormElement).value = this.$slider.config.leftHandleValue();
-    (this.rightHandleValue as HTMLFormElement).value = this.$slider.config.rightHandleValue();
-    this.rightHandleValueContainerSwitch(this.$slider.config.isRange());
+    (this.firstValue as HTMLFormElement).value = this.$slider.config.firstValue();
+    (this.secondValue as HTMLFormElement).value = this.$slider.config.secondValue();
+    this.secondValueContainerSwitch(this.$slider.config.isRange());
   }
 
   private setSubscriptions() {
-    this.$slider.config.setLeftHandleSubscriber(this.leftHandleSubscriber.bind(this));
-    this.$slider.config.setRightHandleSubscriber(this.rightHandleSubscriber.bind(this));
+    this.$slider.config.setFirstValueSubscriber(this.leftHandleSubscriber.bind(this));
+    this.$slider.config.setSecondValueSubscriber(this.rightHandleSubscriber.bind(this));
   }
 
   private leftHandleSubscriber(state: State) {
-    (this.leftHandleValue as HTMLFormElement).value = state.leftHandleValue;
+    (this.firstValue as HTMLFormElement).value = state.firstValue;
   }
 
   private rightHandleSubscriber(state: State) {
-    (this.rightHandleValue as HTMLFormElement).value = state.rightHandleValue;
+    (this.secondValue as HTMLFormElement).value = state.secondValue;
   }
 
   private bindEventsListeners() {
@@ -147,17 +147,17 @@ class DemoSlider {
     this.isVerticalSwitcher.addEventListener('change', this.booleanChangeHandler('isVertical'));
     this.valueLabelDisplayedSwitcher.addEventListener('change', this.booleanChangeHandler('valueLabelDisplayed'));
     this.scaleDisplayedSwitcher.addEventListener('change', this.booleanChangeHandler('scaleDisplayed'));
-    this.minValue.addEventListener('change', this.numberChangeHandler('minValue'));
-    this.maxValue.addEventListener('change', this.numberChangeHandler('maxValue'));
+    this.min.addEventListener('change', this.numberChangeHandler('min'));
+    this.max.addEventListener('change', this.numberChangeHandler('max'));
     this.step.addEventListener('change', this.numberChangeHandler('step'));
-    this.leftHandleValue.addEventListener('change', this.numberChangeHandler('leftHandleValue'));
-    this.rightHandleValue.addEventListener('change', this.numberChangeHandler('rightHandleValue'));
+    this.firstValue.addEventListener('change', this.numberChangeHandler('firstValue'));
+    this.secondValue.addEventListener('change', this.numberChangeHandler('secondValue'));
   }
 
   private rangeSwitcherHandler() {
     const isRange = (this.rangeSwitcher as HTMLFormElement).checked;
     this.$slider.config.isRange(isRange);
-    this.rightHandleValueContainerSwitch(isRange);
+    this.secondValueContainerSwitch(isRange);
   }
 
   private booleanChangeHandler(fieldName: keyof JQuerySliderConfigBooleans) {
@@ -180,9 +180,9 @@ class DemoSlider {
     input.value = this.$slider.config[fieldName](value);
   }
 
-  private rightHandleValueContainerSwitch(isRange: boolean) {
-    if (isRange && this.rightHandleValueContainer) this.panelWrapper.appendChild(this.rightHandleValueContainer);
-    else this.rightHandleValueContainer?.remove();
+  private secondValueContainerSwitch(isRange: boolean) {
+    if (isRange && this.secondValueContainer) this.panelWrapper.appendChild(this.secondValueContainer);
+    else this.secondValueContainer?.remove();
   }
 }
 
