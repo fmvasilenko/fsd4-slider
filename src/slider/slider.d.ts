@@ -31,7 +31,7 @@ interface JQuerySliderConfigNumbers {
 }
 
 interface Subscriber {
-  (value: number): void
+  (state: State): void
 }
 
 interface ISlider extends SliderFunction {}
@@ -84,3 +84,5 @@ interface Classes {
   scaleValueLabel: string
   scaleValueLabelVertical: string
 }
+
+type ModelOption = keyof Config;

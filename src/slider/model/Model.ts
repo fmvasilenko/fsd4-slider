@@ -1,5 +1,4 @@
 /* eslint-disable class-methods-use-this */
-// import { ModelMemoryCell } from '../ModelMemoryCell/ModelMemoryCell';
 import { ModelMemoryCell } from './ModelMemoryCell';
 
 class Model {
@@ -26,15 +25,15 @@ class Model {
   constructor(config?: Config) {
     this.config = { ...require('./defaultConfig.json'), ...config };
 
-    this.isRange = new ModelMemoryCell(this.config.isRange);
-    this.isVertical = new ModelMemoryCell(this.config.isVertical);
-    this.valueLabelDisplayed = new ModelMemoryCell(this.config.valueLabelDisplayed);
-    this.scaleDisplayed = new ModelMemoryCell(this.config.scaleDisplayed);
-    this.minValue = new ModelMemoryCell(this.config.minValue, this.checkMinValue.bind(this));
-    this.maxValue = new ModelMemoryCell(this.config.maxValue, this.checkMaxValue.bind(this));
-    this.step = new ModelMemoryCell(this.config.step, this.checkStep.bind(this));
-    this.leftHandleValue = new ModelMemoryCell(this.config.leftHandleValue, this.checkLeftHandleValue.bind(this));
-    this.rightHandleValue = new ModelMemoryCell(this.config.rightHandleValue, this.checkRightHandleValue.bind(this));
+    this.isRange = new ModelMemoryCell(this.config.isRange, this.getCurrentState.bind(this));
+    this.isVertical = new ModelMemoryCell(this.config.isVertical, this.getCurrentState.bind(this));
+    this.valueLabelDisplayed = new ModelMemoryCell(this.config.valueLabelDisplayed, this.getCurrentState.bind(this));
+    this.scaleDisplayed = new ModelMemoryCell(this.config.scaleDisplayed, this.getCurrentState.bind(this));
+    this.minValue = new ModelMemoryCell(this.config.minValue, this.getCurrentState.bind(this), this.checkMinValue.bind(this));
+    this.maxValue = new ModelMemoryCell(this.config.maxValue, this.getCurrentState.bind(this), this.checkMaxValue.bind(this));
+    this.step = new ModelMemoryCell(this.config.step, this.getCurrentState.bind(this), this.checkStep.bind(this));
+    this.leftHandleValue = new ModelMemoryCell(this.config.leftHandleValue, this.getCurrentState.bind(this), this.checkLeftHandleValue.bind(this));
+    this.rightHandleValue = new ModelMemoryCell(this.config.rightHandleValue, this.getCurrentState.bind(this), this.checkRightHandleValue.bind(this));
 
     this.setSubscriptions();
   }
@@ -74,13 +73,13 @@ class Model {
   }
 
   private checkMinValue(givenValue: number): number {
-    const { maxValue } = this.getCurrentState();
-    return givenValue > maxValue ? maxValue : givenValue;
+    const { maxValue, step } = this.getCurrentState();
+    return givenValue > maxValue - step ? maxValue - step : givenValue;
   }
 
   private checkMaxValue(givenValue: number): number {
-    const { minValue } = this.getCurrentState();
-    return givenValue < minValue ? minValue : givenValue;
+    const { minValue, step } = this.getCurrentState();
+    return givenValue < minValue + step ? minValue + step : givenValue;
   }
 
   private checkStep(givenStep: number): number {
