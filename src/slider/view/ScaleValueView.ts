@@ -1,3 +1,5 @@
+import autobind from 'autobind-decorator';
+
 class ScaleValueView {
   private classes: Classes;
 
@@ -91,9 +93,10 @@ class ScaleValueView {
   }
 
   private bindEventListeners() {
-    this.root.addEventListener('click', this.clickHandler.bind(this));
+    this.root.addEventListener('click', this.clickHandler);
   }
 
+  @autobind
   private clickHandler(event: Event) {
     event.stopPropagation();
     this.externalClickSubscriber(this.shift);

@@ -1,4 +1,5 @@
 /* eslint-disable object-curly-newline */
+import autobind from 'autobind-decorator';
 import { HandleView } from './HandleView';
 import { RangeLineView } from './RangeLineView';
 import { ScaleValueView } from './ScaleValueView';
@@ -33,11 +34,13 @@ class View {
     this.bindEventlisteners();
   }
 
+  @autobind
   public updateIsRange(state: State) {
     this.rightHandle.switchHandle(state);
     this.rangeLine.render(state);
   }
 
+  @autobind
   public updateIsVertical(state: State) {
     this.isVertical = state.isVertical;
     this.switchVertical(state);
@@ -49,35 +52,42 @@ class View {
     });
   }
 
+  @autobind
   public updateValueLabelDisplayed(state: State) {
     this.leftHandle.switchLabel(state);
     this.rightHandle.switchLabel(state);
   }
 
+  @autobind
   public updateScaleDisplayed(state: State) {
     this.scaleValues.forEach((scaleValue: ScaleValueView) => {
       scaleValue.switchLabel(state);
     });
   }
 
+  @autobind
   public updateStep(state: State) {
     this.updateScaleValues(state);
   }
 
+  @autobind
   public updateMin(state: State) {
     this.updateScaleValues(state);
   }
 
+  @autobind
   public updateMax(state: State) {
     this.updateScaleValues(state);
   }
 
+  @autobind
   public updateFirstValue(state: State) {
     this.leftHandle.updateValue(state);
     this.rightHandle.updateValue(state);
     this.rangeLine.render(state);
   }
 
+  @autobind
   public updateSecondValue(state: State) {
     this.leftHandle.updateValue(state);
     this.rightHandle.updateValue(state);
@@ -149,9 +159,10 @@ class View {
   }
 
   private bindEventlisteners() {
-    this.root.addEventListener('click', this.clickHandler.bind(this));
+    this.root.addEventListener('click', this.clickHandler);
   }
 
+  @autobind
   private clickHandler(event: MouseEvent) {
     this.scaleClickExternalSubscriber(this.calculatePosition(event));
   }

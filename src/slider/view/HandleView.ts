@@ -1,3 +1,5 @@
+import autobind from 'autobind-decorator';
+
 enum HandleSide {Left, Right}
 
 class HandleView {
@@ -151,19 +153,22 @@ class HandleView {
   }
 
   private bindEventListeners() {
-    this.root.addEventListener('mousedown', this.drag.bind(this));
-    document.addEventListener('mouseup', this.drop.bind(this));
-    document.addEventListener('mousemove', this.watchMouse.bind(this));
+    this.root.addEventListener('mousedown', this.drag);
+    document.addEventListener('mouseup', this.drop);
+    document.addEventListener('mousemove', this.watchMouse);
   }
 
+  @autobind
   private drag() {
     this.isDragged = true;
   }
 
+  @autobind
   private drop() {
     this.isDragged = false;
   }
 
+  @autobind
   private watchMouse(event: MouseEvent) {
     if (this.isDragged === true) this.positionSubscriber(this.calculatePosition(event));
   }

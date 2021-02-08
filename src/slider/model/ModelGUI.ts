@@ -1,4 +1,5 @@
 /* eslint-disable object-curly-newline */
+import autobind from 'autobind-decorator';
 import { Model } from './Model';
 
 class ModelGUI {
@@ -8,14 +9,17 @@ class ModelGUI {
     this.model = model;
   }
 
+  @autobind
   public calculateFirstValue(position: number) {
     this.model.firstValue.set(this.calculateValue(position));
   }
 
+  @autobind
   public calculateSecondValue(position: number) {
     this.model.secondValue.set(this.calculateValue(position));
   }
 
+  @autobind
   public calculateAndChooseHandle(position: number) {
     const { isRange, min, firstValue, secondValue } = this.model;
     const value = this.calculateValue(position);

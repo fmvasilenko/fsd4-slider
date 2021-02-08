@@ -1,3 +1,4 @@
+import autobind from 'autobind-decorator';
 import { ModelMemoryCell } from './ModelMemoryCell';
 
 class Model {
@@ -24,19 +25,20 @@ class Model {
   constructor(config?: Config) {
     this.config = { ...require('./defaultConfig.json'), ...config };
 
-    this.isRange = new ModelMemoryCell(this.config.isRange, this.getCurrentState.bind(this));
-    this.isVertical = new ModelMemoryCell(this.config.isVertical, this.getCurrentState.bind(this));
-    this.valueLabelDisplayed = new ModelMemoryCell(this.config.valueLabelDisplayed, this.getCurrentState.bind(this));
-    this.scaleDisplayed = new ModelMemoryCell(this.config.scaleDisplayed, this.getCurrentState.bind(this));
-    this.min = new ModelMemoryCell(this.config.min, this.getCurrentState.bind(this), this.checkMin.bind(this));
-    this.max = new ModelMemoryCell(this.config.max, this.getCurrentState.bind(this), this.checkMax.bind(this));
-    this.step = new ModelMemoryCell(this.config.step, this.getCurrentState.bind(this), this.checkStep.bind(this));
-    this.firstValue = new ModelMemoryCell(this.config.firstValue, this.getCurrentState.bind(this), this.checkFirstValue.bind(this));
-    this.secondValue = new ModelMemoryCell(this.config.secondValue, this.getCurrentState.bind(this), this.checkSecondValue.bind(this));
+    this.isRange = new ModelMemoryCell(this.config.isRange, this.getCurrentState);
+    this.isVertical = new ModelMemoryCell(this.config.isVertical, this.getCurrentState);
+    this.valueLabelDisplayed = new ModelMemoryCell(this.config.valueLabelDisplayed, this.getCurrentState);
+    this.scaleDisplayed = new ModelMemoryCell(this.config.scaleDisplayed, this.getCurrentState);
+    this.min = new ModelMemoryCell(this.config.min, this.getCurrentState, this.checkMin);
+    this.max = new ModelMemoryCell(this.config.max, this.getCurrentState, this.checkMax);
+    this.step = new ModelMemoryCell(this.config.step, this.getCurrentState, this.checkStep);
+    this.firstValue = new ModelMemoryCell(this.config.firstValue, this.getCurrentState, this.checkFirstValue);
+    this.secondValue = new ModelMemoryCell(this.config.secondValue, this.getCurrentState, this.checkSecondValue);
 
     this.setSubscriptions();
   }
 
+  @autobind
   public getCurrentState(): State {
     return {
       isRange: this.isRange?.get(),
@@ -52,12 +54,13 @@ class Model {
   }
 
   private setSubscriptions() {
-    this.isRange.addSubscriber(this.updateHandlesValues.bind(this));
-    this.step.addSubscriber(this.updateHandlesValues.bind(this));
-    this.min.addSubscriber(this.updateHandlesValues.bind(this));
-    this.max.addSubscriber(this.updateHandlesValues.bind(this));
+    this.isRange.addSubscriber(this.updateHandlesValues);
+    this.step.addSubscriber(this.updateHandlesValues);
+    this.min.addSubscriber(this.updateHandlesValues);
+    this.max.addSubscriber(this.updateHandlesValues);
   }
 
+  @autobind
   private updateHandlesValues() {
     /**
      * If leftHandle and rightHandle values are lower then min, we need to update rigthHandle value firstValue.
@@ -71,16 +74,19 @@ class Model {
     this.firstValue.update();
   }
 
+  @autobind
   private checkMin(givenValue: number): number {
     const { max, step } = this.getCurrentState();
     return givenValue > max - step ? max - step : givenValue;
   }
 
+  @autobind
   private checkMax(givenValue: number): number {
     const { min, step } = this.getCurrentState();
     return givenValue < min + step ? min + step : givenValue;
   }
 
+  @autobind
   private checkStep(givenStep: number): number {
     const range = this.max.get() - this.min.get();
 
@@ -90,6 +96,7 @@ class Model {
     return givenStep;
   }
 
+  @autobind
   private checkFirstValue(givenValue: number): number {
     const { isRange, secondValue } = this.getCurrentState();
     const value = this.checkHandleValue(givenValue);
@@ -100,6 +107,7 @@ class Model {
     return value;
   }
 
+  @autobind
   private checkSecondValue(givenValue: number): number {
     const { isRange, max, firstValue } = this.getCurrentState();
     const value = this.checkHandleValue(givenValue);

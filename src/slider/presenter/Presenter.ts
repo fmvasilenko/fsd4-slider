@@ -17,26 +17,19 @@ class Presenter {
   }
 
   private setSubscriptions() {
-    this.view.setLeftHandlePositionSubscriber(this.modelGUI.calculateFirstValue.bind(this.modelGUI));
-    this.view.setRightHandlePositionSubscriber(this.modelGUI.calculateSecondValue.bind(this.modelGUI));
-    this.view.setScaleClickSubscriber(this.modelGUI.calculateAndChooseHandle.bind(this.modelGUI));
-    this.modelGUI.subscribe('isRange', this.view.updateIsRange.bind(this.view));
-    this.modelGUI.subscribe('isVertical', this.view.updateIsVertical.bind(this.view));
-    this.modelGUI.subscribe('valueLabelDisplayed', this.view.updateValueLabelDisplayed.bind(this.view));
-    this.modelGUI.subscribe('scaleDisplayed', this.view.updateScaleDisplayed.bind(this.view));
-    this.modelGUI.subscribe('min', this.view.updateMin.bind(this.view));
-    this.modelGUI.subscribe('max', this.view.updateMax.bind(this.view));
-    this.modelGUI.subscribe('step', this.view.updateStep.bind(this.view));
-    this.modelGUI.subscribe('firstValue', this.leftHandleSubscriber.bind(this));
-    this.modelGUI.subscribe('secondValue', this.rightHandleSubscriber.bind(this));
-  }
+    this.view.setLeftHandlePositionSubscriber(this.modelGUI.calculateFirstValue);
+    this.view.setRightHandlePositionSubscriber(this.modelGUI.calculateSecondValue);
+    this.view.setScaleClickSubscriber(this.modelGUI.calculateAndChooseHandle);
 
-  private leftHandleSubscriber(state: State) {
-    this.view.updateFirstValue(state);
-  }
-
-  private rightHandleSubscriber(state: State) {
-    this.view.updateSecondValue(state);
+    this.modelGUI.subscribe('isRange', this.view.updateIsRange);
+    this.modelGUI.subscribe('isVertical', this.view.updateIsVertical);
+    this.modelGUI.subscribe('valueLabelDisplayed', this.view.updateValueLabelDisplayed);
+    this.modelGUI.subscribe('scaleDisplayed', this.view.updateScaleDisplayed);
+    this.modelGUI.subscribe('min', this.view.updateMin);
+    this.modelGUI.subscribe('max', this.view.updateMax);
+    this.modelGUI.subscribe('step', this.view.updateStep);
+    this.modelGUI.subscribe('firstValue', this.view.updateFirstValue);
+    this.modelGUI.subscribe('secondValue', this.view.updateSecondValue);
   }
 
   private setInitialState() {
