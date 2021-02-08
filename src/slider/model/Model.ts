@@ -1,4 +1,3 @@
-/* eslint-disable class-methods-use-this */
 import { ModelMemoryCell } from './ModelMemoryCell';
 
 class Model {

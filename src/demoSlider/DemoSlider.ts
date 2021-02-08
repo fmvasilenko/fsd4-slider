@@ -1,5 +1,4 @@
 /* eslint-disable no-restricted-globals */
-/* eslint-disable class-methods-use-this */
 /// <reference path='./demoSlider.d.ts' />
 
 import '../slider/slider.scss';
@@ -38,7 +37,7 @@ class DemoSlider {
     this.classes = require('./demoSlider.classes.json');
     this.root = this.createRoot(container);
     this.$slider = $(this.createScaleContainer()).slider();
-    this.panelWrapper = this.createElement('div', this.classes.panelWrapper);
+    this.panelWrapper = DemoSlider.createElement('div', this.classes.panelWrapper);
     this.root.appendChild(this.panelWrapper);
 
     this.rangeSwitcher = this.createSwitcher('Is range', '');
@@ -72,9 +71,9 @@ class DemoSlider {
   }
 
   private createSwitcher(label: string, className: string): HTMLElement {
-    const switcher = this.createElement('label', this.classes.switcher);
-    const input = this.createElement('input', className);
-    const text = this.createElement('p', '', label);
+    const switcher = DemoSlider.createElement('label', this.classes.switcher);
+    const input = DemoSlider.createElement('input', className);
+    const text = DemoSlider.createElement('p', '', label);
 
     input.setAttribute('type', 'checkbox');
 
@@ -86,9 +85,9 @@ class DemoSlider {
   }
 
   private createValueElement(text: string, className?: string) {
-    const valueElement = this.createElement('div', this.classes.value);
-    const label = this.createElement('p', '', text);
-    const input = this.createElement('input', this.classes.valueInput);
+    const valueElement = DemoSlider.createElement('div', this.classes.value);
+    const label = DemoSlider.createElement('p', '', text);
+    const input = DemoSlider.createElement('input', this.classes.valueInput);
 
     if (className) input.classList.add(className);
 
@@ -99,7 +98,7 @@ class DemoSlider {
     return input;
   }
 
-  private createElement(
+  private static createElement(
     tag: string,
     className: string | string[],
     value?: string,

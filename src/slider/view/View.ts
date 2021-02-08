@@ -1,5 +1,4 @@
 /* eslint-disable object-curly-newline */
-/* eslint-disable class-methods-use-this */
 import { HandleView } from './HandleView';
 import { RangeLineView } from './RangeLineView';
 import { ScaleValueView } from './ScaleValueView';
@@ -113,7 +112,7 @@ class View {
 
   private updateScaleValues(state: State) {
     this.removeScaleValues();
-    this.createScaleValues(this.calculatePointsNumber(state), state);
+    this.createScaleValues(View.calculatePointsNumber(state), state);
   }
 
   private createScaleValues(pointsNumber: number, state: State) {
@@ -136,7 +135,7 @@ class View {
     this.scaleValues.length = 0;
   }
 
-  private calculatePointsNumber(state: State) {
+  private static calculatePointsNumber(state: State) {
     const { min, max, step } = state;
     const range = max - min;
     const stepsNumber = Math.floor(range / step) + 1;

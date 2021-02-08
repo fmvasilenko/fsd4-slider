@@ -1,4 +1,3 @@
-/* eslint-disable class-methods-use-this */
 class RangeLineView {
   private classes: Classes;
 
@@ -37,10 +36,10 @@ class RangeLineView {
     this.root.style.right = '';
 
     if (isRange) {
-      this.root.style.top = `${100 - this.calculateShift(secondValue, state)}%`;
-      this.root.style.bottom = `${this.calculateShift(firstValue, state)}%`;
+      this.root.style.top = `${100 - RangeLineView.calculateShift(secondValue, state)}%`;
+      this.root.style.bottom = `${RangeLineView.calculateShift(firstValue, state)}%`;
     } else {
-      this.root.style.top = `${100 - this.calculateShift(firstValue, state)}%`;
+      this.root.style.top = `${100 - RangeLineView.calculateShift(firstValue, state)}%`;
       this.root.style.bottom = '0%';
     }
   }
@@ -51,15 +50,15 @@ class RangeLineView {
     this.root.style.bottom = '';
 
     if (isRange) {
-      this.root.style.left = `${this.calculateShift(firstValue, state)}%`;
-      this.root.style.right = `${100 - this.calculateShift(secondValue, state)}%`;
+      this.root.style.left = `${RangeLineView.calculateShift(firstValue, state)}%`;
+      this.root.style.right = `${100 - RangeLineView.calculateShift(secondValue, state)}%`;
     } else {
       this.root.style.left = '0%';
-      this.root.style.right = `${100 - this.calculateShift(firstValue, state)}%`;
+      this.root.style.right = `${100 - RangeLineView.calculateShift(firstValue, state)}%`;
     }
   }
 
-  private calculateShift(value: number, state: State) {
+  private static calculateShift(value: number, state: State) {
     const { min, max } = state;
     return 100 * ((value - min) / (max - min));
   }

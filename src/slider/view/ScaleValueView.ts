@@ -1,4 +1,3 @@
-/* eslint-disable class-methods-use-this */
 class ScaleValueView {
   private classes: Classes;
 
