@@ -3,6 +3,7 @@
 
 import '../slider/slider.scss';
 import '../slider/slider';
+import autobind from 'autobind-decorator';
 
 class DemoSlider {
   private classes: DemoSliderClasses;
@@ -129,20 +130,22 @@ class DemoSlider {
   }
 
   private setSubscriptions() {
-    this.$slider.subscribe('firstValue', this.leftHandleSubscriber.bind(this));
-    this.$slider.subscribe('secondValue', this.rightHandleSubscriber.bind(this));
+    this.$slider.subscribe('firstValue', this.leftHandleSubscriber);
+    this.$slider.subscribe('secondValue', this.rightHandleSubscriber);
   }
 
+  @autobind
   private leftHandleSubscriber(state: State) {
     (this.firstValue as HTMLFormElement).value = state.firstValue;
   }
 
+  @autobind
   private rightHandleSubscriber(state: State) {
     (this.secondValue as HTMLFormElement).value = state.secondValue;
   }
 
   private bindEventsListeners() {
-    this.rangeSwitcher.addEventListener('change', this.rangeSwitcherHandler.bind(this));
+    this.rangeSwitcher.addEventListener('change', this.rangeSwitcherHandler);
     this.isVerticalSwitcher.addEventListener('change', this.booleanChangeHandler('isVertical'));
     this.valueLabelDisplayedSwitcher.addEventListener('change', this.booleanChangeHandler('valueLabelDisplayed'));
     this.scaleDisplayedSwitcher.addEventListener('change', this.booleanChangeHandler('scaleDisplayed'));
@@ -153,6 +156,7 @@ class DemoSlider {
     this.secondValue.addEventListener('change', this.numberChangeHandler('secondValue'));
   }
 
+  @autobind
   private rangeSwitcherHandler() {
     const isRange = (this.rangeSwitcher as HTMLFormElement).checked;
     this.$slider.setSliderOption('isRange', isRange);
