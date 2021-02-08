@@ -1,5 +1,5 @@
 interface SliderFunction {
-  (config?: Config): JQuery;
+  (config?: any): JQuery;
 }
 
 interface JQuerySliderConfig {

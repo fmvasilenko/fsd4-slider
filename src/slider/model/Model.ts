@@ -1,9 +1,8 @@
 import autobind from 'autobind-decorator';
 import { ModelMemoryCell } from './ModelMemoryCell';
+import defaultConfig from './default.config';
 
 class Model {
-  private config: State;
-
   public isRange: ModelMemoryCell<boolean>;
 
   public isVertical: ModelMemoryCell<boolean>;
@@ -22,18 +21,28 @@ class Model {
 
   public secondValue: ModelMemoryCell<number>;
 
-  constructor(config?: Config) {
-    this.config = { ...require('./defaultConfig.json'), ...config };
+  constructor(config?: any) {
+    const {
+      isRange,
+      isVertical,
+      valueLabelDisplayed,
+      scaleDisplayed,
+      min,
+      max,
+      step,
+      firstValue,
+      secondValue,
+    }: State = { ...defaultConfig, ...config };
 
-    this.isRange = new ModelMemoryCell(this.config.isRange, this.getCurrentState);
-    this.isVertical = new ModelMemoryCell(this.config.isVertical, this.getCurrentState);
-    this.valueLabelDisplayed = new ModelMemoryCell(this.config.valueLabelDisplayed, this.getCurrentState);
-    this.scaleDisplayed = new ModelMemoryCell(this.config.scaleDisplayed, this.getCurrentState);
-    this.min = new ModelMemoryCell(this.config.min, this.getCurrentState, this.checkMin);
-    this.max = new ModelMemoryCell(this.config.max, this.getCurrentState, this.checkMax);
-    this.step = new ModelMemoryCell(this.config.step, this.getCurrentState, this.checkStep);
-    this.firstValue = new ModelMemoryCell(this.config.firstValue, this.getCurrentState, this.checkFirstValue);
-    this.secondValue = new ModelMemoryCell(this.config.secondValue, this.getCurrentState, this.checkSecondValue);
+    this.isRange = this.makeBooleanMemoryCell(isRange);
+    this.isVertical = this.makeBooleanMemoryCell(isVertical);
+    this.valueLabelDisplayed = this.makeBooleanMemoryCell(valueLabelDisplayed);
+    this.scaleDisplayed = this.makeBooleanMemoryCell(scaleDisplayed);
+    this.min = this.makeNumberMemoryCell(min, this.checkMin);
+    this.max = this.makeNumberMemoryCell(max, this.checkMax);
+    this.step = this.makeNumberMemoryCell(step, this.checkStep);
+    this.firstValue = this.makeNumberMemoryCell(firstValue, this.checkFirstValue);
+    this.secondValue = this.makeNumberMemoryCell(secondValue, this.checkSecondValue);
 
     this.setSubscriptions();
   }
@@ -50,6 +59,30 @@ class Model {
       step: this.step?.get(),
       firstValue: this.firstValue?.get(),
       secondValue: this.secondValue?.get(),
+    };
+  }
+
+  private static checkType(value: any, type: 'number' | 'boolean'): boolean {
+    switch (type) {
+      case 'number': return typeof value === 'number';
+      case 'boolean': return typeof value === 'boolean';
+      default: return false;
+    }
+  }
+
+  private makeNumberMemoryCell<T>(value: T, checkFunction?: (data: T) => T): ModelMemoryCell<T> {
+    return new ModelMemoryCell<T>(value, this.getCurrentState, Model.typeCheckDecorator('number', checkFunction));
+  }
+
+  private makeBooleanMemoryCell<T>(value: T, checkFunction?: (data: T) => T): ModelMemoryCell<T> {
+    return new ModelMemoryCell<T>(value, this.getCurrentState, Model.typeCheckDecorator('boolean', checkFunction));
+  }
+
+  private static typeCheckDecorator<T>(type: 'number' | 'boolean', checkFunction?: (data: T) => T): (data: T) => T {
+    return (data: T) => {
+      if (!Model.checkType(data, type)) throw TypeError(`Slider option should have '${type}' type, but got '${typeof data}'`);
+      if (checkFunction) return checkFunction(data);
+      return data;
     };
   }
 
