@@ -112,8 +112,9 @@ class Model {
   }
 
   private checkHandleValue(givenValue: number): number {
-    const { min, max } = this.getCurrentState();
-    const value = givenValue !== max ? this.checkIfFitsTheSteps(givenValue) : max;
+    const { min, max, step } = this.getCurrentState();
+    const maxAccuracy = (max - min) % step;
+    const value = givenValue < max - maxAccuracy / 2 ? this.checkIfFitsTheSteps(givenValue) : max;
 
     if (value < min) return min;
     if (value > max) return max;
