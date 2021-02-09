@@ -37,10 +37,7 @@ class DemoSlider {
   constructor(container: HTMLElement) {
     this.classes = require('./demoSlider.classes.json');
     this.root = this.createRoot(container);
-    this.$slider = $(this.createScaleContainer()).slider({
-      firstValue: 10,
-      valueLabelDisplayed: true,
-    });
+    this.$slider = $(this.createScaleContainer()).slider();
     this.panelWrapper = DemoSlider.createElement('div', this.classes.panelWrapper);
     this.root.appendChild(this.panelWrapper);
 

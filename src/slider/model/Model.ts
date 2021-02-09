@@ -62,14 +62,6 @@ class Model {
     };
   }
 
-  private static checkType(value: any, type: 'number' | 'boolean'): boolean {
-    switch (type) {
-      case 'number': return typeof value === 'number';
-      case 'boolean': return typeof value === 'boolean';
-      default: return false;
-    }
-  }
-
   private makeNumberMemoryCell<T>(value: T, checkFunction?: (data: T) => T): ModelMemoryCell<T> {
     return new ModelMemoryCell<T>(value, this.getCurrentState, Model.typeCheckDecorator('number', checkFunction));
   }
@@ -84,6 +76,14 @@ class Model {
       if (checkFunction) return checkFunction(data);
       return data;
     };
+  }
+
+  private static checkType(value: any, type: 'number' | 'boolean'): boolean {
+    switch (type) {
+      case 'number': return typeof value === 'number';
+      case 'boolean': return typeof value === 'boolean';
+      default: return false;
+    }
   }
 
   private setSubscriptions() {
