@@ -68,24 +68,4 @@ interface Config {
   secondValue?: number
 }
 
-interface Classes {
-  root: string
-  rootVertical: string
-  handle: string
-  handleVertical: string
-  leftHandle: string
-  rightHandle: string
-  valueLabel: string
-  leftHandleLabel: string
-  leftHandleLabelVertical: string
-  rightHandleLabel: string
-  rightHandleLabelVertical: string
-  rangeLine: string
-  rangeLineVertical: string
-  scaleValue: string
-  scaleValueVertical: string
-  scaleValueLabel: string
-  scaleValueLabelVertical: string
-}
-
 type ModelOption = keyof Config;
