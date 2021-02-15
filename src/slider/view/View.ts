@@ -1,16 +1,13 @@
 /* eslint-disable object-curly-newline */
 import autobind from 'autobind-decorator';
-import { HandleView } from './HandleView';
+import { HandleView, HandleType } from './HandleView';
 import { RangeLineView } from './RangeLineView';
 import { ScaleValueView } from './ScaleValueView';
-
-enum HandleSide {Left, Right}
+import classes from '../slider.classes';
 
 const POINTS_NUMBER_LIMIT = 10;
 
 class View {
-  private classes: Classes;
-
   private root: HTMLElement;
 
   private leftHandle: HandleView;
@@ -26,10 +23,9 @@ class View {
   private isVertical = false;
 
   constructor(container: HTMLElement) {
-    this.classes = require('../slider.classes.json');
-    this.root = this.createRoot(container);
-    this.leftHandle = new HandleView(this.root, HandleSide.Left);
-    this.rightHandle = new HandleView(this.root, HandleSide.Right);
+    this.root = View.createRoot(container);
+    this.leftHandle = new HandleView(this.root, HandleType.First);
+    this.rightHandle = new HandleView(this.root, HandleType.Second);
     this.rangeLine = new RangeLineView(this.root);
     this.bindEventlisteners();
   }
@@ -106,9 +102,9 @@ class View {
     this.scaleClickExternalSubscriber = subscriber;
   }
 
-  private createRoot(container: HTMLElement): HTMLElement {
+  private static createRoot(container: HTMLElement): HTMLElement {
     const root = document.createElement('div');
-    root.classList.add(this.classes.root);
+    root.classList.add(classes.root);
     container.appendChild(root);
     return root;
   }
@@ -116,8 +112,8 @@ class View {
   private switchVertical(state: State) {
     const { isVertical } = state;
 
-    if (isVertical) this.root.classList.add(this.classes.rootVertical);
-    else this.root.classList.remove(this.classes.rootVertical);
+    if (isVertical) this.root.classList.add(classes.rootVertical);
+    else this.root.classList.remove(classes.rootVertical);
   }
 
   private updateScaleValues(state: State) {

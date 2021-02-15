@@ -1,18 +1,17 @@
-class RangeLineView {
-  private classes: Classes;
+import classes from '../slider.classes';
 
+class RangeLineView {
   private root: HTMLElement;
 
   constructor(container: HTMLElement) {
-    this.classes = require('../slider.classes.json');
-    this.root = this.createRoot(container);
+    this.root = RangeLineView.createRoot(container);
   }
 
   public switchVertical(state: State) {
     const { isVertical } = state;
 
-    if (isVertical) this.root.classList.add(this.classes.rangeLineVertical);
-    else this.root.classList.remove(this.classes.rangeLineVertical);
+    if (isVertical) this.root.classList.add(classes.rangeLineVertical);
+    else this.root.classList.remove(classes.rangeLineVertical);
 
     this.render(state);
   }
@@ -23,9 +22,9 @@ class RangeLineView {
     else this.renderHorizontal(state);
   }
 
-  private createRoot(container: HTMLElement) {
+  private static createRoot(container: HTMLElement) {
     const root = document.createElement('div');
-    root.classList.add(this.classes.rangeLine);
+    root.classList.add(classes.rangeLine);
     container.appendChild(root);
     return root;
   }

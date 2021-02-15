@@ -1,16 +1,14 @@
 /* eslint-disable no-new */
 /* eslint-disable class-methods-use-this */
 import { expect } from 'chai';
-import { HandleView } from '../../../src/slider/view/HandleView';
+import { HandleType, HandleView } from '../../../src/slider/view/HandleView';
 import { RangeLineView } from '../../../src/slider/view/RangeLineView';
 import { ScaleValueView } from '../../../src/slider/view/ScaleValueView';
 import { View } from '../../../src/slider/view/View';
+import classes from '../../../src/slider/slider.classes';
 import { defaultConfig } from '../../utils/sliderDefaultConfig';
 
 const sinon = require('sinon');
-const classes = require('../../../src/slider/slider.classes.json');
-
-enum HandleSide {Left, Right}
 
 class FakeView {
   public leftHandle: HandleView;
@@ -22,8 +20,8 @@ class FakeView {
   public scaleValues: ScaleValueView[] = [];
 
   constructor(container: HTMLElement) {
-    this.leftHandle = new HandleView(container, HandleSide.Left);
-    this.rightHandle = new HandleView(container, HandleSide.Right);
+    this.leftHandle = new HandleView(container, HandleType.First);
+    this.rightHandle = new HandleView(container, HandleType.Second);
     this.rangeLine = new RangeLineView(container);
 
     this.scaleValues.push(new ScaleValueView(container, defaultConfig, 2, 5));

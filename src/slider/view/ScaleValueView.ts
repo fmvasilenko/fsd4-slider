@@ -1,8 +1,7 @@
 import autobind from 'autobind-decorator';
+import classes from '../slider.classes';
 
 class ScaleValueView {
-  private classes: Classes;
-
   private container: HTMLElement;
 
   private index: number;
@@ -18,11 +17,10 @@ class ScaleValueView {
   private externalClickSubscriber: Function = () => {};
 
   constructor(container: HTMLElement, state: State, index: number, pointsNumber: number) {
-    this.classes = require('../slider.classes.json');
     this.container = container;
     this.index = index;
     this.pointsNumber = pointsNumber;
-    this.root = this.createRoot();
+    this.root = ScaleValueView.createRoot();
     this.label = this.createLabel();
     this.shift = 0;
 
@@ -49,13 +47,13 @@ class ScaleValueView {
     if (isVertical) {
       this.root.style.left = '';
       this.root.style.bottom = `${this.shift * 100}%`;
-      this.root.classList.add(this.classes.scaleValueVertical);
-      this.label.classList.add(this.classes.scaleValueLabelVertical);
+      this.root.classList.add(classes.scaleValueVertical);
+      this.label.classList.add(classes.scaleValueLabelVertical);
     } else {
       this.root.style.bottom = '';
       this.root.style.left = `${this.shift * 100}%`;
-      this.root.classList.remove(this.classes.scaleValueVertical);
-      this.label.classList.remove(this.classes.scaleValueLabelVertical);
+      this.root.classList.remove(classes.scaleValueVertical);
+      this.label.classList.remove(classes.scaleValueLabelVertical);
     }
   }
 
@@ -63,15 +61,15 @@ class ScaleValueView {
     this.root.remove();
   }
 
-  private createRoot() {
+  private static createRoot() {
     const root = document.createElement('div');
-    root.classList.add(this.classes.scaleValue);
+    root.classList.add(classes.scaleValue);
     return root;
   }
 
   private createLabel() {
     const label = document.createElement('div');
-    label.classList.add(this.classes.scaleValueLabel);
+    label.classList.add(classes.scaleValueLabel);
     this.root.appendChild(label);
     return label;
   }

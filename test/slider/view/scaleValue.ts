@@ -1,10 +1,10 @@
 /* eslint-disable no-new */
 import { expect } from 'chai';
 import { ScaleValueView } from '../../../src/slider/view/ScaleValueView';
+import classes from '../../../src/slider/slider.classes';
 import { defaultConfig } from '../../utils/sliderDefaultConfig';
 
 const jsdom = require('jsdom');
-const classes = require('../../../src/slider/slider.classes.json');
 
 const { JSDOM } = jsdom;
 const dom = new JSDOM('<!doctype html><html><body></body></html>');

@@ -1,13 +1,12 @@
 import autobind from 'autobind-decorator';
+import classes from '../slider.classes';
 
-enum HandleSide {Left, Right}
+enum HandleType {First, Second}
 
 class HandleView {
   private container: HTMLElement;
 
-  private handleSide: HandleSide;
-
-  private classes: Classes;
+  private handleType: HandleType;
 
   private root: HTMLElement;
 
@@ -19,23 +18,22 @@ class HandleView {
 
   private positionSubscriber: Function;
 
-  constructor(container: HTMLElement, handleSide: HandleSide) {
+  constructor(container: HTMLElement, handleType: HandleType) {
     this.container = container;
-    this.handleSide = handleSide;
-    this.classes = require('../slider.classes.json');
+    this.handleType = handleType;
     this.root = this.createRoot();
     this.label = this.createLabel();
     this.isDragged = false;
     this.isVertical = false;
     this.positionSubscriber = () => {};
 
-    if (this.handleSide === HandleSide.Left) this.container.appendChild(this.root);
+    if (this.handleType === HandleType.First) this.container.appendChild(this.root);
 
     this.bindEventListeners();
   }
 
   public switchHandle(state: State) {
-    if (this.handleSide === HandleSide.Right) {
+    if (this.handleType === HandleType.Second) {
       const { isRange } = state;
 
       if (isRange) {
@@ -58,13 +56,13 @@ class HandleView {
     this.isVertical = isVertical;
 
     if (isVertical) {
-      this.root.classList.add(this.classes.handleVertical);
-      if (this.handleSide === HandleSide.Left) this.label.classList.add(this.classes.leftHandleLabelVertical);
-      else this.label.classList.add(this.classes.rightHandleLabelVertical);
+      this.root.classList.add(classes.handleVertical);
+      if (this.handleType === HandleType.First) this.label.classList.add(classes.firstHandleLabelVertical);
+      else this.label.classList.add(classes.secondHandleLabelVertical);
     } else {
-      this.root.classList.remove(this.classes.handleVertical);
-      if (this.handleSide === HandleSide.Left) this.label.classList.remove(this.classes.leftHandleLabelVertical);
-      else this.label.classList.remove(this.classes.rightHandleLabelVertical);
+      this.root.classList.remove(classes.handleVertical);
+      if (this.handleType === HandleType.First) this.label.classList.remove(classes.firstHandleLabelVertical);
+      else this.label.classList.remove(classes.secondHandleLabelVertical);
     }
 
     this.render(state);
@@ -80,20 +78,20 @@ class HandleView {
 
   private createRoot(): HTMLElement {
     const root = document.createElement('div');
-    root.classList.add(this.classes.handle);
+    root.classList.add(classes.handle);
 
-    if (this.handleSide === HandleSide.Left) root.classList.add(this.classes.leftHandle);
-    else root.classList.add(this.classes.rightHandle);
+    if (this.handleType === HandleType.First) root.classList.add(classes.firstHandle);
+    else root.classList.add(classes.secondHandle);
 
     return root;
   }
 
   private createLabel() {
     const label = document.createElement('div');
-    label.classList.add(this.classes.valueLabel);
+    label.classList.add(classes.valueLabel);
 
-    if (this.handleSide === HandleSide.Left) label.classList.add(this.classes.leftHandleLabel);
-    else label.classList.add(this.classes.rightHandleLabel);
+    if (this.handleType === HandleType.First) label.classList.add(classes.firstHandleLabel);
+    else label.classList.add(classes.secondHandleLabel);
 
     return label;
   }
@@ -102,7 +100,7 @@ class HandleView {
     const { isVertical, firstValue, secondValue } = state;
     let shift = this.calculateShift(state);
 
-    if (this.handleSide === HandleSide.Left) shift -= this.calculateExtraShift(state);
+    if (this.handleType === HandleType.First) shift -= this.calculateExtraShift(state);
     else shift += this.calculateExtraShift(state);
 
     if (isVertical) {
@@ -113,7 +111,7 @@ class HandleView {
       this.root.style.left = `${shift}%`;
     }
 
-    if (this.handleSide === HandleSide.Left) this.label.innerHTML = `${firstValue}`;
+    if (this.handleType === HandleType.First) this.label.innerHTML = `${firstValue}`;
     else this.label.innerHTML = `${secondValue}`;
   }
 
@@ -121,7 +119,7 @@ class HandleView {
     const {
       min, max, firstValue, secondValue,
     } = state;
-    const value = this.handleSide === HandleSide.Left ? firstValue : secondValue;
+    const value = this.handleType === HandleType.First ? firstValue : secondValue;
     const range = max - min;
     const position = (value - min) / range;
     return position * 100;
@@ -197,4 +195,4 @@ class HandleView {
   }
 }
 
-export { HandleView };
+export { HandleView, HandleType };
