@@ -2,7 +2,7 @@
 /* eslint-disable class-methods-use-this */
 import { expect } from 'chai';
 import { Model } from '../../../src/slider/model/Model';
-import { ModelGUI } from '../../../src/slider/model/ModelGUI';
+import { ModelGUI } from '../../../src/slider/model/ModelAPI';
 import { Presenter } from '../../../src/slider/presenter/Presenter';
 import { View } from '../../../src/slider/view/View';
 import { defaultConfig } from '../../utils/sliderDefaultConfig';

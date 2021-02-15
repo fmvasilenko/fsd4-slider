@@ -1,6 +1,6 @@
 /// <reference path='../slider.d.ts' />
 
-import { ModelGUI } from '../model/ModelGUI';
+import { ModelGUI } from '../model/ModelAPI';
 import { View } from '../view/View';
 
 class Presenter {

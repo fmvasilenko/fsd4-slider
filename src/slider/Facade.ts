@@ -1,6 +1,6 @@
 import autobind from 'autobind-decorator';
 import { Model } from './model/Model';
-import { ModelGUI } from './model/ModelGUI';
+import { ModelGUI } from './model/ModelAPI';
 import { ModelMemoryCell } from './model/ModelMemoryCell';
 import { Presenter } from './presenter/Presenter';
 import { View } from './view/View';
