@@ -63,17 +63,17 @@ class View {
 
   @autobind
   public updateStep(state: State) {
-    this.updateScaleValues(state);
+    this.updateScale(state);
   }
 
   @autobind
   public updateMin(state: State) {
-    this.updateScaleValues(state);
+    this.updateScale(state);
   }
 
   @autobind
   public updateMax(state: State) {
-    this.updateScaleValues(state);
+    this.updateScale(state);
   }
 
   @autobind
@@ -116,7 +116,7 @@ class View {
     else this.root.classList.remove(classes.rootVertical);
   }
 
-  private updateScaleValues(state: State) {
+  private updateScale(state: State) {
     this.removeScaleValues();
     this.createScaleValues(View.calculatePointsNumber(state), state);
   }
