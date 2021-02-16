@@ -1,4 +1,4 @@
-class Observable<T> {
+class Observable {
   private subscribers: Function[];
 
   constructor() {

@@ -22,12 +22,12 @@ class Facade {
   }
 
   @autobind
-  public subscribe(option: ModelOption, subscriber: Function) {
+  public subscribe(option: ModelOption, subscriber: (state: State) => void) {
     this.model[option].addSubscriber(subscriber);
   }
 
   @autobind
-  public unsubscribe(option: ModelOption, subscriber: Function) {
+  public unsubscribe(option: ModelOption, subscriber: (state: State) => void) {
     this.model[option].removeSubscriber(subscriber);
   }
 

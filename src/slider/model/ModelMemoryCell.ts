@@ -7,7 +7,7 @@ interface CheckFunction<T> {
 class ModelMemoryCell<T> {
   private value: T;
 
-  private observer: Observable<T>;
+  private observer: Observable;
 
   private getState: () => State;
 
@@ -29,11 +29,11 @@ class ModelMemoryCell<T> {
     this.observer.publish(this.getState());
   }
 
-  public addSubscriber(subscriber: Function) {
+  public addSubscriber(subscriber: (state: State) => void) {
     this.observer.add(subscriber);
   }
 
-  public removeSubscriber(subscriber: Function) {
+  public removeSubscriber(subscriber: (state: State) => void) {
     this.observer.remove(subscriber);
   }
 

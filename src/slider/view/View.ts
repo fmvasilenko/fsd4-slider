@@ -18,7 +18,7 @@ class View {
 
   private scaleValues: ScaleValueView[] = [];
 
-  private scaleClickExternalSubscriber: Function = () => {};
+  private scaleClickExternalSubscriber: (position: number) => void = () => {};
 
   private isVertical = false;
 
@@ -90,15 +90,15 @@ class View {
     this.rangeLine.render(state);
   }
 
-  public setLeftHandlePositionSubscriber(subscriber: Function) {
+  public setLeftHandlePositionSubscriber(subscriber: (position: number) => void) {
     this.leftHandle.setPositionSubscriber(subscriber);
   }
 
-  public setRightHandlePositionSubscriber(subscriber: Function) {
+  public setRightHandlePositionSubscriber(subscriber: (position: number) => void) {
     this.rightHandle.setPositionSubscriber(subscriber);
   }
 
-  public setScaleClickSubscriber(subscriber: Function) {
+  public setScaleClickSubscriber(subscriber: (position: number) => void) {
     this.scaleClickExternalSubscriber = subscriber;
   }
 

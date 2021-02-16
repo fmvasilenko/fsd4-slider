@@ -16,7 +16,7 @@ class HandleView {
 
   private isVertical: boolean;
 
-  private positionSubscriber: Function;
+  private positionSubscriber: (position: number) => void;
 
   constructor(container: HTMLElement, handleType: HandleType) {
     this.container = container;
@@ -72,7 +72,7 @@ class HandleView {
     this.render(state);
   }
 
-  public setPositionSubscriber(subscriber: Function) {
+  public setPositionSubscriber(subscriber: (position: number) => void) {
     this.positionSubscriber = subscriber;
   }
 

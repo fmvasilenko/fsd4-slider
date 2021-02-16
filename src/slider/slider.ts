@@ -5,11 +5,11 @@ import Facade from './Facade';
 export default $.fn.slider = function (this: JQuery, config?: any) {
   const slider = new Facade(this[0], config);
 
-  this.subscribe = (option: ModelOption, subscriber: Function) => {
+  this.subscribe = (option: ModelOption, subscriber: (state: State) => void) => {
     slider.subscribe(option, subscriber);
   };
 
-  this.unsubscribe = (option: ModelOption, subscriber: Function) => {
+  this.unsubscribe = (option: ModelOption, subscriber: (state: State) => void) => {
     slider.unsubscribe(option, subscriber);
   };
 

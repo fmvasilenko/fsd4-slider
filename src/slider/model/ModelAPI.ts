@@ -31,11 +31,11 @@ class ModelGUI {
     else firstValue.set(value);
   }
 
-  public subscribe<T>(option: ModelOption, subscriber: (value: T) => void): void {
+  public subscribe(option: ModelOption, subscriber: (state: State) => void): void {
     this.model[option].addSubscriber(subscriber);
   }
 
-  public unsubscribe<T>(option: ModelOption, subscriber: (value: T) => void): void {
+  public unsubscribe(option: ModelOption, subscriber: (state: State) => void): void {
     this.model[option].removeSubscriber(subscriber);
   }
 
