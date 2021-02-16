@@ -155,11 +155,11 @@ class View {
   }
 
   private bindEventlisteners() {
-    this.root.addEventListener('click', this.clickHandler);
+    this.root.addEventListener('click', this.handleScaleClick);
   }
 
   @autobind
-  private clickHandler(event: MouseEvent) {
+  private handleScaleClick(event: MouseEvent) {
     this.scaleClickSubscriber(this.calculatePosition(event));
   }
 
