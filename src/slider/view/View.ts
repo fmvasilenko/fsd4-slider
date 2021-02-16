@@ -18,7 +18,7 @@ class View {
 
   private scaleValues: ScaleValueView[] = [];
 
-  private scaleClickExternalSubscriber: (position: number) => void = () => {};
+  private scaleClickSubscriber: (position: number) => void = () => {};
 
   private isVertical = false;
 
@@ -99,7 +99,7 @@ class View {
   }
 
   public setScaleClickSubscriber(subscriber: (position: number) => void) {
-    this.scaleClickExternalSubscriber = subscriber;
+    this.scaleClickSubscriber = subscriber;
   }
 
   private static createRoot(container: HTMLElement): HTMLElement {
@@ -127,12 +127,12 @@ class View {
 
     for (let i = 0; i < pointsNumber; i += 1) {
       this.scaleValues[i] = new ScaleValueView(this.root, state, i, pointsNumber);
-      this.scaleValues[i].setClickSubscriber(this.scaleClickExternalSubscriber);
+      this.scaleValues[i].setClickSubscriber(this.scaleClickSubscriber);
     }
 
     if ((range / step) % pointsNumber) {
       this.scaleValues.push(new ScaleValueView(this.root, state, pointsNumber + 1, pointsNumber));
-      this.scaleValues[this.scaleValues.length - 1].setClickSubscriber(this.scaleClickExternalSubscriber);
+      this.scaleValues[this.scaleValues.length - 1].setClickSubscriber(this.scaleClickSubscriber);
     }
   }
 
@@ -160,7 +160,7 @@ class View {
 
   @autobind
   private clickHandler(event: MouseEvent) {
-    this.scaleClickExternalSubscriber(this.calculatePosition(event));
+    this.scaleClickSubscriber(this.calculatePosition(event));
   }
 
   private calculatePosition(event: MouseEvent): number {
