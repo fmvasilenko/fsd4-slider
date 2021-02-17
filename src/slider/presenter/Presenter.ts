@@ -17,9 +17,9 @@ class Presenter {
   }
 
   private setSubscriptions() {
-    this.view.setLeftHandlePositionSubscriber(this.modelGUI.calculateFirstValue);
-    this.view.setRightHandlePositionSubscriber(this.modelGUI.calculateSecondValue);
-    this.view.setScaleClickSubscriber(this.modelGUI.calculateAndChooseHandle);
+    this.view.subscribe('firstHandle', this.modelGUI.calculateFirstValue);
+    this.view.subscribe('secondHandle', this.modelGUI.calculateSecondValue);
+    this.view.subscribe('scale', this.modelGUI.calculateAndChooseHandle);
 
     this.modelGUI.subscribe('isRange', this.view.updateIsRange);
     this.modelGUI.subscribe('isVertical', this.view.updateIsVertical);

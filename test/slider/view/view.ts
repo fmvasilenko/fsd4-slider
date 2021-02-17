@@ -11,17 +11,17 @@ import { defaultConfig } from '../../utils/sliderDefaultConfig';
 const sinon = require('sinon');
 
 class FakeView {
-  public leftHandle: HandleView;
+  public firstHandle: HandleView;
 
-  public rightHandle: HandleView;
+  public secondHandle: HandleView;
 
   public rangeLine: RangeLineView;
 
   public scaleValues: ScaleValueView[] = [];
 
   constructor(container: HTMLElement) {
-    this.leftHandle = new HandleView(container, HandleType.First);
-    this.rightHandle = new HandleView(container, HandleType.Second);
+    this.firstHandle = new HandleView(container, HandleType.First);
+    this.secondHandle = new HandleView(container, HandleType.Second);
     this.rangeLine = new RangeLineView(container);
 
     this.scaleValues.push(new ScaleValueView(container, defaultConfig, 2, 5));
@@ -45,11 +45,11 @@ describe('view', () => {
       const container = document.createElement('div');
       const view = new View(container);
       const fakeView = new FakeView(container);
-      const rightHandleSpy = sinon.spy(fakeView.rightHandle, 'switchHandle');
+      const secondHandleSpy = sinon.spy(fakeView.secondHandle, 'switchHandle');
       const rangeLineSpy = sinon.spy(fakeView.rangeLine, 'render');
 
       (view.updateIsRange.bind(fakeView))(defaultConfig);
-      expect(rightHandleSpy.calledOnce).to.equal(true);
+      expect(secondHandleSpy.calledOnce).to.equal(true);
       expect(rangeLineSpy.calledOnce).to.equal(true);
     });
   });
@@ -59,14 +59,14 @@ describe('view', () => {
       const container = document.createElement('div');
       const view = new View(container);
       const fakeView = new FakeView(container);
-      const leftHandleSpy = sinon.spy(fakeView.leftHandle, 'switchVertical');
-      const rightHandleSpy = sinon.spy(fakeView.rightHandle, 'switchVertical');
+      const firstHandleSpy = sinon.spy(fakeView.firstHandle, 'switchVertical');
+      const secondHandleSpy = sinon.spy(fakeView.secondHandle, 'switchVertical');
       const rangeLineSpy = sinon.spy(fakeView.rangeLine, 'switchVertical');
       const scaleValueSpy = sinon.spy(fakeView.scaleValues[0], 'switchVertical');
 
       (view.updateIsVertical.bind(fakeView))(defaultConfig);
-      expect(leftHandleSpy.calledOnce).to.equal(true);
-      expect(rightHandleSpy.calledOnce).to.equal(true);
+      expect(firstHandleSpy.calledOnce).to.equal(true);
+      expect(secondHandleSpy.calledOnce).to.equal(true);
       expect(rangeLineSpy.calledOnce).to.equal(true);
       expect(scaleValueSpy.calledOnce).to.equal(true);
     });
@@ -88,12 +88,12 @@ describe('view', () => {
       const container = document.createElement('div');
       const view = new View(container);
       const fakeView = new FakeView(container);
-      const leftHandleSpy = sinon.spy(fakeView.leftHandle, 'switchLabel');
-      const rightHandleSpy = sinon.spy(fakeView.rightHandle, 'switchLabel');
+      const firstHandleSpy = sinon.spy(fakeView.firstHandle, 'switchLabel');
+      const secondHandleSpy = sinon.spy(fakeView.secondHandle, 'switchLabel');
 
       (view.updateValueLabelDisplayed.bind(fakeView))(defaultConfig);
-      expect(leftHandleSpy.calledOnce).to.equal(true);
-      expect(rightHandleSpy.calledOnce).to.equal(true);
+      expect(firstHandleSpy.calledOnce).to.equal(true);
+      expect(secondHandleSpy.calledOnce).to.equal(true);
     });
   });
 
@@ -144,13 +144,13 @@ describe('view', () => {
       const container = document.createElement('div');
       const view = new View(container);
       const fakeView = new FakeView(container);
-      const leftHandleSpy = sinon.spy(fakeView.leftHandle, 'updateValue');
-      const rightHandleSpy = sinon.spy(fakeView.rightHandle, 'updateValue');
+      const firstHandleSpy = sinon.spy(fakeView.firstHandle, 'updateValue');
+      const secondHandleSpy = sinon.spy(fakeView.secondHandle, 'updateValue');
       const rangeLineSpy = sinon.spy(fakeView.rangeLine, 'render');
 
       (view.updateFirstValue.bind(fakeView))(defaultConfig);
-      expect(leftHandleSpy.calledOnce).to.equal(true);
-      expect(rightHandleSpy.calledOnce).to.equal(true);
+      expect(firstHandleSpy.calledOnce).to.equal(true);
+      expect(secondHandleSpy.calledOnce).to.equal(true);
       expect(rangeLineSpy.calledOnce).to.equal(true);
     });
   });
@@ -160,38 +160,38 @@ describe('view', () => {
       const container = document.createElement('div');
       const view = new View(container);
       const fakeView = new FakeView(container);
-      const leftHandleSpy = sinon.spy(fakeView.leftHandle, 'updateValue');
-      const rightHandleSpy = sinon.spy(fakeView.rightHandle, 'updateValue');
+      const firstHandleSpy = sinon.spy(fakeView.firstHandle, 'updateValue');
+      const secondHandleSpy = sinon.spy(fakeView.secondHandle, 'updateValue');
       const rangeLineSpy = sinon.spy(fakeView.rangeLine, 'render');
 
       (view.updateSecondValue.bind(fakeView))(defaultConfig);
-      expect(leftHandleSpy.calledOnce).to.equal(true);
-      expect(rightHandleSpy.calledOnce).to.equal(true);
+      expect(firstHandleSpy.calledOnce).to.equal(true);
+      expect(secondHandleSpy.calledOnce).to.equal(true);
       expect(rangeLineSpy.calledOnce).to.equal(true);
     });
   });
 
-  describe('setLeftHandlePositionSubscriber', () => {
+  describe('setfirstHandlePositionSubscriber', () => {
     it('should call subscribers', () => {
       const container = document.createElement('div');
       const view = new View(container);
       const fakeView = new FakeView(container);
-      const leftHandleSpy = sinon.spy(fakeView.leftHandle, 'setPositionSubscriber');
+      const firstHandleSpy = sinon.spy(fakeView.firstHandle, 'subscribe');
 
-      (view.setLeftHandlePositionSubscriber.bind(fakeView))(() => {});
-      expect(leftHandleSpy.calledOnce).to.equal(true);
+      (view.subscribe.bind(fakeView))('firstHandle', () => {});
+      expect(firstHandleSpy.calledOnce).to.equal(true);
     });
   });
 
-  describe('setRightHandlePositionSubscriber', () => {
+  describe('setsecondHandlePositionSubscriber', () => {
     it('should call subscribers', () => {
       const container = document.createElement('div');
       const view = new View(container);
       const fakeView = new FakeView(container);
-      const rightHandleSpy = sinon.spy(fakeView.rightHandle, 'setPositionSubscriber');
+      const secondHandleSpy = sinon.spy(fakeView.secondHandle, 'subscribe');
 
-      (view.setRightHandlePositionSubscriber.bind(fakeView))(() => {});
-      expect(rightHandleSpy.calledOnce).to.equal(true);
+      (view.subscribe.bind(fakeView))('secondHandle', () => {});
+      expect(secondHandleSpy.calledOnce).to.equal(true);
     });
   });
 });

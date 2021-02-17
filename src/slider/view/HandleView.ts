@@ -1,4 +1,5 @@
 import autobind from 'autobind-decorator';
+import { Observable } from '../observable/Observable';
 import classes from '../slider.classes';
 
 enum HandleType {First, Second}
@@ -16,7 +17,7 @@ class HandleView {
 
   private isVertical: boolean;
 
-  private positionSubscriber: (position: number) => void;
+  private subscribers: Observable;
 
   constructor(container: HTMLElement, handleType: HandleType) {
     this.container = container;
@@ -25,7 +26,7 @@ class HandleView {
     this.label = this.createLabel();
     this.isDragged = false;
     this.isVertical = false;
-    this.positionSubscriber = () => {};
+    this.subscribers = new Observable();
 
     if (this.handleType === HandleType.First) this.container.appendChild(this.root);
 
@@ -72,8 +73,8 @@ class HandleView {
     this.render(state);
   }
 
-  public setPositionSubscriber(subscriber: (position: number) => void) {
-    this.positionSubscriber = subscriber;
+  public subscribe(subscriber: (position: number) => void) {
+    this.subscribers.add(subscriber);
   }
 
   private createRoot(): HTMLElement {
@@ -168,7 +169,7 @@ class HandleView {
 
   @autobind
   private watchMouse(event: MouseEvent) {
-    if (this.isDragged === true) this.positionSubscriber(this.calculatePosition(event));
+    if (this.isDragged === true) this.subscribers.publish(this.calculatePosition(event));
   }
 
   private calculatePosition(event: MouseEvent): number {

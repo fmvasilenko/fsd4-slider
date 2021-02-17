@@ -4,35 +4,37 @@ import { HandleView, HandleType } from './HandleView';
 import { RangeLineView } from './RangeLineView';
 import { ScaleValueView } from './ScaleValueView';
 import classes from '../slider.classes';
+import { Observable } from '../observable/Observable';
 
 const POINTS_NUMBER_LIMIT = 10;
 
 class View {
   private root: HTMLElement;
 
-  private leftHandle: HandleView;
+  private firstHandle: HandleView;
 
-  private rightHandle: HandleView;
+  private secondHandle: HandleView;
 
   private rangeLine: RangeLineView;
 
   private scaleValues: ScaleValueView[] = [];
 
-  private scaleClickSubscriber: (position: number) => void = () => {};
+  private scaleSubscribers: Observable;
 
   private isVertical = false;
 
   constructor(container: HTMLElement) {
     this.root = View.createRoot(container);
-    this.leftHandle = new HandleView(this.root, HandleType.First);
-    this.rightHandle = new HandleView(this.root, HandleType.Second);
+    this.firstHandle = new HandleView(this.root, HandleType.First);
+    this.secondHandle = new HandleView(this.root, HandleType.Second);
     this.rangeLine = new RangeLineView(this.root);
+    this.scaleSubscribers = new Observable();
     this.bindEventlisteners();
   }
 
   @autobind
   public updateIsRange(state: State) {
-    this.rightHandle.switchHandle(state);
+    this.secondHandle.switchHandle(state);
     this.rangeLine.render(state);
   }
 
@@ -40,8 +42,8 @@ class View {
   public updateIsVertical(state: State) {
     this.isVertical = state.isVertical;
     this.switchVertical(state);
-    this.leftHandle.switchVertical(state);
-    this.rightHandle.switchVertical(state);
+    this.firstHandle.switchVertical(state);
+    this.secondHandle.switchVertical(state);
     this.rangeLine.switchVertical(state);
     this.scaleValues.forEach((scaleValue: ScaleValueView) => {
       scaleValue.switchVertical(state);
@@ -50,8 +52,8 @@ class View {
 
   @autobind
   public updateValueLabelDisplayed(state: State) {
-    this.leftHandle.switchLabel(state);
-    this.rightHandle.switchLabel(state);
+    this.firstHandle.switchLabel(state);
+    this.secondHandle.switchLabel(state);
   }
 
   @autobind
@@ -78,28 +80,25 @@ class View {
 
   @autobind
   public updateFirstValue(state: State) {
-    this.leftHandle.updateValue(state);
-    this.rightHandle.updateValue(state);
+    this.firstHandle.updateValue(state);
+    this.secondHandle.updateValue(state);
     this.rangeLine.render(state);
   }
 
   @autobind
   public updateSecondValue(state: State) {
-    this.leftHandle.updateValue(state);
-    this.rightHandle.updateValue(state);
+    this.firstHandle.updateValue(state);
+    this.secondHandle.updateValue(state);
     this.rangeLine.render(state);
   }
 
-  public setLeftHandlePositionSubscriber(subscriber: (position: number) => void) {
-    this.leftHandle.setPositionSubscriber(subscriber);
-  }
-
-  public setRightHandlePositionSubscriber(subscriber: (position: number) => void) {
-    this.rightHandle.setPositionSubscriber(subscriber);
-  }
-
-  public setScaleClickSubscriber(subscriber: (position: number) => void) {
-    this.scaleClickSubscriber = subscriber;
+  public subscribe(element: 'firstHandle' | 'secondHandle' | 'scale', subscriber: (position: number) => void): void {
+    switch (element) {
+      case 'firstHandle': this.firstHandle.subscribe(subscriber); break;
+      case 'secondHandle': this.secondHandle.subscribe(subscriber); break;
+      case 'scale': this.scaleSubscribers.add(subscriber); break;
+      default: break;
+    }
   }
 
   private static createRoot(container: HTMLElement): HTMLElement {
@@ -127,12 +126,12 @@ class View {
 
     for (let i = 0; i < pointsNumber; i += 1) {
       this.scaleValues[i] = new ScaleValueView(this.root, state, i, pointsNumber);
-      this.scaleValues[i].setClickSubscriber(this.scaleClickSubscriber);
+      this.scaleValues[i].setClickSubscriber(this.scaleSubscribers.publish);
     }
 
     if ((range / step) % pointsNumber) {
       this.scaleValues.push(new ScaleValueView(this.root, state, pointsNumber + 1, pointsNumber));
-      this.scaleValues[this.scaleValues.length - 1].setClickSubscriber(this.scaleClickSubscriber);
+      this.scaleValues[this.scaleValues.length - 1].setClickSubscriber(this.scaleSubscribers.publish);
     }
   }
 
@@ -160,7 +159,7 @@ class View {
 
   @autobind
   private handleScaleClick(event: MouseEvent) {
-    this.scaleClickSubscriber(this.calculatePosition(event));
+    this.scaleSubscribers.publish(this.calculatePosition(event));
   }
 
   private calculatePosition(event: MouseEvent): number {

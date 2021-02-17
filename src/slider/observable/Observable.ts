@@ -1,3 +1,5 @@
+import autobind from 'autobind-decorator';
+
 class Observable {
   private subscribers: Function[];
 
@@ -13,6 +15,7 @@ class Observable {
     this.subscribers = this.subscribers.filter((el) => el !== subscriber);
   }
 
+  @autobind
   public publish(data: any) {
     this.subscribers.forEach((subscriber: Function) => {
       subscriber(data);
