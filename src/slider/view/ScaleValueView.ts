@@ -14,7 +14,7 @@ class ScaleValueView {
 
   private shift: number;
 
-  private externalClickSubscriber: (position: number) => void = () => {};
+  private clickSubscriber: (position: number) => void = () => {};
 
   constructor(container: HTMLElement, state: State, index: number, pointsNumber: number) {
     this.container = container;
@@ -31,7 +31,7 @@ class ScaleValueView {
   }
 
   public setClickSubscriber(subscriber: (position: number) => void) {
-    this.externalClickSubscriber = subscriber;
+    this.clickSubscriber = subscriber;
   }
 
   public switchLabel(state: State) {
@@ -97,7 +97,7 @@ class ScaleValueView {
   @autobind
   private clickHandler(event: Event) {
     event.stopPropagation();
-    this.externalClickSubscriber(this.shift);
+    this.clickSubscriber(this.shift);
   }
 }
 
