@@ -12,7 +12,7 @@ module.exports = {
   externals: {
     paths: PATHS,
   },
-  entry: `${PATHS.src}/slider/index.ts`,
+  entry: `${PATHS.src}/slider/lib.ts`,
   output: {
     filename: 'slider.js',
     path: `${PATHS.root}/dist`,
