@@ -7,14 +7,14 @@ interface CheckFunction<T> {
 class ModelMemoryCell<T> {
   private value: T;
 
-  private observer: Observable;
+  private subscribers: Observable;
 
   private getState: () => State;
 
   private checkFunction: CheckFunction<T>;
 
   constructor(value: T, getState: () => State, checkFunction: CheckFunction<T> = (givenValue: T) => givenValue) {
-    this.observer = new Observable();
+    this.subscribers = new Observable();
     this.getState = getState;
     this.checkFunction = checkFunction;
     this.value = checkFunction(value);
@@ -26,15 +26,15 @@ class ModelMemoryCell<T> {
 
   public set(value: T) {
     this.value = this.checkFunction(value);
-    this.observer.publish(this.getState());
+    this.subscribers.publish(this.getState());
   }
 
   public addSubscriber(subscriber: (state: State) => void) {
-    this.observer.add(subscriber);
+    this.subscribers.add(subscriber);
   }
 
   public removeSubscriber(subscriber: (state: State) => void) {
-    this.observer.remove(subscriber);
+    this.subscribers.remove(subscriber);
   }
 
   public update() {
