@@ -7,7 +7,7 @@ interface CheckFunction<T> {
 class ModelMemoryCell<T> {
   private value: T;
 
-  private subscribers: Observable;
+  private subscribers: Observable<T>;
 
   private checkFunction: CheckFunction<T>;
 

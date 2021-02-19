@@ -1,23 +1,23 @@
 import autobind from 'autobind-decorator';
 
-class Observable {
-  private subscribers: Function[];
+class Observable<T> {
+  private subscribers: ((value: T) => void)[];
 
   constructor() {
     this.subscribers = [];
   }
 
-  public add(subscriber: Function) {
+  public add(subscriber: (value: T) => void) {
     this.subscribers.push(subscriber);
   }
 
-  public remove(subscriber: Function) {
+  public remove(subscriber: (value: T) => void) {
     this.subscribers = this.subscribers.filter((el) => el !== subscriber);
   }
 
   @autobind
-  public publish(data: any) {
-    this.subscribers.forEach((subscriber: Function) => {
+  public publish(data: T) {
+    this.subscribers.forEach((subscriber: (value: T) => void) => {
       subscriber(data);
     });
   }

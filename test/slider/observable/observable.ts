@@ -5,8 +5,8 @@ import { Subscriber } from '../../utils/Subscriber';
 describe('Observable', () => {
   describe('add', () => {
     it('should add subscriber', () => {
-      const observer = new Observable();
-      const subscriber = new Subscriber(0);
+      const observer = new Observable<number>();
+      const subscriber = new Subscriber<number>(0);
 
       observer.add(subscriber.set);
       observer.publish(10);
@@ -17,8 +17,8 @@ describe('Observable', () => {
 
   describe('remove', () => {
     it('should remove subscribers', () => {
-      const observer = new Observable();
-      const subscriber = new Subscriber(0);
+      const observer = new Observable<number>();
+      const subscriber = new Subscriber<number>(0);
 
       observer.add(subscriber.set);
       observer.remove(subscriber.set);
@@ -30,9 +30,9 @@ describe('Observable', () => {
 
   describe('publish', () => {
     it('should call all the subscribers', () => {
-      const observer = new Observable();
-      const subscriber1 = new Subscriber(0);
-      const subscriber2 = new Subscriber(0);
+      const observer = new Observable<number>();
+      const subscriber1 = new Subscriber<number>(0);
+      const subscriber2 = new Subscriber<number>(0);
 
       observer.add(subscriber1.set);
       observer.add(subscriber2.set);

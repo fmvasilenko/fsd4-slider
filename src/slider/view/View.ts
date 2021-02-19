@@ -19,7 +19,7 @@ class View {
 
   private scaleValues: ScaleValueView[] = [];
 
-  private scaleSubscribers: Observable;
+  private scaleSubscribers: Observable<number>;
 
   private isVertical = false;
 

@@ -17,7 +17,7 @@ class HandleView {
 
   private isVertical: boolean;
 
-  private subscribers: Observable;
+  private subscribers: Observable<number>;
 
   constructor(container: HTMLElement, handleType: HandleType) {
     this.container = container;
