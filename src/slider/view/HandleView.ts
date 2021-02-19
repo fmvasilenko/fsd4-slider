@@ -34,13 +34,15 @@ class HandleView {
   }
 
   public switchHandle(state: State) {
-    if (this.handleType === HandleType.Second) {
-      const { isRange } = state;
+    if (this.handleType !== HandleType.Second) return;
 
-      if (isRange) {
-        this.container.appendChild(this.root);
-        this.render(state);
-      } else this.root.remove();
+    const { isRange } = state;
+
+    if (isRange) {
+      this.container.appendChild(this.root);
+      this.render(state);
+    } else {
+      this.root.remove();
     }
   }
 
