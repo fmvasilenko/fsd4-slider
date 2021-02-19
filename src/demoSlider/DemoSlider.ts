@@ -135,13 +135,13 @@ class DemoSlider {
   }
 
   @autobind
-  private leftHandleSubscriber(state: State) {
-    (this.firstValue as HTMLFormElement).value = state.firstValue;
+  private leftHandleSubscriber(value: number | boolean) {
+    (this.firstValue as HTMLFormElement).value = value;
   }
 
   @autobind
-  private rightHandleSubscriber(state: State) {
-    (this.secondValue as HTMLFormElement).value = state.secondValue;
+  private rightHandleSubscriber(value: number | boolean) {
+    (this.secondValue as HTMLFormElement).value = value;
   }
 
   private bindEventsListeners() {

@@ -48,8 +48,8 @@ describe('model', () => {
     it('should call subscribers', () => {
       const model = new Model({ isRange: false });
       const subscriber = new Subscriber(false);
-      model.isRange.addSubscriber((state: State) => {
-        subscriber.set(state.isRange);
+      model.isRange.addSubscriber((value: number | boolean) => {
+        subscriber.set(value as boolean);
       });
       model.isRange.set(true);
       expect(subscriber.get()).to.equal(true);
@@ -66,8 +66,8 @@ describe('model', () => {
     it('should call subscribers', () => {
       const model = new Model({ isVertical: false });
       const subscriber = new Subscriber(false);
-      model.isVertical.addSubscriber((state: State) => {
-        subscriber.set(state.isVertical);
+      model.isVertical.addSubscriber((value: number | boolean) => {
+        subscriber.set(value as boolean);
       });
       model.isVertical.set(true);
       expect(subscriber.get()).to.equal(true);
@@ -84,8 +84,8 @@ describe('model', () => {
     it('should call subscribers', () => {
       const model = new Model({ scaleDisplayed: false });
       const subscriber = new Subscriber(false);
-      model.scaleDisplayed.addSubscriber((state: State) => {
-        subscriber.set(state.scaleDisplayed);
+      model.scaleDisplayed.addSubscriber((value: number | boolean) => {
+        subscriber.set(value as boolean);
       });
       model.scaleDisplayed.set(true);
       expect(subscriber.get()).to.equal(true);
@@ -102,8 +102,8 @@ describe('model', () => {
     it('should call subscribers', () => {
       const model = new Model({ valueLabelDisplayed: false });
       const subscriber = new Subscriber(false);
-      model.valueLabelDisplayed.addSubscriber((state: State) => {
-        subscriber.set(state.valueLabelDisplayed);
+      model.valueLabelDisplayed.addSubscriber((value: number | boolean) => {
+        subscriber.set(value as boolean);
       });
       model.valueLabelDisplayed.set(true);
       expect(subscriber.get()).to.equal(true);
@@ -120,8 +120,8 @@ describe('model', () => {
     it('should call subscribers', () => {
       const model = new Model({ min: 0 });
       const subscriber = new Subscriber(0);
-      model.min.addSubscriber((state: State) => {
-        subscriber.set(state.min);
+      model.min.addSubscriber((value: number | boolean) => {
+        subscriber.set(value as number);
       });
       model.min.set(10);
       expect(subscriber.get()).to.equal(10);
@@ -144,8 +144,8 @@ describe('model', () => {
     it('should call subscribers', () => {
       const model = new Model({ max: 100 });
       const subscriber = new Subscriber(100);
-      model.max.addSubscriber((state: State) => {
-        subscriber.set(state.max);
+      model.max.addSubscriber((value: number | boolean) => {
+        subscriber.set(value as number);
       });
       model.max.set(90);
       expect(subscriber.get()).to.equal(90);
@@ -168,8 +168,8 @@ describe('model', () => {
     it('should call subscribers', () => {
       const model = new Model({ step: 1 });
       const subscriber = new Subscriber(1);
-      model.step.addSubscriber((state: State) => {
-        subscriber.set(state.step);
+      model.step.addSubscriber((value: number | boolean) => {
+        subscriber.set(value as number);
       });
       model.step.set(2);
       expect(subscriber.get()).to.equal(2);
@@ -192,8 +192,8 @@ describe('model', () => {
     it('should call subscribers', () => {
       const model = new Model({ firstValue: 10 });
       const subscriber = new Subscriber(10);
-      model.firstValue.addSubscriber((state: State) => {
-        subscriber.set(state.firstValue);
+      model.firstValue.addSubscriber((value: number | boolean) => {
+        subscriber.set(value as number);
       });
       model.firstValue.set(20);
       expect(subscriber.get()).to.equal(20);
@@ -218,8 +218,8 @@ describe('model', () => {
     it('should call subscribers', () => {
       const model = new Model({ isRange: true, secondValue: 90 });
       const subscriber = new Subscriber(90);
-      model.secondValue.addSubscriber((state: State) => {
-        subscriber.set(state.secondValue);
+      model.secondValue.addSubscriber((value: number | boolean) => {
+        subscriber.set(value as number);
       });
       model.secondValue.set(80);
       expect(subscriber.get()).to.equal(80);

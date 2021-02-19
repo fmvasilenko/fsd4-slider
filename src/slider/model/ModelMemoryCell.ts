@@ -9,13 +9,10 @@ class ModelMemoryCell<T> {
 
   private subscribers: Observable;
 
-  private getState: () => State;
-
   private checkFunction: CheckFunction<T>;
 
-  constructor(value: T, getState: () => State, checkFunction: CheckFunction<T> = (givenValue: T) => givenValue) {
+  constructor(value: T, checkFunction: CheckFunction<T> = (givenValue: T) => givenValue) {
     this.subscribers = new Observable();
-    this.getState = getState;
     this.checkFunction = checkFunction;
     this.value = checkFunction(value);
   }
@@ -26,14 +23,14 @@ class ModelMemoryCell<T> {
 
   public set(value: T) {
     this.value = this.checkFunction(value);
-    this.subscribers.publish(this.getState());
+    this.subscribers.publish(this.value);
   }
 
-  public addSubscriber(subscriber: (state: State) => void) {
+  public addSubscriber(subscriber: (value: T) => void) {
     this.subscribers.add(subscriber);
   }
 
-  public removeSubscriber(subscriber: (state: State) => void) {
+  public removeSubscriber(subscriber: (value: T) => void) {
     this.subscribers.remove(subscriber);
   }
 

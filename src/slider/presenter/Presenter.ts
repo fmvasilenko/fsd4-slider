@@ -17,19 +17,21 @@ class Presenter {
   }
 
   private setSubscriptions() {
+    const { getCurrentState } = this.modelAPI;
+
     this.view.subscribe('firstHandle', this.modelAPI.calculateFirstValue);
     this.view.subscribe('secondHandle', this.modelAPI.calculateSecondValue);
     this.view.subscribe('scale', this.modelAPI.calculateAndChooseHandle);
 
-    this.modelAPI.subscribe('isRange', this.view.updateIsRange);
-    this.modelAPI.subscribe('isVertical', this.view.updateIsVertical);
-    this.modelAPI.subscribe('valueLabelDisplayed', this.view.updateValueLabelDisplayed);
-    this.modelAPI.subscribe('scaleDisplayed', this.view.updateScaleDisplayed);
-    this.modelAPI.subscribe('min', this.view.updateScale);
-    this.modelAPI.subscribe('max', this.view.updateScale);
-    this.modelAPI.subscribe('step', this.view.updateScale);
-    this.modelAPI.subscribe('firstValue', this.view.updateValues);
-    this.modelAPI.subscribe('secondValue', this.view.updateValues);
+    this.modelAPI.subscribe('isRange', () => this.view.updateIsRange(getCurrentState()));
+    this.modelAPI.subscribe('isVertical', () => this.view.updateIsVertical(getCurrentState()));
+    this.modelAPI.subscribe('valueLabelDisplayed', () => this.view.updateValueLabelDisplayed(getCurrentState()));
+    this.modelAPI.subscribe('scaleDisplayed', () => this.view.updateScaleDisplayed(getCurrentState()));
+    this.modelAPI.subscribe('min', () => this.view.updateScale(getCurrentState()));
+    this.modelAPI.subscribe('max', () => this.view.updateScale(getCurrentState()));
+    this.modelAPI.subscribe('step', () => this.view.updateScale(getCurrentState()));
+    this.modelAPI.subscribe('firstValue', () => this.view.updateValues(getCurrentState()));
+    this.modelAPI.subscribe('secondValue', () => this.view.updateValues(getCurrentState()));
   }
 
   private setInitialState() {

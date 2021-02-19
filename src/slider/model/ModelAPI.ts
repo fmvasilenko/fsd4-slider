@@ -31,14 +31,15 @@ class ModelAPI {
     else firstValue.set(value);
   }
 
-  public subscribe(option: ModelOption, subscriber: (state: State) => void): void {
+  public subscribe(option: ModelOption, subscriber: (value: number | boolean) => void): void {
     this.model[option].addSubscriber(subscriber);
   }
 
-  public unsubscribe(option: ModelOption, subscriber: (state: State) => void): void {
+  public unsubscribe(option: ModelOption, subscriber: (value: number | boolean) => void): void {
     this.model[option].removeSubscriber(subscriber);
   }
 
+  @autobind
   public getCurrentState(): State {
     return this.model.getCurrentState();
   }

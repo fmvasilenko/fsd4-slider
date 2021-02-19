@@ -34,15 +34,15 @@ class Model {
       secondValue,
     }: State = { ...defaultConfig, ...config };
 
-    this.isRange = this.makeBooleanMemoryCell(isRange);
-    this.isVertical = this.makeBooleanMemoryCell(isVertical);
-    this.valueLabelDisplayed = this.makeBooleanMemoryCell(valueLabelDisplayed);
-    this.scaleDisplayed = this.makeBooleanMemoryCell(scaleDisplayed);
-    this.min = this.makeNumberMemoryCell(min, this.checkMin);
-    this.max = this.makeNumberMemoryCell(max, this.checkMax);
-    this.step = this.makeNumberMemoryCell(step, this.checkStep);
-    this.firstValue = this.makeNumberMemoryCell(firstValue, this.checkFirstValue);
-    this.secondValue = this.makeNumberMemoryCell(secondValue, this.checkSecondValue);
+    this.isRange = Model.makeBooleanMemoryCell(isRange);
+    this.isVertical = Model.makeBooleanMemoryCell(isVertical);
+    this.valueLabelDisplayed = Model.makeBooleanMemoryCell(valueLabelDisplayed);
+    this.scaleDisplayed = Model.makeBooleanMemoryCell(scaleDisplayed);
+    this.min = Model.makeNumberMemoryCell(min, this.checkMin);
+    this.max = Model.makeNumberMemoryCell(max, this.checkMax);
+    this.step = Model.makeNumberMemoryCell(step, this.checkStep);
+    this.firstValue = Model.makeNumberMemoryCell(firstValue, this.checkFirstValue);
+    this.secondValue = Model.makeNumberMemoryCell(secondValue, this.checkSecondValue);
 
     this.setSubscriptions();
   }
@@ -62,12 +62,12 @@ class Model {
     };
   }
 
-  private makeNumberMemoryCell<T>(value: T, checkFunction?: (data: T) => T): ModelMemoryCell<T> {
-    return new ModelMemoryCell<T>(value, this.getCurrentState, Model.typeCheckDecorator('number', checkFunction));
+  private static makeNumberMemoryCell<T>(value: T, checkFunction?: (data: T) => T): ModelMemoryCell<T> {
+    return new ModelMemoryCell<T>(value, Model.typeCheckDecorator('number', checkFunction));
   }
 
-  private makeBooleanMemoryCell<T>(value: T, checkFunction?: (data: T) => T): ModelMemoryCell<T> {
-    return new ModelMemoryCell<T>(value, this.getCurrentState, Model.typeCheckDecorator('boolean', checkFunction));
+  private static makeBooleanMemoryCell<T>(value: T, checkFunction?: (data: T) => T): ModelMemoryCell<T> {
+    return new ModelMemoryCell<T>(value, Model.typeCheckDecorator('boolean', checkFunction));
   }
 
   private static typeCheckDecorator<T>(type: 'number' | 'boolean', checkFunction?: (data: T) => T): (data: T) => T {
