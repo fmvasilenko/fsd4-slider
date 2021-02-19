@@ -25,11 +25,11 @@ class Presenter {
     this.modelAPI.subscribe('isVertical', this.view.updateIsVertical);
     this.modelAPI.subscribe('valueLabelDisplayed', this.view.updateValueLabelDisplayed);
     this.modelAPI.subscribe('scaleDisplayed', this.view.updateScaleDisplayed);
-    this.modelAPI.subscribe('min', this.view.updateMin);
-    this.modelAPI.subscribe('max', this.view.updateMax);
-    this.modelAPI.subscribe('step', this.view.updateStep);
-    this.modelAPI.subscribe('firstValue', this.view.updateFirstValue);
-    this.modelAPI.subscribe('secondValue', this.view.updateSecondValue);
+    this.modelAPI.subscribe('min', this.view.updateScale);
+    this.modelAPI.subscribe('max', this.view.updateScale);
+    this.modelAPI.subscribe('step', this.view.updateScale);
+    this.modelAPI.subscribe('firstValue', this.view.updateValues);
+    this.modelAPI.subscribe('secondValue', this.view.updateValues);
   }
 
   private setInitialState() {
@@ -39,11 +39,8 @@ class Presenter {
     this.view.updateIsVertical(state);
     this.view.updateValueLabelDisplayed(state);
     this.view.updateScaleDisplayed(state);
-    this.view.updateStep(state);
-    this.view.updateMin(state);
-    this.view.updateMax(state);
-    this.view.updateFirstValue(state);
-    this.view.updateSecondValue(state);
+    this.view.updateScale(state);
+    this.view.updateValues(state);
   }
 }
 

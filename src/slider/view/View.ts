@@ -64,32 +64,16 @@ class View {
   }
 
   @autobind
-  public updateStep(state: State) {
-    this.updateScale(state);
-  }
-
-  @autobind
-  public updateMin(state: State) {
-    this.updateScale(state);
-  }
-
-  @autobind
-  public updateMax(state: State) {
-    this.updateScale(state);
-  }
-
-  @autobind
-  public updateFirstValue(state: State) {
+  public updateValues(state: State) {
     this.firstHandle.updateValue(state);
     this.secondHandle.updateValue(state);
     this.rangeLine.render(state);
   }
 
   @autobind
-  public updateSecondValue(state: State) {
-    this.firstHandle.updateValue(state);
-    this.secondHandle.updateValue(state);
-    this.rangeLine.render(state);
+  public updateScale(state: State) {
+    this.removeScaleValues();
+    this.createScaleValues(View.calculatePointsNumber(state), state);
   }
 
   public subscribe(element: 'firstHandle' | 'secondHandle' | 'scale', subscriber: (position: number) => void): void {
@@ -113,11 +97,6 @@ class View {
 
     if (isVertical) this.root.classList.add(classes.rootVertical);
     else this.root.classList.remove(classes.rootVertical);
-  }
-
-  private updateScale(state: State) {
-    this.removeScaleValues();
-    this.createScaleValues(View.calculatePointsNumber(state), state);
   }
 
   private createScaleValues(pointsNumber: number, state: State) {

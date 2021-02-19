@@ -109,37 +109,17 @@ describe('view', () => {
     });
   });
 
-  describe('updateStep', () => {
+  describe('updateScale', () => {
     it('should recalculate scale values number', () => {
       const container = document.createElement('div');
       const view = new View(container);
 
-      view.updateStep(defaultConfig);
+      view.updateScale(defaultConfig);
       expect(container.querySelectorAll(`.${classes.scaleValue}`).length).to.equal(6);
     });
   });
 
-  describe('updateMin', () => {
-    it('should recalculate scale values number', () => {
-      const container = document.createElement('div');
-      const view = new View(container);
-
-      view.updateMin(defaultConfig);
-      expect(container.querySelectorAll(`.${classes.scaleValue}`).length).to.equal(6);
-    });
-  });
-
-  describe('updateMax', () => {
-    it('should recalculate scale values number', () => {
-      const container = document.createElement('div');
-      const view = new View(container);
-
-      view.updateMax(defaultConfig);
-      expect(container.querySelectorAll(`.${classes.scaleValue}`).length).to.equal(6);
-    });
-  });
-
-  describe('updateFirstValue', () => {
+  describe('updateValues', () => {
     it('should call subscribers', () => {
       const container = document.createElement('div');
       const view = new View(container);
@@ -148,23 +128,7 @@ describe('view', () => {
       const secondHandleSpy = sinon.spy(fakeView.secondHandle, 'updateValue');
       const rangeLineSpy = sinon.spy(fakeView.rangeLine, 'render');
 
-      (view.updateFirstValue.bind(fakeView))(defaultConfig);
-      expect(firstHandleSpy.calledOnce).to.equal(true);
-      expect(secondHandleSpy.calledOnce).to.equal(true);
-      expect(rangeLineSpy.calledOnce).to.equal(true);
-    });
-  });
-
-  describe('updateSecondValue', () => {
-    it('should call subscribers', () => {
-      const container = document.createElement('div');
-      const view = new View(container);
-      const fakeView = new FakeView(container);
-      const firstHandleSpy = sinon.spy(fakeView.firstHandle, 'updateValue');
-      const secondHandleSpy = sinon.spy(fakeView.secondHandle, 'updateValue');
-      const rangeLineSpy = sinon.spy(fakeView.rangeLine, 'render');
-
-      (view.updateSecondValue.bind(fakeView))(defaultConfig);
+      (view.updateValues.bind(fakeView))(defaultConfig);
       expect(firstHandleSpy.calledOnce).to.equal(true);
       expect(secondHandleSpy.calledOnce).to.equal(true);
       expect(rangeLineSpy.calledOnce).to.equal(true);
