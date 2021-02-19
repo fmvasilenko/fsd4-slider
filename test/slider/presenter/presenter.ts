@@ -2,7 +2,7 @@
 /* eslint-disable class-methods-use-this */
 import { expect } from 'chai';
 import { Model } from '../../../src/slider/model/Model';
-import { ModelGUI } from '../../../src/slider/model/ModelAPI';
+import { ModelAPI } from '../../../src/slider/model/ModelAPI';
 import { Presenter } from '../../../src/slider/presenter/Presenter';
 import { View } from '../../../src/slider/view/View';
 import { defaultConfig } from '../../utils/sliderDefaultConfig';
@@ -13,9 +13,9 @@ describe('presenter', () => {
     it('should set and return value', () => {
       const container = document.createElement('div');
       const model = new Model(defaultConfig);
-      const modelGUI = new ModelGUI(model);
+      const ModelAPI = new ModelAPI(model);
       const view = new View(container);
-      const presenter = new Presenter(modelGUI, view);
+      const presenter = new Presenter(ModelAPI, view);
 
       presenter.isRange = true;
       expect(presenter.isRange).to.equal(true);

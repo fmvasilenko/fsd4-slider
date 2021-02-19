@@ -2,7 +2,7 @@
 import autobind from 'autobind-decorator';
 import { Model } from './Model';
 
-class ModelGUI {
+class ModelAPI {
   private model: Model;
 
   constructor(model: Model) {
@@ -50,4 +50,4 @@ class ModelGUI {
   }
 }
 
-export { ModelGUI };
+export { ModelAPI };

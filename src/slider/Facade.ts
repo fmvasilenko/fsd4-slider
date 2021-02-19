@@ -1,6 +1,6 @@
 import autobind from 'autobind-decorator';
 import { Model } from './model/Model';
-import { ModelGUI } from './model/ModelAPI';
+import { ModelAPI } from './model/ModelAPI';
 import { ModelMemoryCell } from './model/ModelMemoryCell';
 import { Presenter } from './presenter/Presenter';
 import { View } from './view/View';
@@ -8,7 +8,7 @@ import { View } from './view/View';
 class Facade {
   private model: Model;
 
-  private modelGUI: ModelGUI;
+  private modelAPI: ModelAPI;
 
   private view: View;
 
@@ -16,9 +16,9 @@ class Facade {
 
   constructor(container: HTMLElement, config?: any) {
     this.model = new Model(config);
-    this.modelGUI = new ModelGUI(this.model);
+    this.modelAPI = new ModelAPI(this.model);
     this.view = new View(container);
-    this.presenter = new Presenter(this.modelGUI, this.view);
+    this.presenter = new Presenter(this.modelAPI, this.view);
   }
 
   @autobind
