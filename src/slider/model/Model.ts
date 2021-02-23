@@ -128,7 +128,7 @@ class Model {
     if (givenStep < 1) return 1;
     if (max && givenStep > range) return range;
 
-    return givenStep;
+    return Math.floor(givenStep);
   }
 
   @autobind
