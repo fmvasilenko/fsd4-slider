@@ -39,8 +39,8 @@ class Model {
     this.valueLabelDisplayed = Model.makeBooleanMemoryCell(valueLabelDisplayed);
     this.scaleDisplayed = Model.makeBooleanMemoryCell(scaleDisplayed);
     this.min = Model.makeNumberMemoryCell(min, this.checkMin);
-    this.max = Model.makeNumberMemoryCell(max, this.checkMax);
     this.step = Model.makeNumberMemoryCell(step, this.checkStep);
+    this.max = Model.makeNumberMemoryCell(max, this.checkMax);
     this.firstValue = Model.makeNumberMemoryCell(firstValue, this.checkFirstValue);
     this.secondValue = Model.makeNumberMemoryCell(secondValue, this.checkSecondValue);
 
@@ -110,7 +110,7 @@ class Model {
   @autobind
   private checkMin(givenValue: number): number {
     const { max, step } = this.getCurrentState();
-    return givenValue > max - step ? max - step : givenValue;
+    return (givenValue > max - step) ? max - step : givenValue;
   }
 
   @autobind
@@ -121,10 +121,11 @@ class Model {
 
   @autobind
   private checkStep(givenStep: number): number {
-    const range = this.max.get() - this.min.get();
+    const { min, max } = this.getCurrentState();
+    const range = max - min;
 
     if (givenStep < 1) return 1;
-    if (givenStep > range) return range;
+    if (max && givenStep > range) return range;
 
     return givenStep;
   }
