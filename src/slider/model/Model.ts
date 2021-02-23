@@ -72,9 +72,10 @@ class Model {
 
   private static typeCheckDecorator<T>(type: 'number' | 'boolean', checkFunction?: (data: T) => T): (data: T) => T {
     return (data: T) => {
-      if (!Model.checkType(data, type)) throw TypeError(`Slider option should have '${type}' type, but got '${typeof data}'`);
-      if (checkFunction) return checkFunction(data);
-      return data;
+      const value = typeof data === 'string' ? parseInt(data, 10) || data : data;
+      if (!Model.checkType(value, type)) throw TypeError(`Slider option should have '${type}' type, but got '${typeof value}'`);
+      if (checkFunction) return checkFunction(value as T);
+      return value as T;
     };
   }
 
