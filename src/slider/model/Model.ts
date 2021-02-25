@@ -111,13 +111,19 @@ class Model {
   @autobind
   private checkMin(givenValue: number): number {
     const { max, step } = this.getCurrentState();
-    return (givenValue > max - step) ? max - step : givenValue;
+
+    if (givenValue > max - step) return max - step;
+
+    return Math.floor(givenValue);
   }
 
   @autobind
   private checkMax(givenValue: number): number {
     const { min, step } = this.getCurrentState();
-    return givenValue < min + step ? min + step : givenValue;
+
+    if (givenValue < min + step) return min + step;
+
+    return Math.floor(givenValue);
   }
 
   @autobind
