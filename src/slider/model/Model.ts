@@ -32,19 +32,20 @@ class Model {
       step,
       firstValue,
       secondValue,
-    }: State = { ...defaultConfig, ...config };
+    } = defaultConfig;
 
-    this.isRange = Model.makeBooleanMemoryCell(isRange);
-    this.isVertical = Model.makeBooleanMemoryCell(isVertical);
-    this.valueLabelDisplayed = Model.makeBooleanMemoryCell(valueLabelDisplayed);
-    this.scaleDisplayed = Model.makeBooleanMemoryCell(scaleDisplayed);
-    this.min = Model.makeNumberMemoryCell(min, this.checkMin);
-    this.step = Model.makeNumberMemoryCell(step, this.checkStep);
-    this.max = Model.makeNumberMemoryCell(max, this.checkMax);
-    this.firstValue = Model.makeNumberMemoryCell(firstValue, this.checkFirstValue);
-    this.secondValue = Model.makeNumberMemoryCell(secondValue, this.checkSecondValue);
+    this.isRange = new ModelMemoryCell(isRange, Model.checkIfBoolean);
+    this.isVertical = new ModelMemoryCell(isVertical, Model.checkIfBoolean);
+    this.valueLabelDisplayed = new ModelMemoryCell(valueLabelDisplayed, Model.checkIfBoolean);
+    this.scaleDisplayed = new ModelMemoryCell(scaleDisplayed, Model.checkIfBoolean);
+    this.min = new ModelMemoryCell(min, this.checkMin);
+    this.step = new ModelMemoryCell(step, this.checkStep);
+    this.max = new ModelMemoryCell(max, this.checkMax);
+    this.firstValue = new ModelMemoryCell(firstValue, this.checkFirstValue);
+    this.secondValue = new ModelMemoryCell(secondValue, this.checkSecondValue);
 
     this.setSubscriptions();
+    this.setInitialState({ ...defaultConfig, ...config });
   }
 
   @autobind
@@ -60,31 +61,6 @@ class Model {
       firstValue: this.firstValue?.get(),
       secondValue: this.secondValue?.get(),
     };
-  }
-
-  private static makeNumberMemoryCell<T>(value: T, checkFunction?: (data: T) => T): ModelMemoryCell<T> {
-    return new ModelMemoryCell<T>(value, Model.typeCheckDecorator('number', checkFunction));
-  }
-
-  private static makeBooleanMemoryCell<T>(value: T, checkFunction?: (data: T) => T): ModelMemoryCell<T> {
-    return new ModelMemoryCell<T>(value, Model.typeCheckDecorator('boolean', checkFunction));
-  }
-
-  private static typeCheckDecorator<T>(type: 'number' | 'boolean', checkFunction?: (data: T) => T): (data: T) => T {
-    return (data: T) => {
-      const value = typeof data === 'string' ? parseInt(data, 10) || data : data;
-      if (!Model.checkType(value, type)) throw TypeError(`Slider option should have '${type}' type, but got '${typeof value}'`);
-      if (checkFunction) return checkFunction(value as T);
-      return value as T;
-    };
-  }
-
-  private static checkType(value: any, type: 'number' | 'boolean'): boolean {
-    switch (type) {
-      case 'number': return typeof value === 'number';
-      case 'boolean': return typeof value === 'boolean';
-      default: return false;
-    }
   }
 
   private setSubscriptions() {
@@ -108,39 +84,54 @@ class Model {
     this.firstValue.update();
   }
 
+  private setInitialState(config: State) {
+    this.isRange.set(config.isRange);
+    this.isVertical.set(config.isVertical);
+    this.valueLabelDisplayed.set(config.valueLabelDisplayed);
+    this.scaleDisplayed.set(config.scaleDisplayed);
+    this.min.set(config.min);
+    this.step.set(config.step);
+    this.max.set(config.max);
+    this.firstValue.set(config.firstValue);
+    this.secondValue.set(config.secondValue);
+  }
+
   @autobind
   private checkMin(givenValue: number): number {
+    const value = Model.checkIfNumber(givenValue);
     const { max, step } = this.getCurrentState();
 
-    if (givenValue > max - step) return max - step;
+    if (value > max - step) return max - step;
 
-    return Math.floor(givenValue);
+    return Math.floor(value);
   }
 
   @autobind
   private checkMax(givenValue: number): number {
+    const value = Model.checkIfNumber(givenValue);
     const { min, step } = this.getCurrentState();
 
-    if (givenValue < min + step) return min + step;
+    if (value < min + step) return min + step;
 
-    return Math.floor(givenValue);
+    return Math.floor(value);
   }
 
   @autobind
   private checkStep(givenStep: number): number {
+    const step = Model.checkIfNumber(givenStep);
     const { min, max } = this.getCurrentState();
     const range = max - min;
 
-    if (givenStep < 1) return 1;
-    if (max && givenStep > range) return range;
+    if (step < 1) return 1;
+    if (max && step > range) return range;
 
-    return Math.floor(givenStep);
+    return Math.floor(step);
   }
 
   @autobind
   private checkFirstValue(givenValue: number): number {
     const { isRange, secondValue } = this.getCurrentState();
-    const value = this.checkHandleValue(givenValue);
+    const value = this.checkHandleValue(Model.checkIfNumber(givenValue));
 
     if (!this.secondValue) return value; // necessary for inital value check, when rigthHandleValue was not defined yet
     if (isRange && value > secondValue) return secondValue;
@@ -151,7 +142,7 @@ class Model {
   @autobind
   private checkSecondValue(givenValue: number): number {
     const { isRange, max, firstValue } = this.getCurrentState();
-    const value = this.checkHandleValue(givenValue);
+    const value = this.checkHandleValue(Model.checkIfNumber(givenValue));
 
     if (!isRange) return max;
     if (value < firstValue) return firstValue;
@@ -178,6 +169,20 @@ class Model {
 
     if (accuracy > step / 2 && value + step <= max) return value + step;
 
+    return value;
+  }
+
+  @autobind
+  private static checkIfNumber(value: number): number {
+    if (typeof value === 'string' && parseInt(value, 10)) return parseInt(value, 10);
+
+    if (typeof value !== 'number') throw new TypeError(`'${value}' is not a number. Number expected.`);
+    return value;
+  }
+
+  @autobind
+  private static checkIfBoolean(value: boolean): boolean {
+    if (typeof value !== 'boolean') throw new TypeError(`'${value}' is not boolean. Boolean expected.`);
     return value;
   }
 }

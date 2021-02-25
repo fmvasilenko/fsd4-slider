@@ -11,10 +11,10 @@ class ModelMemoryCell<T> {
 
   private checkFunction: CheckFunction<T>;
 
-  constructor(value: T, checkFunction: CheckFunction<T> = (givenValue: T) => givenValue) {
+  constructor(initialValue: T, checkFunction: CheckFunction<T> = (givenValue: T) => givenValue) {
     this.subscribers = new Observable();
     this.checkFunction = checkFunction;
-    this.value = checkFunction(value);
+    this.value = initialValue;
   }
 
   public get() {
@@ -22,8 +22,12 @@ class ModelMemoryCell<T> {
   }
 
   public set(value: T) {
-    this.value = this.checkFunction(value);
-    this.subscribers.publish(this.value);
+    try {
+      this.value = this.checkFunction(value);
+      this.subscribers.publish(this.value);
+    } catch (error) {
+      console.warn(error);
+    }
   }
 
   public addSubscriber(subscriber: (value: T) => void) {
