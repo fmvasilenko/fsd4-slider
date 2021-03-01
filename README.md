@@ -70,7 +70,7 @@ By default slider will be created with following parameters:
 }
 ```
 
-<a name="#subscribe"></a>
+<a name="subscribe"></a>
 
 ## 3. Subscribe
 
@@ -89,7 +89,7 @@ const subscriber = (value) => console.log(value);
 slider.subscribe('firstValue', subscriber);
 ```
 
-<a name="#unsubscribe"></a>
+<a name="unsubscribe"></a>
 
 ## 4. Unsubscribe
 
@@ -109,7 +109,7 @@ slider.subscribe('firstValue', subscriber);
 slider.unsubscribe('firstValue', subscriber);
 ```
 
-<a name="#setslideroption"></a>
+<a name="setslideroption"></a>
 
 ## 5. setSliderOption
 
@@ -127,7 +127,7 @@ const slider = $(element).slider();
 slider.setSlideroption('firstValue', 20);
 ```
 
-<a name="#getslideroption"></a>
+<a name="getslideroption"></a>
 
 ## 6. getSliderOption
 
