@@ -124,7 +124,7 @@ Example:
 ```ts
 const slider = $(element).slider();
 
-slider.setSlideroption('firstValue', 20);
+slider.setSliderOption('firstValue', 20);
 ```
 
 <a name="getslideroption"></a>
@@ -142,5 +142,5 @@ Example:
 ```ts
 const slider = $(element).slider();
 
-console.log(slider.getSlideroption('firstValue'));
+console.log(slider.getSliderOption('firstValue'));
 ```
