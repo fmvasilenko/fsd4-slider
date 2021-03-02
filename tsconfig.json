@@ -1,19 +1,12 @@
 {
   "compilerOptions": {
-    //"baseUrl": "/",
     "outDir": "./dist/",
     "sourceMap": true,
-    //"noImplicitAny": true,
-    //"preserveSymlinks": true,
     "strict": true,
     "module": "commonjs",
     "target": "es5",
     "jsx": "react",
     "allowJs": true,
     "experimentalDecorators": true,
-  },
-  "exclude": [
-    "slider2",
-    "testOld"
-  ]
+  }
 }
