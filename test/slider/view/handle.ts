@@ -22,7 +22,7 @@ describe('handle', () => {
   });
 
   describe('switch', () => {
-    it('should add and remove right handle', () => {
+    it('should add and remove second handle', () => {
       const container = document.createElement('div');
       const handleView = new HandleView(container, HandleType.Second);
 
@@ -74,6 +74,18 @@ describe('handle', () => {
 
       const handle = container.querySelector(`.${classes.handle}`) as HTMLElement;
       expect(handle.style.left).to.equal('30%');
+    });
+  });
+
+  describe('subscribe', () => {
+    it('should add subscriber to the subscribers list', () => {
+      const container = document.createElement('div');
+      const handleView = new HandleView(container, HandleType.First);
+      const subscriber = () => {};
+
+      handleView.subscribe(subscriber);
+      // @ts-ignore
+      expect(handleView.subscribers.subscribers.includes(subscriber)).to.equal(true);
     });
   });
 });

@@ -1,34 +1,8 @@
 /* eslint-disable no-new */
-/* eslint-disable class-methods-use-this */
 import { expect } from 'chai';
-import { HandleType, HandleView } from '../../../src/slider/view/HandleView';
-import { RangeLineView } from '../../../src/slider/view/RangeLineView';
-import { ScaleValueView } from '../../../src/slider/view/ScaleValueView';
 import { View } from '../../../src/slider/view/View';
 import classes from '../../../src/slider/slider.classes';
 import { defaultConfig } from '../../utils/sliderDefaultConfig';
-
-const sinon = require('sinon');
-
-class FakeView {
-  public firstHandle: HandleView;
-
-  public secondHandle: HandleView;
-
-  public rangeLine: RangeLineView;
-
-  public scaleValues: ScaleValueView[] = [];
-
-  constructor(container: HTMLElement) {
-    this.firstHandle = new HandleView(container, HandleType.First);
-    this.secondHandle = new HandleView(container, HandleType.Second);
-    this.rangeLine = new RangeLineView(container);
-
-    this.scaleValues.push(new ScaleValueView(container, defaultConfig, 2, 5));
-  }
-
-  public switchVertical() {}
-}
 
 describe('view', () => {
   describe('constructor', () => {
@@ -41,71 +15,45 @@ describe('view', () => {
   });
 
   describe('updateIsRange', () => {
-    it('should call subscribers', () => {
+    it('should add the second handle', () => {
       const container = document.createElement('div');
       const view = new View(container);
-      const fakeView = new FakeView(container);
-      const secondHandleSpy = sinon.spy(fakeView.secondHandle, 'switchHandle');
-      const rangeLineSpy = sinon.spy(fakeView.rangeLine, 'render');
 
-      (view.updateIsRange.bind(fakeView))(defaultConfig);
-      expect(secondHandleSpy.calledOnce).to.equal(true);
-      expect(rangeLineSpy.calledOnce).to.equal(true);
+      view.updateIsRange({ ...defaultConfig, isRange: true });
+      expect(container.querySelectorAll(`.${classes.secondHandle}`).length).to.equal(1);
+      expect(container.querySelector(`.${classes.rangeLine}`)?.clientLeft).to.equal(0);
     });
   });
 
   describe('updateIsVertical', () => {
-    it('should call subscribers', () => {
-      const container = document.createElement('div');
-      const view = new View(container);
-      const fakeView = new FakeView(container);
-      const firstHandleSpy = sinon.spy(fakeView.firstHandle, 'switchVertical');
-      const secondHandleSpy = sinon.spy(fakeView.secondHandle, 'switchVertical');
-      const rangeLineSpy = sinon.spy(fakeView.rangeLine, 'switchVertical');
-      const scaleValueSpy = sinon.spy(fakeView.scaleValues[0], 'switchVertical');
-
-      (view.updateIsVertical.bind(fakeView))(defaultConfig);
-      expect(firstHandleSpy.calledOnce).to.equal(true);
-      expect(secondHandleSpy.calledOnce).to.equal(true);
-      expect(rangeLineSpy.calledOnce).to.equal(true);
-      expect(scaleValueSpy.calledOnce).to.equal(true);
-    });
-
-    it('should add and remove vertical root class', () => {
+    it('should add vertical classes', () => {
       const container = document.createElement('div');
       const view = new View(container);
 
-      view.updateIsVertical({ ...defaultConfig, ...{ isVertical: true } });
+      view.updateIsVertical({ ...defaultConfig, isVertical: true });
       expect(container.querySelectorAll(`.${classes.rootVertical}`).length).to.equal(1);
-
-      view.updateIsVertical({ ...defaultConfig, ...{ isVertical: false } });
-      expect(container.querySelectorAll(`.${classes.rootVertical}`).length).to.equal(0);
+      expect(container.querySelectorAll(`.${classes.handleVertical}`).length).to.equal(1);
+      expect(container.querySelectorAll(`.${classes.rangeLineVertical}`).length).to.equal(1);
     });
   });
 
   describe('updateValueLabelDisplayed', () => {
-    it('should call subscribers', () => {
+    it('should show/hide value label', () => {
       const container = document.createElement('div');
       const view = new View(container);
-      const fakeView = new FakeView(container);
-      const firstHandleSpy = sinon.spy(fakeView.firstHandle, 'switchLabel');
-      const secondHandleSpy = sinon.spy(fakeView.secondHandle, 'switchLabel');
 
-      (view.updateValueLabelDisplayed.bind(fakeView))(defaultConfig);
-      expect(firstHandleSpy.calledOnce).to.equal(true);
-      expect(secondHandleSpy.calledOnce).to.equal(true);
+      view.updateValueLabelDisplayed({ ...defaultConfig, valueLabelDisplayed: false });
+      expect(container.querySelectorAll(`.${classes.valueLabel}`).length).to.equal(0);
     });
   });
 
   describe('updateScaleDisplayed', () => {
-    it('should call subscribers', () => {
+    it('should show/hide scale', () => {
       const container = document.createElement('div');
       const view = new View(container);
-      const fakeView = new FakeView(container);
-      const scaleValueSpy = sinon.spy(fakeView.scaleValues[0], 'switchLabel');
 
-      (view.updateScaleDisplayed.bind(fakeView))(defaultConfig);
-      expect(scaleValueSpy.calledOnce).to.equal(true);
+      view.updateScaleDisplayed({ ...defaultConfig, scaleDisplayed: false });
+      expect(container.querySelectorAll(`.${classes.scaleValue}`).length).to.equal(0);
     });
   });
 
@@ -115,7 +63,7 @@ describe('view', () => {
       const view = new View(container);
 
       view.updateScale(defaultConfig);
-      expect(container.querySelectorAll(`.${classes.scaleValue}`).length).to.equal(6);
+      expect(container.querySelectorAll(`.${classes.scaleValue}`).length).to.equal(7);
     });
   });
 
@@ -123,39 +71,45 @@ describe('view', () => {
     it('should call subscribers', () => {
       const container = document.createElement('div');
       const view = new View(container);
-      const fakeView = new FakeView(container);
-      const firstHandleSpy = sinon.spy(fakeView.firstHandle, 'updateValue');
-      const secondHandleSpy = sinon.spy(fakeView.secondHandle, 'updateValue');
-      const rangeLineSpy = sinon.spy(fakeView.rangeLine, 'render');
 
-      (view.updateValues.bind(fakeView))(defaultConfig);
-      expect(firstHandleSpy.calledOnce).to.equal(true);
-      expect(secondHandleSpy.calledOnce).to.equal(true);
-      expect(rangeLineSpy.calledOnce).to.equal(true);
+      view.updateIsRange({ ...defaultConfig, isRange: true });
+
+      view.updateValues({ ...defaultConfig, firstValue: 30, secondValue: 70 });
+      const handle = container.querySelectorAll(`.${classes.handle}`);
+      expect((handle[0] as HTMLElement).style.left).to.equal('30%');
+      expect((handle[1] as HTMLElement).style.left).to.equal('70%');
     });
   });
 
-  describe('setfirstHandlePositionSubscriber', () => {
-    it('should call subscribers', () => {
+  describe('subscribe', () => {
+    it('should add scale click subscriber', () => {
       const container = document.createElement('div');
       const view = new View(container);
-      const fakeView = new FakeView(container);
-      const firstHandleSpy = sinon.spy(fakeView.firstHandle, 'subscribe');
+      const subscriber = () => {};
 
-      (view.subscribe.bind(fakeView))('firstHandle', () => {});
-      expect(firstHandleSpy.calledOnce).to.equal(true);
+      view.subscribe('scale', subscriber);
+      // @ts-ignore
+      expect(view.scaleSubscribers.subscribers.includes(subscriber)).to.equal(true);
     });
-  });
 
-  describe('setsecondHandlePositionSubscriber', () => {
-    it('should call subscribers', () => {
+    it('should add first handle subscriber', () => {
       const container = document.createElement('div');
       const view = new View(container);
-      const fakeView = new FakeView(container);
-      const secondHandleSpy = sinon.spy(fakeView.secondHandle, 'subscribe');
+      const subscriber = () => {};
 
-      (view.subscribe.bind(fakeView))('secondHandle', () => {});
-      expect(secondHandleSpy.calledOnce).to.equal(true);
+      view.subscribe('firstHandle', subscriber);
+      // @ts-ignore
+      expect(view.firstHandle.subscribers.subscribers.includes(subscriber)).to.equal(true);
+    });
+
+    it('should add second handle subscriber', () => {
+      const container = document.createElement('div');
+      const view = new View(container);
+      const subscriber = () => {};
+
+      view.subscribe('secondHandle', subscriber);
+      // @ts-ignore
+      expect(view.secondHandle.subscribers.subscribers.includes(subscriber)).to.equal(true);
     });
   });
 });
