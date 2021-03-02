@@ -1,5 +1,5 @@
 interface SliderFunction {
-  (config?: any): JQuery;
+  (config?: Config): JQuery;
 }
 
 interface JQuerySliderConfig {
@@ -57,15 +57,15 @@ interface State {
 }
 
 interface Config {
-  isRange?: boolean
-  isVertical?: boolean
-  valueLabelDisplayed?: boolean
-  scaleDisplayed?: boolean
-  min?: number
-  max?: number
-  step?: number
-  firstValue?: number
-  secondValue?: number
+  isRange?: unknown
+  isVertical?: unknown
+  valueLabelDisplayed?: unknown
+  scaleDisplayed?: unknown
+  min?: unknown
+  max?: unknown
+  step?: unknown
+  firstValue?: unknown
+  secondValue?: unknown
 }
 
 type ModelOption = keyof Config;

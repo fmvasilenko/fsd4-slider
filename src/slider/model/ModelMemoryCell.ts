@@ -1,7 +1,7 @@
 import { Observable } from '../observable/Observable';
 
 interface CheckFunction<T> {
-  (data: T): T
+  (data: unknown): T
 }
 
 class ModelMemoryCell<T> {
@@ -11,7 +11,7 @@ class ModelMemoryCell<T> {
 
   private checkFunction: CheckFunction<T>;
 
-  constructor(initialValue: T, checkFunction: CheckFunction<T> = (givenValue: T) => givenValue) {
+  constructor(initialValue: T, checkFunction: CheckFunction<T> = (givenValue: unknown) => givenValue as T) {
     this.subscribers = new Observable();
     this.checkFunction = checkFunction;
     this.value = initialValue;
@@ -21,7 +21,7 @@ class ModelMemoryCell<T> {
     return this.value;
   }
 
-  public set(value: T) {
+  public set(value: unknown) {
     try {
       this.value = this.checkFunction(value);
       this.subscribers.publish(this.value);

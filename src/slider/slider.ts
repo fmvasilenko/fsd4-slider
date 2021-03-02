@@ -2,7 +2,7 @@
 import Facade from './Facade';
 
 // eslint-disable-next-line func-names
-export default $.fn.slider = function (this: JQuery, config?: any) {
+export default $.fn.slider = function (this: JQuery, config?: Config) {
   const slider = new Facade(this[0], config);
 
   this.subscribe = (option: ModelOption, subscriber: (value: number | boolean) => void) => {

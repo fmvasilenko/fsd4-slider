@@ -21,7 +21,7 @@ class Model {
 
   public secondValue: ModelMemoryCell<number>;
 
-  constructor(config?: any) {
+  constructor(config?: Config) {
     const {
       isRange,
       isVertical,
@@ -84,7 +84,7 @@ class Model {
     this.firstValue.update();
   }
 
-  private setInitialState(config: State) {
+  private setInitialState(config: Config) {
     this.isRange.set(config.isRange);
     this.isVertical.set(config.isVertical);
     this.valueLabelDisplayed.set(config.valueLabelDisplayed);
@@ -97,7 +97,7 @@ class Model {
   }
 
   @autobind
-  private checkMin(givenValue: number): number {
+  private checkMin(givenValue: unknown): number {
     const value = Model.checkIfNumber(givenValue);
     const { max, step } = this.getCurrentState();
 
@@ -107,7 +107,7 @@ class Model {
   }
 
   @autobind
-  private checkMax(givenValue: number): number {
+  private checkMax(givenValue: unknown): number {
     const value = Model.checkIfNumber(givenValue);
     const { min, step } = this.getCurrentState();
 
@@ -117,7 +117,7 @@ class Model {
   }
 
   @autobind
-  private checkStep(givenStep: number): number {
+  private checkStep(givenStep: unknown): number {
     const step = Model.checkIfNumber(givenStep);
     const { min, max } = this.getCurrentState();
     const range = max - min;
@@ -129,7 +129,7 @@ class Model {
   }
 
   @autobind
-  private checkFirstValue(givenValue: number): number {
+  private checkFirstValue(givenValue: unknown): number {
     const { isRange, secondValue } = this.getCurrentState();
     const value = this.checkHandleValue(Model.checkIfNumber(givenValue));
 
@@ -140,7 +140,7 @@ class Model {
   }
 
   @autobind
-  private checkSecondValue(givenValue: number): number {
+  private checkSecondValue(givenValue: unknown): number {
     const { isRange, max, firstValue } = this.getCurrentState();
     const value = this.checkHandleValue(Model.checkIfNumber(givenValue));
 
@@ -173,7 +173,7 @@ class Model {
   }
 
   @autobind
-  private static checkIfNumber(value: number): number {
+  private static checkIfNumber(value: unknown): number {
     if (typeof value === 'string' && parseInt(value, 10)) return parseInt(value, 10);
 
     if (typeof value !== 'number') throw new TypeError(`'${value}' is not a number. Number expected.`);
@@ -181,7 +181,7 @@ class Model {
   }
 
   @autobind
-  private static checkIfBoolean(value: boolean): boolean {
+  private static checkIfBoolean(value: unknown): boolean {
     if (typeof value !== 'boolean') throw new TypeError(`'${value}' is not boolean. Boolean expected.`);
     return value;
   }

@@ -14,7 +14,7 @@ class Facade {
 
   private presenter: Presenter;
 
-  constructor(container: HTMLElement, config?: any) {
+  constructor(container: HTMLElement, config?: Config) {
     this.model = new Model(config);
     this.modelAPI = new ModelAPI(this.model);
     this.view = new View(container);
